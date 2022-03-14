@@ -19,6 +19,12 @@ export default [
     ],
   },
   {
+    path: '/posts',
+    name: 'posts',
+    icon: 'AppstoreAddOutlined',
+    component: './posting',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
