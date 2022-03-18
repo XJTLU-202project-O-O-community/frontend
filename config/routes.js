@@ -25,6 +25,12 @@ export default [
     component: './posting',
   },
   {
+    path:'/personal_info',
+    name:'Personal Page',
+    icon:'IdcardFilled',
+    component:'./personalPage',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
