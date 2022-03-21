@@ -164,6 +164,17 @@ const Register = () => {
         >
           <Input size="large" placeholder="邮箱" />
         </FormItem>
+        <FormItem
+          name="userName"
+          rules={[
+            {
+              required: true,
+              message: '请输入用户昵称!',
+            },
+          ]}
+        >
+          <Input size="large" placeholder="用户名" />
+        </FormItem>
         <Popover
           getPopupContainer={(node) => {
             if (node && node.parentNode) {
@@ -227,72 +238,55 @@ const Register = () => {
         >
           <Input size="large" type="password" placeholder="确认密码" />
         </FormItem>
-        <InputGroup compact>
-          <Select
-            size="large"
-            value={prefix}
-            onChange={changePrefix}
-            style={{
-              width: '20%',
-            }}
-          >
-            <Option value="86">+86</Option>
-            <Option value="87">+87</Option>
-          </Select>
-          <FormItem
-            style={{
-              width: '80%',
-            }}
-            name="mobile"
-            rules={[
-              {
-                required: true,
-                message: '请输入手机号!',
-              },
-              {
-                pattern: /^\d{11}$/,
-                message: '手机号格式错误!',
-              },
-            ]}
-          >
-            <Input size="large" placeholder="手机号" />
-          </FormItem>
-        </InputGroup>
-        <Row gutter={8}>
-          <Col span={16}>
-            <FormItem
-              name="captcha"
-              rules={[
-                {
-                  required: true,
-                  message: '请输入验证码!',
-                },
-              ]}
-            >
-              <Input size="large" placeholder="验证码" />
-            </FormItem>
-          </Col>
-          <Col span={8}>
+        <FormItem
+          name="gender"
+          rules={[
+            {
+              required: false,
+              message: '请输入性别（可选）',
+            },
+          ]}
+        >
+          <Input size="large" placeholder="性别（可选）" />
+        </FormItem>
+        <FormItem
+          name="actualName"
+          rules={[
+            {
+              required: false,
+              message: '请输入真实姓名（可选）',
+            },
+          ]}
+        >
+          <Input size="large" placeholder="真实姓名（可选）" />
+        </FormItem>
+        <FormItem
+          name="birth"
+          rules={[
+            {
+              required: false,
+              message: '请输入生日（可选）',
+            },
+            {
+              type: 'date',
+              message: '请输入正确日期格式!',
+            },
+          ]}
+        >
+          <Input size="large" placeholder="生日（可选）" />
+        </FormItem>
+        <FormItem>
+          <Link to='/user/register-result'>
             <Button
               size="large"
-              disabled={!!count}
-              className={styles.getCaptcha}
-              onClick={onGetCaptcha}
+              loading={submitting}
+              className={styles.submit}
+              type="primary"
+              htmlType="submit"
             >
-              {count ? `${count} s` : '获取验证码'}
+              <span>注册</span>
             </Button>
-          </Col>
-        </Row>
-        <FormItem>
-          <Button
-            size="large"
-            loading={submitting}
-            className={styles.submit}
-            type="primary"
-            htmlType="submit"
-          >
-            <span>注册</span>
-          </Button>
+          </Link>
           <Link className={styles.login} to="/user/login">
             <span>使用已有账户登录</span>
           </Link>
