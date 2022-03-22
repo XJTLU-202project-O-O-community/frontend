@@ -84,7 +84,7 @@ const Login = () => {
       <div className={styles.content}>
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
+          title="O%O community"
           subTitle={intl.formatMessage({
             id: 'pages.layouts.userLayout.title',
           })}
@@ -281,7 +281,8 @@ const Login = () => {
             </a>
           </div>
           <div>
-            <Link to="register"
+            <Link
+              to="register"
               style={{
                 float: 'right',
               }}

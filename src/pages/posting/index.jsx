@@ -1,12 +1,23 @@
 import React from 'react';
-import { Button, Card, Image, Tooltip } from 'antd';
+import { Button, Card, Image, message, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { List, Avatar, Space } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getWholePosts } from '@/services/posts';
+import { getWholePosts, add } from '@/services/posts';
 import logo from '/src/main.png';
+import { QueryFilter, ProFormText, ProFormDatePicker } from '@ant-design/pro-form';
+import { ProFormUploadDragger, ProFormUploadButton } from '@ant-design/pro-form';
+import { useRef } from 'react';
+import ProForm, {
+  DrawerForm,
+  ModalForm,
+  ProFormDateRangePicker,
+  ProFormSelect,
+} from '@ant-design/pro-form';
+import { PlusOutlined } from '@ant-design/icons';
+import './index.css';
 
 const index_postList = async () => {
   const data = await getWholePosts();
@@ -46,9 +57,17 @@ const PostList = () => {
   //data=getRequst
   const [thumb, setThumb] = useState(false); //useState(data.thumb)
   const [count, setCount] = useState(0);
-
+  const formRef = useRef();
   const [like, setLike] = useState(1); // useState(data.like)
   const [numComment, setNum] = useState(10); //useState(len(data.comment))
+
+  const uploadPosting = async (value) => {
+    console.log(11111111);
+    const res = await add(value);
+    if (res.code == 200) {
+      message.success('add successfully');
+    } else message.error('error');
+  };
   //const [comment,setLike]=useState(1)// useState(data.like)
 
   // const fn=()=>{
@@ -76,16 +95,56 @@ const PostList = () => {
         extra: [
           <input />,
           <input type={'submit'} />,
-          <Button key="1">次要按钮</Button>,
-          <Button key="2">次要按钮</Button>,
-          <Button key="3" type="primary">
-            主要按钮
-          </Button>,
+          <ModalForm
+            title="Write moments here"
+            formRef={formRef}
+            trigger={
+              <Button type="primary">
+                <PlusOutlined />
+                Post
+              </Button>
+            }
+            autoFocusFirstInput
+            drawerProps={{
+              destroyOnClose: true,
+            }}
+            onFinish={(value) => {
+              uploadPosting(value);
+            }}
+          >
+            <ProForm.Group>
+              <ProFormText
+                name="description"
+                width="md"
+                label="Put the description here"
+                tooltip="最长为 24 位"
+                placeholder="请输入名称"
+              />
+            </ProForm.Group>
+            <ProFormText
+              width="xl"
+              name="content"
+              label="write whatever you want"
+              placeholder="请输入名称"
+            />
+            <ProFormUploadButton
+              name="imgs"
+              label="Upload"
+              max={2}
+              fieldProps={{
+                name: 'file',
+                listType: 'picture-card',
+                max: 3,
+              }}
+              action="/upload.do"
+              extra="your photo here"
+            />
+          </ModalForm>,
         ],
       }}
-      content={content}
+      // content={content}
     >
-      <Card style={{ width: 1400 }}>
+      <Card style={{ marginLeft: 150, width: 800 }}>
         <List
           itemLayout="vertical"
           size="large"
@@ -93,7 +152,7 @@ const PostList = () => {
             onChange: (page) => {
               console.log(page);
             },
-            pageSize: 3,
+            pageSize: 10,
           }}
           dataSource={data}
           footer={
@@ -105,20 +164,26 @@ const PostList = () => {
             <List.Item
               key={item.title}
               actions={[
-                <>
+                <div className="site-button-ghost-wrapper">
                   {/*<Button onClick={handleClick(item)}><IconText icon={StarOutlined} text={item.thumb} key="list-vertical-star-o" /></Button>,*/}
                   {/*<IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,*/}
                   {/*<IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,*/}
 
-                  <Button icon={<StarOutlined />}> {thumb}</Button>
+                  <Button style={{ width: 220 }} icon={<StarOutlined />}>
+                    {' '}
+                    {item.thumbs}
+                  </Button>
 
-                  <Tooltip>
-                    <Button icon={<LikeOutlined />}> {like}</Button>
-                  </Tooltip>
-                  <Tooltip>
-                    <Button icon={<MessageOutlined />}> {numComment}</Button>
-                  </Tooltip>
-                </>,
+                  <Button style={{ width: 220 }} icon={<LikeOutlined />}>
+                    {' '}
+                    {item.likes}
+                  </Button>
+
+                  <Button style={{ width: 220 }} icon={<MessageOutlined />}>
+                    {' '}
+                    {numComment}
+                  </Button>
+                </div>,
               ]}
             >
               <List.Item.Meta
