@@ -6,17 +6,26 @@ import { useEffect } from 'react';
 import { Avatar, Button, Card } from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
 import './index.css';
+
 export default () => {
+  const subT = 'Subscribe';
+  const chatT = 'Chat';
   return (
     <PageContainer>
       <div>
-        <div className="pictureCard">
+        <div className="pictureCardV">
           <Avatar
             size={150}
             src={'https://th.bing.com/th/id/OIP.Jj--APqfnW9dNtbzDkFFBQAAAA?pid=ImgDet&rs=1'}
           />
+          <Button className="sub" id="text" onClick={null} size="large">
+            <b>{subT}</b>
+          </Button>
+          <Button className="chat" id="chat" onClick={null} size="large">
+            <b>{chatT}</b>
+          </Button>
         </div>
-        <div className="info">
+        <div className="infoV">
           <Card hoverable={true}>
             <ProDescriptions
               className="personaltext"
@@ -61,15 +70,6 @@ export default () => {
                   dataIndex: 'date',
                   valueType: 'date',
                 },
-                {
-                  title: '操作',
-                  valueType: 'option',
-                  render: () => [
-                    <a target="_blank" rel="noopener noreferrer" key="link">
-                      Edit
-                    </a>,
-                  ],
-                },
               ]}
             >
               <hr></hr>
@@ -79,15 +79,6 @@ export default () => {
               ></ProDescriptions.Item>
             </ProDescriptions>
           </Card>
-        </div>
-
-        <div className="bt2">
-          <Button className="bt1" onClick={null}>
-            Modify Password
-          </Button>
-          <Button className="bt1" onClick={null}>
-            Cancellation
-          </Button>
         </div>
       </div>
     </PageContainer>
