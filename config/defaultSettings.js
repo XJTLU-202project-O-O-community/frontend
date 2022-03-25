@@ -1,7 +1,7 @@
 const Settings = {
   navTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#ff8c00',
+  primaryColor: '#32CD32',
   layout: 'mix',
   contentWidth: 'Fluid',
   fixedHeader: false,
@@ -9,7 +9,7 @@ const Settings = {
   colorWeak: false,
   title: 'Social network software',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  logo: '/img.png',
   iconfontUrl: '',
 };
 export default Settings;

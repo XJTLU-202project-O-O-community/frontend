@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { List, Avatar, Space } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getWholePosts, add } from '@/services/posts';
+import { getWholePosts, add, Profile } from '@/services/posts';
 import logo from '/src/main.png';
 import { QueryFilter, ProFormText, ProFormDatePicker } from '@ant-design/pro-form';
 import { ProFormUploadDragger, ProFormUploadButton } from '@ant-design/pro-form';
@@ -16,12 +16,18 @@ import ProForm, {
   ProFormDateRangePicker,
   ProFormSelect,
 } from '@ant-design/pro-form';
+import ProDescriptions from '@ant-design/pro-descriptions';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
 
 const index_postList = async () => {
   const data = await getWholePosts();
   console.log(data, 999);
+  return { data: data };
+};
+
+const index_postProfile = async () => {
+  const data = await Profile();
   return { data: data };
 };
 
@@ -48,10 +54,19 @@ const App = () => (
 
 const PostList = () => {
   let [data, setData] = useState([]);
+
+  let [dataPerson, setPersonData] = useState([]);
+  //动态信息
   useEffect(async () => {
     const resData = await index_postList();
     console.log(resData.data);
     setData(resData.data);
+  }, []);
+  //个人信息
+  useEffect(async () => {
+    const res1Data = await index_postProfile();
+    console.log(res1Data, 11111);
+    setPersonData(res1Data.data);
   }, []);
 
   //data=getRequst
@@ -196,6 +211,13 @@ const PostList = () => {
             </List.Item>
           )}
         />
+      </Card>
+
+      <Card className="indexc" title="Personal Info">
+        <Avatar shape="square" size={50} src={dataPerson.avatar} />,
+        <h2 style={{ marginTop: 20 }}>{dataPerson.name}</h2>
+        <h3 style={{ textAlign: 'left' }}>description:</h3>
+        <h5 style={{ textAlign: 'left' }}>{dataPerson.description}</h5>
       </Card>
     </PageContainer>
   );
