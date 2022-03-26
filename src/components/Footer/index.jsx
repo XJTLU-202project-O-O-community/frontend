@@ -5,7 +5,7 @@ export default () => {
   const intl = useIntl();
   const defaultMessage = intl.formatMessage({
     id: 'app.copyright.produced',
-    defaultMessage: '蚂蚁集团体验技术部出品',
+    defaultMessage: 'O%O community',
   });
   const currentYear = new Date().getFullYear();
   return (
@@ -14,7 +14,7 @@ export default () => {
       links={[
         {
           key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
+          title: 'O%O community',
           href: 'https://pro.ant.design',
           blankTarget: true,
         },
@@ -26,7 +26,7 @@ export default () => {
         },
         {
           key: 'Ant Design',
-          title: 'Ant Design',
+          title: 'O%O community',
           href: 'https://ant.design',
           blankTarget: true,
         },

@@ -1,7 +1,16 @@
 .pictureCard{
-  text-align: center;
-  padding-bottom: 20px;
+  margin-left: 30%;
 }
+
+.Card1{
+  margin-left: 25%;
+  margin-top: 60px;
+  width: 50%;
+}
+.button1{
+  width: 30%;
+}
+
 .bt2 {
   position: relative;
   text-align: right;
