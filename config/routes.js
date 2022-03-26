@@ -71,6 +71,12 @@ export default [
     ],
   },
   {
+    name: 'chat',
+    icon: 'table',
+    path: '/chat',
+    component: './chat',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
