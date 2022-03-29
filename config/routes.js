@@ -43,8 +43,14 @@ export default [
   {
     path: '/personal_view',
     name: 'View Person',
-    icon: 'IdcardFilled',
+    icon: 'UserOutlined',
     component: './viewPerson',
+  },
+  {
+    path: '/personal_edit',
+    name: 'Edit Person',
+    icon: 'EditOutlined',
+    component: './editPerson',
   },
   {
     path: '/welcome',

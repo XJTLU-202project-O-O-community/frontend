@@ -51,12 +51,6 @@ export default () => {
             size={150}
             src={'https://th.bing.com/th/id/OIP.Jj--APqfnW9dNtbzDkFFBQAAAA?pid=ImgDet&rs=1'}
           />
-          <Button className="sub" id="text" onClick={null} size="large">
-            <b>Subscribe</b>
-          </Button>
-          <Button className="chat" id="chat" onClick={null} size="large">
-            <b>Chat</b>
-          </Button>
         </div>
         <div>
           <Card className="Card1">
@@ -107,7 +101,7 @@ export default () => {
                   title: '操作',
                   valueType: 'option',
                   render: () => [
-                    <a target="_blank" rel="noopener noreferrer" key="link">
+                    <a href='/personal_edit' target="_blank" rel="noopener noreferrer" key="link">
                       Edit
                     </a>,
                   ],
