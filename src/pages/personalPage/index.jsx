@@ -21,11 +21,18 @@ import ProForm, {
   ProFormText,
   ProFormUploadButton,
 } from '@ant-design/pro-form';
+import { GetPersonInfo } from '@/services/person';
 
 const index_postList = async () => {
   const data = await getPersonalPosts();
   console.log(data, 999);
   return { data: data };
+};
+
+const index_PersonInfo = async () => {
+  const data = await GetPersonInfo();
+  console.log(data);
+  return {data};
 };
 
 export default () => {
@@ -43,13 +50,20 @@ export default () => {
     } else message.error('error');
   };
 
+  let [personInfo, setpersonInfo] = useState([]);
+  useEffect(async ()=>{
+    const infoData = await index_PersonInfo();
+    console.log(infoData.data);
+    setpersonInfo(infoData.data);
+  },[]);
+
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
           <Avatar
             size={150}
-            src={'https://th.bing.com/th/id/OIP.Jj--APqfnW9dNtbzDkFFBQAAAA?pid=ImgDet&rs=1'}
+            src={personInfo.avatar}
           />
         </div>
         <div>
@@ -57,46 +71,7 @@ export default () => {
             <ProDescriptions
               className="personaltext"
               title="Personal Information"
-              request={async () => {
-                return Promise.resolve({
-                  success: true,
-                  data: {
-                    username: 'Sakura',
-                    name: 'Mike Martin',
-                    id: '123456',
-                    gender: 'Male',
-                    date: '20000809',
-                    text: 'testtesttesttesttesttesttesttesttesttesttesttesttest',
-                  },
-                });
-              }}
               columns={[
-                {
-                  title: 'Username',
-                  key: 'text',
-                  dataIndex: 'username',
-                },
-                {
-                  title: 'Name',
-                  key: 'text',
-                  dataIndex: 'name',
-                },
-                {
-                  title: 'ID',
-                  key: 'text',
-                  dataIndex: 'id',
-                },
-                {
-                  title: 'Gender',
-                  key: 'text',
-                  dataIndex: 'gender',
-                },
-                {
-                  title: 'Birthday',
-                  key: 'date',
-                  dataIndex: 'date',
-                  valueType: 'date',
-                },
                 {
                   title: '操作',
                   valueType: 'option',
@@ -108,11 +83,28 @@ export default () => {
                 },
               ]}
             >
-              <hr></hr>
+              <ProDescriptions.Item dataIndex="username" label="Username">
+                  {personInfo.username}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="name" label="Name">
+                  {personInfo.name}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="id" label="ID">
+                  {personInfo.id}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="gender" label="Gender">
+                  {personInfo.gender}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="city" label="City">
+                  {personInfo.city}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="date" label="Birthday">
+                  {personInfo.date}
+              </ProDescriptions.Item>
               <ProDescriptions.Item
                 dataIndex="text"
                 label="Personalized Signature"
-              ></ProDescriptions.Item>
+              > {personInfo.text} </ProDescriptions.Item>
             </ProDescriptions>
           </Card>
         </div>

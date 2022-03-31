@@ -27,8 +27,6 @@ const Demo = () => (
         username: 'Sakura',
         name:'Mike',
         radio: 'male',
-        country:'China',
-        province:'Jiangsu',
         city:'Suzhou',
         text:'testtesttesttest'
     }} onValuesChange={(_, values) => {
@@ -46,7 +44,7 @@ const Demo = () => (
         fieldProps={{
           name: 'file',
           listType: 'picture-card',
-        }}
+        }} 
         action="/upload.do"
         extra="This is your avatar"
       />
@@ -68,8 +66,6 @@ const Demo = () => (
 
       </ProFormGroup>
       <ProFormGroup label="Address">
-        <ProFormText width="md" name="country" label="Country"placeholder="input your country"/>
-        <ProFormText width="md" name="province" label="Province"placeholder="input your province"/>
         <ProFormText width="md" name="city" label="City"placeholder="input your city"/>
       </ProFormGroup>
       <ProFormGroup label="Signature">
