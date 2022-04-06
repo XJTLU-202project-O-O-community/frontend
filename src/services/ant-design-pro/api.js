@@ -18,10 +18,23 @@ export async function outLogin(options) {
     ...(options || {}),
   });
 }
-/** 登录接口 POST /api/login/account */
+/** 登录接口 POST /api/user/login */
 
 export async function login(body, options) {
-  return request('/api/login/account', {
+  return request('/api/user/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 注册接口 POST /api/user/register */
+
+export async function register(body, options) {
+  return request('/api/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
