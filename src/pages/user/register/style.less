@@ -11,6 +11,7 @@
 
   .password {
     margin-bottom: 24px;
+
     :global {
       .ant-form-item-explain {
         display: none;
@@ -33,6 +34,18 @@
   }
 }
 
+@media (min-width: @screen-md-min) {
+  .container {
+    background-image: url('login.jpg');
+    background-repeat: no-repeat;
+    background-position: center 0vh;
+    background-size: 100%;
+  }
+
+  .main {
+    padding: 32px 0 24px;
+  }
+}
 .success,
 .warning,
 .error {

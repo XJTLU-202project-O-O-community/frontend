@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Col, Input, Popover, Progress, Row, Select, message } from 'antd';
 import { Link, useRequest, history } from 'umi';
-import { fakeRegister } from './service';
+import { register } from '@/services/ant-design-pro/api';
 import styles from './style.less';
+import { values } from 'lodash';
 const FormItem = Form.Item;
 const { Option } = Select;
 const InputGroup = Input.Group;
@@ -44,6 +45,20 @@ const Register = () => {
     [interval],
   );
 
+  const submit = async(data) => {
+    //发送请求
+    const ans = await register(data);
+    if (ans.err_code === 200) {
+      history.push({
+        pathname: '/user/register-result',
+        state: {
+          account: ans.email,
+        },
+      });
+    }
+    console.log(ans)
+  }
+  
   const onGetCaptcha = () => {
     let counts = 59;
     setCount(counts);
@@ -56,7 +71,22 @@ const Register = () => {
       }
     }, 1000);
   };
-
+ 
+  const { loading: submitting, run: register } = useRequest(register, {
+    manual: true,
+    onSuccess: (data, params) => {
+      if (data.err_code === 200) {
+        message.success('注册成功！');
+        history.push({
+          pathname: '/user/register-result',
+          state: {
+            account: params.email,
+          },
+        });
+      }
+    },
+  });
+  
   const getPasswordStatus = () => {
     const value = form.getFieldValue('password');
 
@@ -71,23 +101,8 @@ const Register = () => {
     return 'poor';
   };
 
-  const { loading: submitting, run: register } = useRequest(fakeRegister, {
-    manual: true,
-    onSuccess: (data, params) => {
-      if (data.status === 'ok') {
-        message.success('注册成功！');
-        history.push({
-          pathname: '/user/register-result',
-          state: {
-            account: params.email,
-          },
-        });
-      }
-    },
-  });
-
   const onFinish = (values) => {
-    register(values);
+    submit(values);
   };
 
   const checkConfirm = (_, value) => {
@@ -150,7 +165,7 @@ const Register = () => {
       <h3>注册</h3>
       <Form form={form} name="UserRegister" onFinish={onFinish}>
         <FormItem
-          name="mail"
+          name="email"
           rules={[
             {
               required: true,
@@ -165,7 +180,7 @@ const Register = () => {
           <Input size="large" placeholder="邮箱" />
         </FormItem>
         <FormItem
-          name="userName"
+          name="username"
           rules={[
             {
               required: true,
@@ -276,17 +291,15 @@ const Register = () => {
           <Input size="large" placeholder="生日（可选）" />
         </FormItem>
         <FormItem>
-          <Link to='/user/register-result'>
-            <Button
-              size="large"
-              loading={submitting}
-              className={styles.submit}
-              type="primary"
-              htmlType="submit"
-            >
-              <span>注册</span>
-            </Button>
-          </Link>
+          <Button
+            size="large"
+            loading={submitting}
+            className={styles.submit}
+            type="primary"
+            htmlType="submit"
+          >
+            <span>注册</span>
+          </Button>
           <Link className={styles.login} to="/user/login">
             <span>使用已有账户登录</span>
           </Link>
