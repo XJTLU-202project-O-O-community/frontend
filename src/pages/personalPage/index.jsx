@@ -32,7 +32,7 @@ const index_postList = async () => {
 const index_PersonInfo = async () => {
   const data = await GetPersonInfo();
   console.log(data);
-  return {data};
+  return { data };
 };
 
 export default () => {
@@ -51,20 +51,23 @@ export default () => {
   };
 
   let [personInfo, setpersonInfo] = useState([]);
-  useEffect(async ()=>{
+  useEffect(async () => {
     const infoData = await index_PersonInfo();
     console.log(infoData.data);
     setpersonInfo(infoData.data);
-  },[]);
+  }, []);
 
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
-          <Avatar
-            size={150}
-            src={personInfo.avatar}
-          />
+          <Avatar size={150} src={personInfo.avatar} />
+          <Button className="followers" id="followers" onClick={null} size="large">
+            <b>Followers</b>
+          </Button>
+          <Button className="fans" id="fans" onClick={null} size="large">
+            <b>Fans</b>
+          </Button>
         </div>
         <div>
           <Card className="Card1">
@@ -76,7 +79,7 @@ export default () => {
                   title: '操作',
                   valueType: 'option',
                   render: () => [
-                    <a href='/personal_edit' target="_blank" rel="noopener noreferrer" key="link">
+                    <a href="/personal_edit" target="_blank" rel="noopener noreferrer" key="link">
                       Edit
                     </a>,
                   ],
@@ -84,27 +87,27 @@ export default () => {
               ]}
             >
               <ProDescriptions.Item dataIndex="username" label="Username">
-                  {personInfo.username}
+                {personInfo.username}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="name" label="Name">
-                  {personInfo.name}
+                {personInfo.name}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="id" label="ID">
-                  {personInfo.id}
+                {personInfo.id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
-                  {personInfo.gender}
+                {personInfo.gender}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="city" label="City">
-                  {personInfo.city}
+                {personInfo.city}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="date" label="Birthday">
-                  {personInfo.date}
+                {personInfo.date}
               </ProDescriptions.Item>
-              <ProDescriptions.Item
-                dataIndex="text"
-                label="Personalized Signature"
-              > {personInfo.text} </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="text" label="Personalized Signature">
+                {' '}
+                {personInfo.text}{' '}
+              </ProDescriptions.Item>
             </ProDescriptions>
           </Card>
         </div>
