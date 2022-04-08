@@ -8,13 +8,21 @@
  */
 export default {
   dev: {
+    // 前后端测试时使用
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'http://127.0.0.1:8000/',
       changeOrigin: true,
       pathRewrite: {
-        '^': '',
+        '^/api': '',
       },
     },
+    //   '/api/': {
+    //     target: 'https://preview.pro.ant.design',
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^': '',
+    //     },
+    //   },
     '/server/': {
       target: 'http://127.0.0.1:8000/',
       changeOrigin: true,

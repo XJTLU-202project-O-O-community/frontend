@@ -2,9 +2,10 @@ let list = [
   {
     id: 1,
     href: 'https://ant.design',
-    title: `Robin`,
+    user_id__name: `Robin`,
+    userid: 1,
     avatar: 'https://joeschmoe.io/api/v1/random',
-    description:
+    user_id__signature:
       'Ant Design11111, a design language for background applications, is refined by Ant UED Team.',
     content:
       'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), ' +
@@ -17,9 +18,10 @@ let list = [
   {
     id: 2,
     href: 'https://ant.design',
-    title: `This is linda`,
+    user_id__name: `This is linda`,
+    userid: 2,
     avatar: 'https://joeschmoe.io/api/v1/random',
-    description:
+    user_id__signature:
       'Ant Design2222, a design language for background applications, is refined by Ant UED Team.',
     content:
       'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), ' +
@@ -32,9 +34,10 @@ let list = [
   {
     id: 3,
     href: 'https://ant.design',
-    title: `this is mock3`,
+    user_id__name: `mock3`,
+    userid: 3,
     avatar: 'https://joeschmoe.io/api/v1/random',
-    description:
+    user_id__signature:
       'Ant Design3333, a design language for background applications, is refined by Ant UED Team.',
     content:
       'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), ' +
@@ -54,7 +57,7 @@ export default {
       href: 'https://ant.design',
       title: `Robin`,
       avatar: 'https://joeschmoe.io/api/v1/random',
-      description: req.body.description,
+      user_id__signature: req.body.user_id__signature,
       content: req.body.content,
       likes: 0,
       thumbs: 0,

@@ -115,15 +115,16 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
+
   'POST /api/user/login': async (req, res) => {
     const { password, username, type } = req.body;
     await waitTime(2000);
 
     if (password === 'ant.design' && username === 'admin') {
       res.send({
-        "err_code": 200,
-        "msg": "test4 login successfully",
-        "data": []
+        err_code: 200,
+        msg: 'test4 login successfully',
+        data: [],
       });
       access = 'admin';
       return;
@@ -131,17 +132,17 @@ export default {
 
     if (password === 'ant.design' && username === 'user') {
       res.send({
-        "err_code": 200,
-        "msg": "test5 login successfully",
-        "data": []
+        err_code: 200,
+        msg: 'test5 login successfully',
+        data: [],
       });
       access = 'user';
       return;
     }
     res.send({
-      "err_code": 400,
-      "msg": "邮箱或密码错误",
-      "data": []
+      err_code: 400,
+      msg: '邮箱或密码错误',
+      data: [],
     });
     access = 'guest';
   },
@@ -157,21 +158,21 @@ export default {
 
     if (username === 'KaiyuZHEF') {
       res.send({
-        "err_code": 200,
-        "data": {
-          "msg": "sucess",
-          "username": "12154545"
-        }
+        err_code: 200,
+        data: {
+          msg: 'sucess',
+          username: '12154545',
+        },
       });
       return;
     }
 
     res.send({
-      "error_code": 400,
-      "data": {
-        "msg": "创建失败",
-        "username": req.body
-      }
+      error_code: 400,
+      data: {
+        msg: '创建失败',
+        username: req.body,
+      },
     });
   },
   'GET /api/500': (req, res) => {

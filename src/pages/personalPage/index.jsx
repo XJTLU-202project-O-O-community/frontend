@@ -16,30 +16,39 @@ import { add, Delete, getPersonalPosts, getWholePosts } from '@/services/posts';
 import ProForm, {
   DrawerForm,
   ModalForm,
+  ProFormDatePicker,
   ProFormDateRangePicker,
+  ProFormGroup,
+  ProFormRadio,
   ProFormSelect,
   ProFormText,
+  ProFormTextArea,
   ProFormUploadButton,
 } from '@ant-design/pro-form';
-import { GetPersonInfo } from '@/services/person';
+import { changeProfile, GetPersonInfo } from '@/services/person';
 
-const index_postList = async () => {
-  const data = await getPersonalPosts();
+const index_postList = async (values) => {
+  const data = await getPersonalPosts(values);
   console.log(data, 999);
-  return { data: data };
+  return { data: data.data.own_moments };
+};
+const uploadProfile = async (values) => {
+  const res = await changeProfile(values);
+  if (res.code == 200) {
+    message.success('add successfully');
+  } else message.error('error');
 };
 
-const index_PersonInfo = async () => {
-  const data = await GetPersonInfo();
-  console.log(data);
-  return { data };
+const index_PersonInfo = async (values) => {
+  const res = await GetPersonInfo(values);
+  return res.data;
 };
 
-export default () => {
+export default (props) => {
   let [own_data, setData] = useState([]);
   useEffect(async () => {
-    const resData = await index_postList();
-    console.log(resData.data);
+    const resData = await index_postList({ userid: 1 });
+    console.log(resData, 300);
     setData(resData.data);
   }, []);
 
@@ -52,9 +61,8 @@ export default () => {
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
-    const infoData = await index_PersonInfo();
-    console.log(infoData.data);
-    setpersonInfo(infoData.data);
+    const infoData = await index_PersonInfo({ userid: 1 });
+    setpersonInfo(infoData);
   }, []);
 
   return (
@@ -62,12 +70,6 @@ export default () => {
       <div>
         <div className="pictureCard">
           <Avatar size={150} src={personInfo.avatar} />
-          <Button className="followers" id="followers" onClick={null} size="large">
-            <b>Followers</b>
-          </Button>
-          <Button className="fans" id="fans" onClick={null} size="large">
-            <b>Fans</b>
-          </Button>
         </div>
         <div>
           <Card className="Card1">
@@ -79,9 +81,82 @@ export default () => {
                   title: '操作',
                   valueType: 'option',
                   render: () => [
-                    <a href="/personal_edit" target="_blank" rel="noopener noreferrer" key="link">
-                      Edit
-                    </a>,
+                    <ModalForm
+                      title={[<h2>Edit personal info</h2>]}
+                      trigger={<Button style={{ color: 'blue', marginTop: 20 }}>EDIT</Button>}
+                      autoFocusFirstInput
+                      drawerProps={{
+                        destroyOnClose: true,
+                      }}
+                      onFinish={(value) => {
+                        uploadProfile(value);
+                        location.reload();
+                        return true;
+                      }}
+                    >
+                      <Card>
+                        <ProFormGroup label="Basic">
+                          <ProFormText
+                            name="username"
+                            initialValue={personInfo.username}
+                            width="sm"
+                            label="username"
+                          />
+                          <ProFormText
+                            name="name"
+                            initialValue={personInfo.name}
+                            width="sm"
+                            label="Name"
+                          />
+                          <ProFormUploadButton
+                            title="Click to upload"
+                            name="upload"
+                            label="Upload"
+                            withCredentials={true}
+                            max={1}
+                            fieldProps={{
+                              name: 'file',
+                              listType: 'picture-card',
+                            }}
+                            action="/upload.do"
+                            extra="This is your avatar"
+                          />
+                        </ProFormGroup>
+                        <ProFormGroup
+                          label="Gender & Birthday"
+                          style={{
+                            gap: '0 32px',
+                          }}
+                        >
+                          <ProFormRadio.Group
+                            name="radio"
+                            layout="vertical"
+                            options={[
+                              {
+                                label: 'Male',
+                                value: 'male',
+                              },
+                              {
+                                label: 'Female',
+                                value: 'female',
+                              },
+                            ]}
+                          />
+                          <ProFormDatePicker name="date" label="Birthday" />
+                        </ProFormGroup>
+                        <ProFormGroup label="Address">
+                          <ProFormText
+                            width="md"
+                            name="city"
+                            label="City"
+                            initialValue={personInfo.city}
+                          />
+                        </ProFormGroup>
+                        <ProFormGroup label="Signature">
+                          <ProFormTextArea width="xl" name="text" initialValue={personInfo.text} />
+                        </ProFormGroup>
+                      </Card>
+                    </ModalForm>,
                   ],
                 },
               ]}
@@ -154,6 +229,8 @@ export default () => {
                     }}
                     onFinish={() => {
                       deleteMoment({ id: item.id });
+                      location.reload();
+                      return true;
                     }}
                   >
                     <h3 style={{ color: 'red' }}>
@@ -172,6 +249,8 @@ export default () => {
                     }}
                     onFinish={() => {
                       deleteMoment({ id: item.id });
+                      location.reload();
+                      return true;
                     }}
                   >
                     <ProForm.Group>

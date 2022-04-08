@@ -9,7 +9,7 @@ const Settings = {
   colorWeak: false,
   title: 'Social network software',
   pwa: false,
-  logo: '/img.png',
+  logo: '/img1.png',
   iconfontUrl: '',
 };
 export default Settings;

@@ -52,8 +52,8 @@ const Login = () => {
         });
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
-        //此方法会跳转到 redirect 参数所在的位置 
-        
+        //此方法会跳转到 redirect 参数所在的位置
+
         if (!history) return;
         const { query } = history.location;
         const { redirect } = query;
@@ -83,13 +83,11 @@ const Login = () => {
           logo={<img alt="logo" src="/logo.svg" />}
           title="O&O"
           subTitle="这是咱的副标题"
-          
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
         >
-
-          {status === 'error'  && (
+          {status === 'error' && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
@@ -97,7 +95,7 @@ const Login = () => {
               })}
             />
           )}
-          {(
+          {
             <>
               <ProFormText
                 name="username"
@@ -144,7 +142,7 @@ const Login = () => {
                 ]}
               />
             </>
-          )}
+          }
 
           <div
             style={{
@@ -160,7 +158,8 @@ const Login = () => {
             </a>
           </div>
           <div>
-            <Link to="register"
+            <Link
+              to="register"
               style={{
                 float: 'left',
               }}

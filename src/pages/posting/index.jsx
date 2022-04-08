@@ -19,11 +19,15 @@ import ProForm, {
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
+import pic1 from '/media/rose.jpg';
+import pic2 from '/media/kobe.png';
+import { Link } from 'umi';
 
 const index_postList = async () => {
   const data = await getWholePosts();
   console.log(data, 999);
-  return { data: data };
+  //return { data: data };
+  return { data: data.data.moments };
 };
 
 const index_postProfile = async () => {
@@ -40,26 +44,51 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
+const props1 = {
+  name: 'file',
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  progress: {
+    strokeColor: {
+      '0%': '#108ee9',
+      '100%': '#87d068',
+    },
+    strokeWidth: 3,
+    format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
+  },
+};
+
 const App = () => (
   <Image.PreviewGroup>
     <div style={{ margin: 25 }}>
-      <Image width={83} src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-      <Image
-        width={83}
-        src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
-      />
+      <Image width={90} height={90} src={pic1} />
+      <Image width={90} height={90} src={pic2} />
     </div>
   </Image.PreviewGroup>
 );
 
-const PostList = () => {
+const PostList = (props) => {
+  const data1 = props.match.userid;
+
   let [data, setData] = useState([]);
 
   let [dataPerson, setPersonData] = useState([]);
   //动态信息
   useEffect(async () => {
     const resData = await index_postList();
-    console.log(resData.data);
+
     setData(resData.data);
   }, []);
   //个人信息
@@ -124,9 +153,13 @@ const PostList = () => {
               destroyOnClose: true,
             }}
             onFinish={(value) => {
+              console.log(value, 99999);
               uploadPosting(value);
+              //location.reload()
+              return true;
             }}
           >
+            <ProFormText name="user_id" width="md" label="User id" readonly initialValue={1} />
             <ProForm.Group>
               <ProFormText
                 name="description"
@@ -151,15 +184,14 @@ const PostList = () => {
                 listType: 'picture-card',
                 max: 3,
               }}
-              action="/upload.do"
+              action="/api/posting/imgs/"
               extra="your photo here"
             />
           </ModalForm>,
         ],
       }}
-      // content={content}
     >
-      <Card style={{ marginLeft: 150, width: 800 }}>
+      <Card style={{ marginLeft: 170, width: 800 }}>
         <List
           itemLayout="vertical"
           size="large"
@@ -186,12 +218,12 @@ const PostList = () => {
 
                   <Button style={{ width: 220 }} icon={<StarOutlined />}>
                     {' '}
-                    {item.thumbs}
+                    {item.likes}
                   </Button>
 
                   <Button style={{ width: 220 }} icon={<LikeOutlined />}>
                     {' '}
-                    {item.likes}
+                    {item.thumbs}
                   </Button>
 
                   <Button style={{ width: 220 }} icon={<MessageOutlined />}>
@@ -203,8 +235,8 @@ const PostList = () => {
             >
               <List.Item.Meta
                 avatar={<Avatar shape="square" size={50} src={item.avatar} />}
-                title={<a href={item.href}>{item.title}</a>}
-                description={item.description}
+                title={<Link to={`/personal_view/${item.userid}/`}>{item.user_id__name}</Link>}
+                description={item.user_id__signature}
               />
               {item.content}
               <App />
@@ -213,7 +245,10 @@ const PostList = () => {
         />
       </Card>
 
-      <Card className="indexc" title="Personal Info">
+      <Card
+        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 310 }}
+        title="Personal Info"
+      >
         <Avatar shape="square" size={50} src={dataPerson.avatar} />,
         <h2 style={{ marginTop: 20 }}>{dataPerson.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>

@@ -41,7 +41,7 @@ export default [
     component: './personalPage',
   },
   {
-    path: '/personal_view',
+    path: '/personal_view/:id',
     name: 'View Person',
     icon: 'UserOutlined',
     component: './viewPerson',

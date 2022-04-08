@@ -15,19 +15,19 @@ export default () => {
         {
           key: 'Ant Design Pro',
           title: 'O%O community',
-          href: 'https://pro.ant.design',
+
           blankTarget: true,
         },
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+
           blankTarget: true,
         },
         {
           key: 'Ant Design',
           title: 'O%O community',
-          href: 'https://ant.design',
+
           blankTarget: true,
         },
       ]}
