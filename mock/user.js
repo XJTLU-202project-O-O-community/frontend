@@ -115,7 +115,6 @@ export default {
       address: 'Sidney No. 1 Lake Park',
     },
   ],
-
   'POST /api/user/login': async (req, res) => {
     const { password, username, type } = req.body;
     await waitTime(2000);
@@ -124,7 +123,7 @@ export default {
       res.send({
         err_code: 200,
         msg: 'test4 login successfully',
-        data: [],
+        data: [{ "pk": 1 }],
       });
       access = 'admin';
       return;
@@ -134,7 +133,7 @@ export default {
       res.send({
         err_code: 200,
         msg: 'test5 login successfully',
-        data: [],
+        data: [{ "pk": 2 }],
       });
       access = 'user';
       return;
