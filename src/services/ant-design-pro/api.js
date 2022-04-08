@@ -21,7 +21,7 @@ export async function outLogin(options) {
 /** 登录接口 POST /api/user/login */
 
 export async function login(body, options) {
-  return request('/api/user/login', {
+  return request('/api/user/login/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,8 +33,8 @@ export async function login(body, options) {
 
 /** 注册接口 POST /api/user/register */
 
-export async function register(body, options) {
-  return request('/api/user/register', {
+export async function this_register(body, options) {
+  return request('/api/user/register/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
