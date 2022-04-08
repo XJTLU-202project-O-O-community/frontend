@@ -121,9 +121,9 @@ export default {
 
     if (password === 'ant.design' && username === 'admin') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
+        "err_code": 200,
+        "msg": "test4 login successfully",
+        "data": []
       });
       access = 'admin';
       return;
@@ -131,43 +131,47 @@ export default {
 
     if (password === 'ant.design' && username === 'user') {
       res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
+        "err_code": 200,
+        "msg": "test5 login successfully",
+        "data": []
       });
       access = 'user';
       return;
     }
-
-    if (type === 'mobile') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
-      access = 'admin';
-      return;
-    }
-
     res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
+      "err_code": 400,
+      "msg": "邮箱或密码错误",
+      "data": []
     });
     access = 'guest';
   },
-  'POST /api/login/outLogin': (req, res) => {
+  'POST /api/user/login/outLogin': (req, res) => {
     access = '';
     res.send({
       data: {},
       success: true,
     });
   },
-  'POST /api/register': (req, res) => {
+  'POST /api/user/register': (req, res) => {
+    const { password, username, email } = req.body;
+
+    if (username === 'KaiyuZHEF') {
+      res.send({
+        "err_code": 200,
+        "data": {
+          "msg": "sucess",
+          "username": "12154545"
+        }
+      });
+      return;
+    }
+
     res.send({
-      status: 'ok',
-      currentAuthority: 'user',
-      success: true,
+      "error_code": 400,
+      "data": {
+        "msg": "创建失败",
+        "username": req.body
+      }
     });
   },
   'GET /api/500': (req, res) => {
