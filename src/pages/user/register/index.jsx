@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Col, Input, Popover, Progress, Row, Select, message } from 'antd';
 import { Link, useRequest, history } from 'umi';
-import { register } from '@/services/ant-design-pro/api';
+import { this_register } from '@/services/ant-design-pro/api';
 import styles from './style.less';
 import { values } from 'lodash';
+
+
 const FormItem = Form.Item;
 const { Option } = Select;
 const InputGroup = Input.Group;
@@ -45,9 +47,12 @@ const Register = () => {
     [interval],
   );
 
-  const submit = async(data) => {
+  const submit = async (data) => {
+    console.log("正在发送数据");
+    console.log(data);
     //发送请求
-    const ans = await register(data);
+    const ans = await this_register(data);
+    console.log("已经收到结果");
     if (ans.err_code === 200) {
       history.push({
         pathname: '/user/register-result',
@@ -102,6 +107,8 @@ const Register = () => {
   };
 
   const onFinish = (values) => {
+    console.log("正在提交数据");
+    console.log(values);
     submit(values);
   };
 
