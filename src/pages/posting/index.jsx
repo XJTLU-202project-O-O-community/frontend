@@ -22,6 +22,7 @@ import './index.css';
 import pic1 from '/media/rose.jpg';
 import pic2 from '/media/kobe.png';
 import { Link } from 'umi';
+import localStorage from 'localStorage';
 
 const index_postList = async () => {
   const data = await getWholePosts();
@@ -80,8 +81,8 @@ const App = () => (
 );
 
 const PostList = (props) => {
-  const data1 = props.match.userid;
-
+  const data1 = localStorage.getItem('access_pk');
+  console.log(data1, 7355608);
   let [data, setData] = useState([]);
 
   let [dataPerson, setPersonData] = useState([]);

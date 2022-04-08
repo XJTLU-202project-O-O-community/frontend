@@ -16,7 +16,7 @@ import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import styles from './index.less';
 import { Button, Result } from 'antd';
 import { Link } from 'umi';
-import localStorage from "localStorage";
+import localStorage from 'localStorage';
 
 const LoginMessage = ({ content }) => (
   <Alert
@@ -46,14 +46,16 @@ const Login = () => {
     try {
       // 登录
       const ans = await login({ ...values });
-      if (ans.err_code === 200) {
+      if (ans.error_code === 200) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
+        console.log(111);
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
+        //await fetchUserInfo();
         //id_cookie
+        /*
         const currentUserPk = ans.data;
         console.log("pk是");
         console.log(currentUserPk);
@@ -61,8 +63,8 @@ const Login = () => {
 
         console.log("local的pk是");
         console.log(localStorage.getItem("access_pk"));
-        
-        if (!history) return;
+        */
+        //if (!history) return;
         history.push('../posts');
         return;
       }
@@ -89,13 +91,11 @@ const Login = () => {
           logo={<img alt="logo" src="/logo.svg" />}
           title="O&O"
           subTitle="这是咱的副标题"
-          
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
         >
-
-          {status === 'error'  && (
+          {status === 'error' && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
@@ -103,7 +103,7 @@ const Login = () => {
               })}
             />
           )}
-          {(
+          {
             <>
               <ProFormText
                 name="username"
@@ -150,7 +150,7 @@ const Login = () => {
                 ]}
               />
             </>
-          )}
+          }
 
           <div
             style={{
@@ -166,7 +166,8 @@ const Login = () => {
             </a>
           </div>
           <div>
-            <Link to="register"
+            <Link
+              to="register"
               style={{
                 float: 'left',
               }}

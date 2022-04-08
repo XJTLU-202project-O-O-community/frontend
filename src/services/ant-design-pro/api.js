@@ -24,9 +24,9 @@ export async function login(body, options) {
   return request('/api/user/login/', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data: body,
+    data: `email=${body.username}&password=${body.password}`,
     ...(options || {}),
   });
 }
@@ -37,12 +37,13 @@ export async function this_register(body, options) {
   return request('/api/user/register/', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data: body,
+    data: `username=${body.username}&password=${body.password}&email=${body.email}`,
     ...(options || {}),
   });
 }
+
 /** 此处后端没有提供注释 GET /api/notices */
 
 export async function getNotices(options) {
