@@ -16,6 +16,7 @@ import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import styles from './index.less';
 import { Button, Result } from 'antd';
 import { Link } from 'umi';
+import localStorage from "localStorage";
 
 const LoginMessage = ({ content }) => (
   <Alert
@@ -52,12 +53,17 @@ const Login = () => {
         });
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
-        //此方法会跳转到 redirect 参数所在的位置
+        //id_cookie
+        const currentUserPk = ans.data;
+        console.log("pk是");
+        console.log(currentUserPk);
+        localStorage.setItem("access_pk", "2");
 
+        console.log("local的pk是");
+        console.log(localStorage.getItem("access_pk"));
+        
         if (!history) return;
-        const { query } = history.location;
-        const { redirect } = query;
-        history.push(redirect || '/');
+        history.push('../posts');
         return;
       }
       console.log(ans); // 如果失败去设置用户错误信息
@@ -83,11 +89,13 @@ const Login = () => {
           logo={<img alt="logo" src="/logo.svg" />}
           title="O&O"
           subTitle="这是咱的副标题"
+          
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
         >
-          {status === 'error' && (
+
+          {status === 'error'  && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
@@ -95,7 +103,7 @@ const Login = () => {
               })}
             />
           )}
-          {
+          {(
             <>
               <ProFormText
                 name="username"
@@ -142,7 +150,7 @@ const Login = () => {
                 ]}
               />
             </>
-          }
+          )}
 
           <div
             style={{
@@ -158,8 +166,7 @@ const Login = () => {
             </a>
           </div>
           <div>
-            <Link
-              to="register"
+            <Link to="register"
               style={{
                 float: 'left',
               }}
