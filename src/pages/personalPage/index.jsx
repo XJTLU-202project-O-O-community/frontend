@@ -41,7 +41,8 @@ const uploadProfile = async (values) => {
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
-  return res.data;
+  console.log(res.data[0].fields.name);
+  return res.data[0].fields;
 };
 
 export default (props) => {
@@ -61,15 +62,18 @@ export default (props) => {
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
-    const infoData = await index_PersonInfo({ userid: 1 });
+    const infoData = await index_PersonInfo({ his_id: 1 });
+    
     setpersonInfo(infoData);
   }, []);
-
+  console.log("111");
+  console.log(personInfo.photo);
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
-          <Avatar size={150} src={personInfo.avatar} />
+          
+          <Avatar size={150} src={'http://localhost:8000/media/'+personInfo.photo} />
         </div>
         <div>
           <Card className="Card1">
@@ -162,13 +166,14 @@ export default (props) => {
               ]}
             >
               <ProDescriptions.Item dataIndex="username" label="Username">
-                {personInfo.username}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="name" label="Name">
+
                 {personInfo.name}
               </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="name" label="Name">
+                {personInfo.actual_name}
+              </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="id" label="ID">
-                {personInfo.id}
+                {personInfo.pk}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
                 {personInfo.gender}
@@ -177,11 +182,11 @@ export default (props) => {
                 {personInfo.city}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="date" label="Birthday">
-                {personInfo.date}
+                {personInfo.birth}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="text" label="Personalized Signature">
                 {' '}
-                {personInfo.text}{' '}
+                {personInfo.signature}{' '}
               </ProDescriptions.Item>
             </ProDescriptions>
           </Card>
