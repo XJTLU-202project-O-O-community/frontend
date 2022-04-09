@@ -63,17 +63,16 @@ export default (props) => {
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
     const infoData = await index_PersonInfo({ his_id: 1 });
-    
+
     setpersonInfo(infoData);
   }, []);
-  console.log("111");
+  console.log('111');
   console.log(personInfo.photo);
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
-          
-          <Avatar size={150} src={'http://localhost:8000/media/'+personInfo.photo} />
+          <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
         </div>
         <div>
           <Card className="Card1">
@@ -102,13 +101,13 @@ export default (props) => {
                         <ProFormGroup label="Basic">
                           <ProFormText
                             name="username"
-                            initialValue={personInfo.username}
+                            initialValue={personInfo.name}
                             width="sm"
                             label="username"
                           />
                           <ProFormText
                             name="name"
-                            initialValue={personInfo.name}
+                            initialValue={personInfo.actual_name}
                             width="sm"
                             label="Name"
                           />
@@ -133,7 +132,7 @@ export default (props) => {
                           }}
                         >
                           <ProFormRadio.Group
-                            name="radio"
+                            name="gender"
                             layout="vertical"
                             options={[
                               {
@@ -146,7 +145,7 @@ export default (props) => {
                               },
                             ]}
                           />
-                          <ProFormDatePicker name="date" label="Birthday" />
+                          <ProFormDatePicker name="birth" label="Birthday" />
                         </ProFormGroup>
                         <ProFormGroup label="Address">
                           <ProFormText
@@ -157,7 +156,11 @@ export default (props) => {
                           />
                         </ProFormGroup>
                         <ProFormGroup label="Signature">
-                          <ProFormTextArea width="xl" name="text" initialValue={personInfo.text} />
+                          <ProFormTextArea
+                            width="xl"
+                            name="text"
+                            initialValue={personInfo.signature}
+                          />
                         </ProFormGroup>
                       </Card>
                     </ModalForm>,
@@ -166,7 +169,6 @@ export default (props) => {
               ]}
             >
               <ProDescriptions.Item dataIndex="username" label="Username">
-
                 {personInfo.name}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="name" label="Name">
