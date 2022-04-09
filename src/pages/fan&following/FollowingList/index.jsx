@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Avatar, Card, List } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less';
+import { queryFakeList } from './service';
 
 export const FanList = () => {
   const [list, setList] = useState([]);

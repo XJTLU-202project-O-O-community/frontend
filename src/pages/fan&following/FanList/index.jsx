@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import React, { useState } from 'react';
 import { Avatar, Card, List } from 'antd';
-
 import { PageContainer } from '@ant-design/pro-layout';
 import { queryFakeList } from './service';
 import styles from './style.less';
