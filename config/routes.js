@@ -81,7 +81,7 @@ export default [
     redirect: '/welcome',
   },
   {
-    // name: 'fan',
+    name: 'fan',
     icon: 'smile',
     path: '/fanlist',
     component: './fan&following/FanList',
