@@ -44,9 +44,11 @@ const Login = () => {
         message.success(defaultLoginSuccessMessage);
 
         const currentUserPk = ans.data[0]['pk'];
+        const currentUserInfo = ans.data[0]['fields'];
         console.log('pk是');
         console.log(currentUserPk);
         localStorage.setItem('access_pk', currentUserPk);
+        localStorage.setItem('user_info', JSON.stringify(currentUserInfo));
 
         if (!history) return;
         history.push('../posts');
