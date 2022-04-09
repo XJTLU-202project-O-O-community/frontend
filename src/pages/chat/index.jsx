@@ -52,10 +52,6 @@ const App = () => {
   const init = async () => {
     user_id.current = localStorage.getItem('access_pk');
     setUser_info(JSON.parse(localStorage.getItem('user_info')));
-    // fetchUserInfo
-    // const user_info = await queryCurrentUser();
-    // setUser_info(user_info.data);
-    // user_id.current = user_info.data.userid;
 
     // fetchMessageList
     const message_list = await getMessageList(user_id.current);

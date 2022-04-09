@@ -33,7 +33,7 @@ export default (props) => {
         <div className="pictureCardV">
           <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
           <Button className="sub" id="text" onClick={null} size="large">
-            <b>{subT}</b>
+            <b>{subT1}</b>
           </Button>
           <Button className="chat" id="chat" onClick={null} size="large">
             <b>{chatT}</b>
