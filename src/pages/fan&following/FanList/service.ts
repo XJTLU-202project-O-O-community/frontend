@@ -8,7 +8,7 @@ type ParamsType = {
 export async function queryFakeList(
   params: ParamsType,
 ): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/fans/fans/', {params});
+  return request('/api/fans/fans/', { params });
 }
 
 export async function removeFakeList(
