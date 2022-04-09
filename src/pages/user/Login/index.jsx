@@ -1,7 +1,4 @@
-import {
-  LockOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, message } from 'antd';
 import React, { useState } from 'react';
 import { ProFormText, LoginForm } from '@ant-design/pro-form';
@@ -38,20 +35,20 @@ const Login = () => {
     try {
       // 登录
       const ans = await login({ ...values });
-      console.log(ans,"===========")
+      console.log(ans, '===========');
       if (ans.error_code === 200) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
-        
-        const currentUserPk = ans.data[0]["pk"];
-        const currentUserInfo = ans.data[0]["fields"];
 
-        localStorage.setItem("access_pk", currentUserPk);
-        localStorage.setItem("user_info", currentUserInfo);
-        console.log(currentUserInfo, 77777777)
+        const currentUserPk = ans.data[0]['pk'];
+        const currentUserInfo = ans.data[0]['fields'];
+
+        localStorage.setItem('access_pk', currentUserPk);
+        localStorage.setItem('user_info', currentUserInfo);
+        console.log(currentUserInfo, 77777777);
 
         //if (!history) return;
         history.push('../posts');
