@@ -51,9 +51,7 @@ const App = () => {
 
   const init = async () => {
     user_id.current = localStorage.getItem('access_pk');
-    setUser_info(localStorage.getItem('user_info'));
-    console.log(localStorage.getItem('user_info'));
-    console.log(6666666666);
+    setUser_info(JSON.parse(localStorage.getItem('user_info')));
     // fetchUserInfo
     // const user_info = await queryCurrentUser();
     // setUser_info(user_info.data);
@@ -188,7 +186,7 @@ const App = () => {
   };
 
   const handleMsg = (msgItem) => {
-    console.log(user_info, 888888888888888888888);
+    console.log(user_info, 8888888888);
     return {
       _id: msgItem.id,
       type: 'text',
