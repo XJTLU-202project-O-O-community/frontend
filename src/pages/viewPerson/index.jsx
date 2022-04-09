@@ -7,6 +7,7 @@ import { Avatar, Button, Card } from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
 import './index.css';
 import { GetPersonInfo } from '@/services/person';
+import localStorage from 'localStorage';
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
@@ -14,14 +15,15 @@ const index_PersonInfo = async (values) => {
 };
 
 export default (props) => {
-  const subT = 'Subscribe';
+  const subT1 = 'Subscribe';
+  const subT2 = 'Subscribed';
   const chatT = 'Chat';
-  const his_id = props.match.params.id;
+  const his_id = localStorage.getItem('access_pk');
   const data1 = { his_id: his_id };
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
-    const infoData = await index_PersonInfo({ his_id: 1 });
+    const infoData = await index_PersonInfo(data1);
     setpersonInfo(infoData);
   }, []);
 
@@ -61,7 +63,7 @@ export default (props) => {
                 {personInfo.actual_name}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="id" label="ID">
-                {personInfo.pk}
+                {his_id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
                 {personInfo.gender}

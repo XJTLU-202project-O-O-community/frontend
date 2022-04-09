@@ -26,6 +26,7 @@ import ProForm, {
   ProFormUploadButton,
 } from '@ant-design/pro-form';
 import { changeProfile, GetPersonInfo } from '@/services/person';
+import localStorage from 'localStorage';
 
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
@@ -45,10 +46,13 @@ const index_PersonInfo = async (values) => {
   return res.data[0].fields;
 };
 
+const his_id = localStorage.getItem('access_pk');
+const data1 = { his_id: his_id };
+
 export default (props) => {
   let [own_data, setData] = useState([]);
   useEffect(async () => {
-    const resData = await index_postList({ userid: 1 });
+    const resData = await index_postList(data1);
     console.log(resData, 300);
     setData(resData.data);
   }, []);
@@ -175,7 +179,7 @@ export default (props) => {
                 {personInfo.actual_name}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="id" label="ID">
-                {personInfo.pk}
+                {his_id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
                 {personInfo.gender}

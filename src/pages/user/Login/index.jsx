@@ -53,18 +53,15 @@ const Login = () => {
         });
         console.log(111);
         message.success(defaultLoginSuccessMessage);
-        //await fetchUserInfo();
-        //id_cookie
-        /*
-        const currentUserPk = ans.data;
-        console.log("pk是");
-        console.log(currentUserPk);
-        localStorage.setItem("access_pk", "2");
+        await fetchUserInfo();
+        id_cookie;
 
-        console.log("local的pk是");
-        console.log(localStorage.getItem("access_pk"));
-        */
-        //if (!history) return;
+        const currentUserPk = ans.data[0]['pk'];
+        console.log('pk是');
+        console.log(currentUserPk);
+        localStorage.setItem('access_pk', currentUserPk);
+
+        if (!history) return;
         history.push('../posts');
         return;
       }
