@@ -26,6 +26,7 @@ import ProForm, {
   ProFormUploadButton,
 } from '@ant-design/pro-form';
 import { changeProfile, GetPersonInfo } from '@/services/person';
+import localStorage from 'localStorage';
 
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
@@ -41,13 +42,17 @@ const uploadProfile = async (values) => {
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
-  return res.data;
+  console.log(res.data[0].fields.name);
+  return res.data[0].fields;
 };
+
+const his_id = localStorage.getItem('access_pk');
+const data1 = { his_id: his_id };
 
 export default (props) => {
   let [own_data, setData] = useState([]);
   useEffect(async () => {
-    const resData = await index_postList({ userid: 1 });
+    const resData = await index_postList(data1);
     console.log(resData, 300);
     setData(resData.data);
   }, []);
@@ -61,15 +66,17 @@ export default (props) => {
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
-    const infoData = await index_PersonInfo({ userid: 1 });
+    const infoData = await index_PersonInfo({ his_id: 1 });
+
     setpersonInfo(infoData);
   }, []);
-
+  console.log('111');
+  console.log(personInfo.photo);
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
-          <Avatar size={150} src={personInfo.avatar} />
+          <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
         </div>
         <div>
           <Card className="Card1">
@@ -98,13 +105,13 @@ export default (props) => {
                         <ProFormGroup label="Basic">
                           <ProFormText
                             name="username"
-                            initialValue={personInfo.username}
+                            initialValue={personInfo.name}
                             width="sm"
                             label="username"
                           />
                           <ProFormText
                             name="name"
-                            initialValue={personInfo.name}
+                            initialValue={personInfo.actual_name}
                             width="sm"
                             label="Name"
                           />
@@ -129,7 +136,7 @@ export default (props) => {
                           }}
                         >
                           <ProFormRadio.Group
-                            name="radio"
+                            name="gender"
                             layout="vertical"
                             options={[
                               {
@@ -142,7 +149,7 @@ export default (props) => {
                               },
                             ]}
                           />
-                          <ProFormDatePicker name="date" label="Birthday" />
+                          <ProFormDatePicker name="birth" label="Birthday" />
                         </ProFormGroup>
                         <ProFormGroup label="Address">
                           <ProFormText
@@ -153,7 +160,11 @@ export default (props) => {
                           />
                         </ProFormGroup>
                         <ProFormGroup label="Signature">
-                          <ProFormTextArea width="xl" name="text" initialValue={personInfo.text} />
+                          <ProFormTextArea
+                            width="xl"
+                            name="text"
+                            initialValue={personInfo.signature}
+                          />
                         </ProFormGroup>
                       </Card>
                     </ModalForm>,
@@ -162,13 +173,13 @@ export default (props) => {
               ]}
             >
               <ProDescriptions.Item dataIndex="username" label="Username">
-                {personInfo.username}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="name" label="Name">
                 {personInfo.name}
               </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="name" label="Name">
+                {personInfo.actual_name}
+              </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="id" label="ID">
-                {personInfo.id}
+                {his_id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
                 {personInfo.gender}
@@ -177,11 +188,11 @@ export default (props) => {
                 {personInfo.city}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="date" label="Birthday">
-                {personInfo.date}
+                {personInfo.birth}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="text" label="Personalized Signature">
                 {' '}
-                {personInfo.text}{' '}
+                {personInfo.signature}{' '}
               </ProDescriptions.Item>
             </ProDescriptions>
           </Card>

@@ -47,12 +47,6 @@ export default [
     component: './viewPerson',
   },
   {
-    path: '/personal_edit',
-    name: 'Edit Person',
-    icon: 'EditOutlined',
-    component: './editPerson',
-  },
-  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',

@@ -7,31 +7,31 @@ import { Avatar, Button, Card } from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
 import './index.css';
 import { GetPersonInfo } from '@/services/person';
+import localStorage from 'localStorage';
 
 const index_PersonInfo = async (values) => {
-  const data = await GetPersonInfo(values);
-  console.log(data);
-  return { data };
+  const res = await GetPersonInfo(values);
+  return res.data[0].fields;
 };
 
 export default (props) => {
-  const subT = 'Subscribe';
+  const subT1 = 'Subscribe';
+  const subT2 = 'Subscribed';
   const chatT = 'Chat';
-  const userid = props.match.params.id;
-  const data1 = { userid: userid };
+  const his_id = localStorage.getItem('access_pk');
+  const data1 = { his_id: his_id };
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
     const infoData = await index_PersonInfo(data1);
-    console.log(infoData.data.data, 999999);
-    setpersonInfo(infoData.data.data);
+    setpersonInfo(infoData);
   }, []);
 
   return (
     <PageContainer>
       <div>
         <div className="pictureCardV">
-          <Avatar size={150} src={personInfo.avatar} />
+          <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
           <Button className="sub" id="text" onClick={null} size="large">
             <b>{subT}</b>
           </Button>
@@ -57,13 +57,13 @@ export default (props) => {
               ]}
             >
               <ProDescriptions.Item dataIndex="username" label="Username">
-                {personInfo.username}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="name" label="Name">
                 {personInfo.name}
               </ProDescriptions.Item>
+              <ProDescriptions.Item dataIndex="name" label="Name">
+                {personInfo.actual_name}
+              </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="id" label="ID">
-                {personInfo.id}
+                {his_id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
                 {personInfo.gender}
@@ -72,11 +72,11 @@ export default (props) => {
                 {personInfo.city}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="date" label="Birthday">
-                {personInfo.date}
+                {personInfo.birth}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="text" label="Personalized Signature">
                 {' '}
-                {personInfo.text}{' '}
+                {personInfo.signature}{' '}
               </ProDescriptions.Item>
             </ProDescriptions>
           </Card>
