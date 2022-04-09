@@ -66,7 +66,7 @@ export default (props) => {
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
-    const infoData = await index_PersonInfo({ his_id: 1 });
+    const infoData = await index_PersonInfo(data1);
 
     setpersonInfo(infoData);
   }, []);
