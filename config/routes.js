@@ -87,7 +87,7 @@ export default [
     component: './fan&following/FanList',
   },
   {
-    // name: 'following',
+    name: 'following',
     icon: 'smile',
     path: '/followinglist',
     component: './fan&following/FollowingList',

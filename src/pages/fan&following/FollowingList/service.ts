@@ -8,7 +8,7 @@ type ParamsType = {
 export async function queryFakeList(
   params: ParamsType,
 ): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/get_list_following', {
+  return request('/api/fans/following/', {
     params,
   });
 }

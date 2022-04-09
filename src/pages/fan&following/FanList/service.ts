@@ -2,13 +2,13 @@ import { request } from 'umi';
 import type { BasicListItemDataType } from './data.d';
 
 type ParamsType = {
-  count?: number;
+  user_id?: string;
 } & Partial<BasicListItemDataType>;
 
 export async function queryFakeList(
   params: ParamsType,
 ): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/fans/fans/');
+  return request('/api/fans/fans/', {params});
 }
 
 export async function removeFakeList(
