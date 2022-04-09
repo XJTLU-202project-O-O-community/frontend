@@ -5,7 +5,6 @@ import '@chatui/core/dist/index.css';
 import './chat.less';
 import { message, List, Avatar, Badge, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 import ProCard from '@ant-design/pro-card';
 import { getHistory, getMessageList } from '@/services/chat';
 import { getFollowingList } from '@/services/fans';
@@ -27,9 +26,9 @@ const App = () => {
   }, [])
 
   useLayoutEffect(() => {
-    console.log(user_id.current)
+    // console.log(user_id.current)
     if (user_id.current) {
-      ws.current = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${user_id.current}/`);
+      ws.current = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${localStorage.getItem("access_pk")}/`);
 
       ws.current.onmessage = async e => {
         const res = JSON.parse(e.data);
@@ -49,10 +48,14 @@ const App = () => {
   }, [user_id.current])
 
   const init = async () => {
+    user_id.current = localStorage.getItem("access_pk")
+    setUser_info(localStorage.getItem("user_info"))
+    console.log(localStorage.getItem("user_info"))
+    console.log(6666666666)
     // fetchUserInfo
-    const user_info = await queryCurrentUser();
-    setUser_info(user_info.data);
-    user_id.current = user_info.data.userid;
+    // const user_info = await queryCurrentUser();
+    // setUser_info(user_info.data);
+    // user_id.current = user_info.data.userid;
 
     // fetchMessageList
     const message_list = await getMessageList(user_id.current);
@@ -79,7 +82,7 @@ const App = () => {
     resetList()
     target.id = target.message_user_id
     target_user.current = target
-    const res = await getHistory(user_info.userid, target.id)
+    const res = await getHistory(user_id.current, target.id)
     if (res.error_code == 200) {
       let msgItems = res.data;
       if (!msgItems) return
@@ -108,7 +111,7 @@ const App = () => {
         recipient_id: target_user.current.message_user_id
       }));
       ws.current.send(JSON.stringify({
-        user_id: user_info.userid,
+        user_id: user_id.current,
         recipient_id: target_user.current.message_user_id,
         message: val
       }))
@@ -180,15 +183,16 @@ const App = () => {
 
 
   const handleMsg = (msgItem) => {
+    console.log(user_info, 888888888888888888888)
     return {
       "_id": msgItem.id,
       "type": 'text',
       "content": { "text": msgItem.message },
       "createdAt": msgItem.createdAt,
-      "position": msgItem.recipient_id == user_info?.userid ? "left" : "right",
+      "position": msgItem.recipient_id == user_id.current? "left" : "right",
       "hasTime": true,
       "user": {
-        "avatar": msgItem.recipient_id == user_info?.userid ? `/server/media/${target_user.current?.avatar}` : user_info?.avatar,
+        "avatar": msgItem.recipient_id == user_id.current ? `/server/media/${target_user.current?.avatar}` : "/server/media/"+user_info?.photo,
       }
     }
   }
