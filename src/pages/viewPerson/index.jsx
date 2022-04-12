@@ -54,7 +54,7 @@ export default (props) => {
           <Button className="sub" id="text" onClick={sendSubMes} size="large">
             <b>{subT1}</b>
           </Button>
-          <Button className="chat" id="chat" onClick={null} size="large">
+          <Button className="chat" id="chat" onClick={()=>props.history.push(`/chat?target_id=${props.match.params.id}`)} size="large">
             <b>{chatT}</b>
           </Button>
         </div>

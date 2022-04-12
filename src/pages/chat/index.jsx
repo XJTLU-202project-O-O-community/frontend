@@ -8,14 +8,15 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ProCard from '@ant-design/pro-card';
 import { getHistory, getMessageList } from '@/services/chat';
 import { getFollowingList } from '@/services/fans';
+import { GetPersonInfo } from '@/services/person';
 
-const App = () => {
+const App = (props) => {
   let { messages, appendMsg, setTyping, prependMsgs, resetList } = useMessages([]);
   const [user_info, setUser_info] = useState(null);
-  const [message_list, setMessage_list] = useState(null);
+  const [message_list, setMessage_list] = useState([]);
   const [following_lst, setFollowingList] = useState([]);
-  const message_list_ref = useRef(null);
-  const following_lst_ref = useRef(null);
+  const message_list_ref = useRef([]);
+  const following_lst_ref = useRef([]);
   const ws = useRef(null);
   const target_user = useRef(null);
   const user_id = useRef(null);
@@ -23,6 +24,7 @@ const App = () => {
 
   useEffect(() => {
     init();
+    console.log(props)
   }, []);
 
   useLayoutEffect(() => {
@@ -54,9 +56,9 @@ const App = () => {
     setUser_info(JSON.parse(localStorage.getItem('user_info')));
 
     // fetchMessageList
-    const message_list = await getMessageList(user_id.current);
-    setMessage_list(message_list.data);
-    message_list_ref.current = message_list.data;
+    const message_list_res = await getMessageList(user_id.current);
+    setMessage_list(message_list_res.data);
+    message_list_ref.current = message_list_res.data;
 
     // fetchFollowingList
     const res = await getFollowingList(user_id.current);
@@ -72,6 +74,35 @@ const App = () => {
     }
     setFollowingList(following_lst);
     following_lst_ref.current = following_lst;
+
+    // handle target
+    const target_id = props.location.query.target_id;
+    if(target_id){
+      let flag = 0;
+      for(let i in message_list_ref.current){
+        if(message_list_ref.current[i].message_user_id==String(target_id)){
+          handleTarget(message_list_ref.current[i]);
+          flag = 1;
+          break;
+        }
+      }
+      if(flag == 0){
+        const res = await GetPersonInfo({his_id: target_id});
+
+        if(res.error_code==200){
+          console.log(res.data[0])
+          const target_info = {
+            message_user_id: res.data[0].pk,
+            username: res.data[0].fields.name, 
+            avatar: res.data[0].fields.photo
+          }
+
+          setMessage_list([...message_list_ref.current, target_info])
+          message_list_ref.current = message_list;
+          handleTarget(target_info);
+        }
+      }
+    }
   };
 
   const handleTarget = async (target) => {
@@ -182,7 +213,6 @@ const App = () => {
   };
 
   const handleMsg = (msgItem) => {
-    console.log(user_info, 8888888888);
     return {
       _id: msgItem.id,
       type: 'text',
