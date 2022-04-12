@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import React, { useState } from 'react';
-import { Avatar, Card, List, message } from 'antd';
+import { Avatar, Card, List } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-import { queryFakeList,searchWithinFan } from './service';
+import { searchUser } from './service';
 import styles from './style.less';
 
 export const FanList = () => {
@@ -12,32 +12,12 @@ export const FanList = () => {
     queryFanList();
   }, []);
 
-  
-  // const { Search } = Input;
-
-  const onSearch =async (value) => {
-    const res=await searchWithinFan({ user_id: localStorage.getItem('access_pk'),keyword:value });
-    if(res.status=201){props.dispatch({
-      type:'service/queryFakeList',
-      payload:null
-    })
-    message.success(res.message)
-    } else{
-      message.error(res.message)
-    }
-  };
-
   const queryFanList = async () => {
-    const res = await queryFakeList({ user_id: localStorage.getItem('access_pk') });
+    const res = await searchUser({ user_id: localStorage.getItem('access_pk'),
+    targeted_User_id:"keyword" });
     console.log(res, 999);
     setList(res.data.fans_list);
   };
-
-  // const queryList = async () => {
-  //   const res = await searchWithinFan({ user_id: localStorage.getItem('access_pk'),keyword:value });
-  //   console.log(res, 999);
-  //   setList(res.data.fans_list);
-  // };
 
   const paginationProps = {
     showSizeChanger: true,
@@ -56,7 +36,6 @@ export const FanList = () => {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
           >
-            <Search placeholder="input search text" onSearch={onSearch} enterButton />
             <List
               size="large"
               rowKey="id"

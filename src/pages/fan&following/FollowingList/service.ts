@@ -13,38 +13,25 @@ export async function queryFakeList(
   });
 }
 
-export async function removeFakeList(
-  params: ParamsType,
-): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/post_fake_list_following', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'delete',
-    },
-  });
-}
+// export async function removeFakeList(
+//   params: ParamsType,
+// ): Promise<{ data: { list: BasicListItemDataType[] } }> {
+//   return request('/api/post_fake_list_following', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }
 
-export async function addFakeList(
-  params: ParamsType,
-): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/post_fake_list_following', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'post',
-    },
-  });
-}
+// export async function addFakeList(
+//   params: ParamsType,
+// ): Promise<{ data: { list: BasicListItemDataType[] } }> {
+//   return request('/api/post_fake_list_following', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }
 
-export async function updateFakeList(
-  params: ParamsType,
-): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/post_fake_list_following', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'update',
-    },
-  });
-}

@@ -5,44 +5,46 @@ type ParamsType = {
   user_id?: string;
 } & Partial<BasicListItemDataType>;
 
-export async function queryFakeList(
-  params: ParamsType,
-): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/fans/fans/', { params });
-}
+type ParamsType1 = {
+  user_id?: string;
+  keyword?: string;
+} & Partial<BasicListItemDataType>;
 
-export async function removeFakeList(
-  params: ParamsType,
+export async function queryFakeList(
+  params: ParamsType
 ): Promise<{ data: { list: BasicListItemDataType[] } }> {
   return request('/api/fans/fans/', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'delete',
-    },
+    params,
   });
 }
 
-export async function addFakeList(
-  params: ParamsType,
+export async function searchWithinFan(
+  params: ParamsType1,
 ): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/post_fake_list_fan', {
+  return request('/api/user/register/', {
     method: 'POST',
-    data: {
-      ...params,
-      method: 'post',
-    },
+    params,
   });
 }
 
-export async function updateFakeList(
-  params: ParamsType,
-): Promise<{ data: { list: BasicListItemDataType[] } }> {
-  return request('/api/post_fake_list_fan', {
-    method: 'POST',
-    data: {
-      ...params,
-      method: 'update',
-    },
-  });
-}
+// export async function removeFakeList(
+//   params: ParamsType,
+// ): Promise<{ data: { list: BasicListItemDataType[] } }> {
+//   return request('/api/fans/following/', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }
+
+// export async function addFakeList(
+//   params: ParamsType,
+// ): Promise<{ data: { list: BasicListItemDataType[] } }> {
+//   return request('/api/post_fake_list_fan', {
+//     method: 'POST',
+//     data: {
+//       ...params,
+//     },
+//   });
+// }

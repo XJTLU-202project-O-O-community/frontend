@@ -81,22 +81,16 @@ export default [
     redirect: '/welcome',
   },
   {
-    name: 'fan',
+    // name: 'fan',
     icon: 'smile',
     path: '/fanlist',
     component: './fan&following/FanList',
   },
   {
-    name: 'following',
+    // name: 'following',
     icon: 'smile',
     path: '/followinglist',
     component: './fan&following/FollowingList',
-  },
-  {
-    name: '待跳转',
-    icon: 'smile',
-    path: '/emptypage',
-    component: './EmptyPage',
   },
   {
     name: 'user list',

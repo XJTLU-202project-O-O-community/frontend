@@ -1,29 +1,20 @@
 export type Member = {
-  avatar: string;
-  name: string;
-  id: string;
+  email: string;
+  photo: string;
+  actual_name: string;
+  gender: string;
+  birth: null;
+  signature: string;
+  id: number;
+  username: string;
+  moment: string;
 };
 
 export type BasicListItemDataType = {
-  id: string;
-  owner: string;
-  title: string;
-  avatar: string;
-  cover: string;
-  status: 'normal' | 'exception' | 'active' | 'success';
-  percent: number;
-  logo: string;
+  user_id: string;
+  username: string;
+  moment: string;
+  photo: string;
   href: string;
-  body?: any;
-  updatedAt: number;
-  createdAt: number;
-  subDescription: string;
-  description: string;
-  activeUser: number;
-  newUser: number;
-  star: number;
-  like: number;
-  message: number;
-  content: string;
-  members: Member[];
+  following_list: Member[];
 };
