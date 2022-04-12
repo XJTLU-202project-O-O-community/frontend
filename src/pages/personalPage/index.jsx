@@ -48,26 +48,28 @@ const index_PersonInfo = async (values) => {
 
 const his_id = localStorage.getItem('access_pk');
 const data1 = { his_id: his_id };
+const data2 = { userid: his_id };
 
 export default (props) => {
   let [own_data, setData] = useState([]);
   useEffect(async () => {
-    const resData = await index_postList(data1);
+    const resData = await index_postList(data2);
     console.log(resData, 300);
     setData(resData.data);
   }, []);
 
   const deleteMoment = async (value) => {
     const res = await Delete(value);
-    if (res.code == 200) {
-      message.success('add successfully');
+    console.log(res, 88);
+    if (res.error_code == 200) {
+      message.success('delete successfully');
     } else message.error('error');
   };
 
   let [personInfo, setpersonInfo] = useState([]);
   useEffect(async () => {
     const infoData = await index_PersonInfo(data1);
-
+    console.log(infoData, 400);
     setpersonInfo(infoData);
   }, []);
   console.log('111');
@@ -197,6 +199,7 @@ export default (props) => {
             </ProDescriptions>
           </Card>
         </div>
+
         <Card className="Card1">
           <h3>Personal posting here</h3>
 
@@ -235,12 +238,10 @@ export default (props) => {
                     title={[<h2>Confirmation for deleting</h2>]}
                     trigger={<Button style={{ color: 'red', marginTop: 20 }}>Delete</Button>}
                     autoFocusFirstInput
-                    drawerProps={{
-                      destroyOnClose: true,
-                    }}
                     onFinish={() => {
                       deleteMoment({ id: item.id });
-                      location.reload();
+                      console.log({ id: item.id }, 99999);
+                      //location.reload();
                       return true;
                     }}
                   >
@@ -301,9 +302,7 @@ export default (props) => {
                     <Avatar
                       shape="square"
                       size={50}
-                      src={
-                        'https://th.bing.com/th/id/OIP.Jj--APqfnW9dNtbzDkFFBQAAAA?pid=ImgDet&rs=1'
-                      }
+                      src={'http://localhost:8000/media/' + item.user_id__photo}
                     />
                   }
                   title={<a href={item.href}>{item.title}</a>}

@@ -11,10 +11,13 @@ export const getPersonalPosts = async (params) => {
 
 export const add = async (params) => {
   console.log(params.imgs);
+
   let strr = '';
-  for (var i = 0; i < params.imgs.length; i++) {
-    console.log(params.imgs[i].name, i);
-    strr += params.imgs[i].name + ',';
+  if (params.imgs != null) {
+    for (var i = 0; i < params.imgs.length; i++) {
+      console.log(params.imgs[i].name, i);
+      strr += params.imgs[i].name + ',';
+    }
   }
   console.log(strr, 8888);
 
@@ -26,11 +29,15 @@ export const add = async (params) => {
 };
 
 export const Delete = async (params) => {
-  return request('/api/posting/delete/', { method: 'post', data: params });
+  return request('/api/posting/delete/', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: `id=${params.id}`,
+  });
 };
 
-export const Profile = async () => {
-  return request('/api/posting/edit/', { method: 'get' });
+export const Profile = async (params) => {
+  return request('/api/user/currentUser/', { method: 'get', params: params });
 };
 
 // export const getWholePosts = async () => {

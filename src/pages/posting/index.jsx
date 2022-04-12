@@ -31,57 +31,29 @@ const index_postList = async () => {
   return { data: data.data.moments };
 };
 
-const index_postProfile = async () => {
-  const data = await Profile();
-  return { data: data };
+const index_postProfile = async (params) => {
+  const data = await Profile(params);
+  return data.data[0].fields;
 };
 
-const content = <Image height={115} width={1400} src={logo} />;
-
-const IconText = ({ icon, text }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
-
-const props1 = {
-  name: 'file',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  progress: {
-    strokeColor: {
-      '0%': '#108ee9',
-      '100%': '#87d068',
-    },
-    strokeWidth: 3,
-    format: (percent) => `${parseFloat(percent.toFixed(2))}%`,
-  },
+const App = (values) => {
+  const list11 = values.toString().split(',');
+  list11.pop();
+  console.log(list11);
+  return (
+    <Image.PreviewGroup>
+      <div style={{ margin: 25 }}>
+        {list11.map((item) => (
+          <Image width={90} height={90} src={'http://localhost:8000/media/moments/' + item} />
+        ))}
+      </div>
+    </Image.PreviewGroup>
+  );
 };
-
-const App = () => (
-  <Image.PreviewGroup>
-    <div style={{ margin: 25 }}>
-      <Image width={90} height={90} src={pic1} />
-      <Image width={90} height={90} src={pic2} />
-    </div>
-  </Image.PreviewGroup>
-);
 
 const PostList = (props) => {
   const data1 = localStorage.getItem('access_pk');
+  const own_id = { his_id: data1 };
   console.log(data1, 7355608);
   let [data, setData] = useState([]);
 
@@ -94,9 +66,9 @@ const PostList = (props) => {
   }, []);
   //个人信息
   useEffect(async () => {
-    const res1Data = await index_postProfile();
+    const res1Data = await index_postProfile(own_id);
     console.log(res1Data, 11111);
-    setPersonData(res1Data.data);
+    setPersonData(res1Data);
   }, []);
 
   //data=getRequst
@@ -109,26 +81,11 @@ const PostList = (props) => {
   const uploadPosting = async (value) => {
     console.log(11111111);
     const res = await add(value);
-    if (res.code == 200) {
+    console.log(res, 333);
+    if (res.error_code == 200) {
       message.success('add successfully');
     } else message.error('error');
   };
-  //const [comment,setLike]=useState(1)// useState(data.like)
-
-  // const fn=()=>{
-  //   if (count==0) {
-  //     setThumb(thumb+1)
-  //     setCount(1)
-  //   }
-  //   else {setThumb(thumb-1)
-  //     setCount(0)}
-  // }
-
-  // const handleClick = item => {
-  //   // 未点赞
-  //
-  //
-  // }
 
   return (
     <PageContainer
@@ -160,7 +117,7 @@ const PostList = (props) => {
               return true;
             }}
           >
-            <ProFormText name="user_id" width="md" label="User id" readonly initialValue={1} />
+            <ProFormText name="user_id" width="md" label="User id" readonly initialValue={data1} />
             <ProForm.Group>
               <ProFormText
                 name="description"
@@ -179,7 +136,7 @@ const PostList = (props) => {
             <ProFormUploadButton
               name="imgs"
               label="Upload"
-              max={2}
+              max={3}
               fieldProps={{
                 name: 'file',
                 listType: 'picture-card',
@@ -235,25 +192,31 @@ const PostList = (props) => {
               ]}
             >
               <List.Item.Meta
-                avatar={<Avatar shape="square" size={50} src={item.avatar} />}
+                avatar={
+                  <Avatar
+                    shape="square"
+                    size={50}
+                    src={'http://localhost:8000/media/' + item.user_id__photo}
+                  />
+                }
                 title={<Link to={`/personal_view/${item.userid}/`}>{item.user_id__name}</Link>}
                 description={item.user_id__signature}
               />
               {item.content}
-              <App />
+              {App(item.url)}
             </List.Item>
           )}
         />
       </Card>
 
       <Card
-        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 310 }}
+        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 200 }}
         title="Personal Info"
       >
-        <Avatar shape="square" size={50} src={dataPerson.avatar} />,
+        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson.photo} />,
         <h2 style={{ marginTop: 20 }}>{dataPerson.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
-        <h5 style={{ textAlign: 'left' }}>{dataPerson.description}</h5>
+        <h5 style={{ textAlign: 'left' }}>{dataPerson.signature}</h5>
       </Card>
     </PageContainer>
   );
