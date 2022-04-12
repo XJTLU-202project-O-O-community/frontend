@@ -1,43 +1,27 @@
 import React from 'react';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Avatar, Button, Card, List, message } from 'antd';
-import {
-  AntDesignOutlined,
-  LikeOutlined,
-  MessageOutlined,
-  PlusOutlined,
-  StarOutlined,
-} from '@ant-design/icons';
+import { LikeOutlined, StarOutlined } from '@ant-design/icons';
 import './index.css';
 import { add, Delete, getPersonalPosts, getWholePosts } from '@/services/posts';
 import ProForm, {
-  DrawerForm,
   ModalForm,
   ProFormDatePicker,
-  ProFormDateRangePicker,
   ProFormGroup,
   ProFormRadio,
-  ProFormSelect,
   ProFormText,
   ProFormTextArea,
   ProFormUploadButton,
 } from '@ant-design/pro-form';
-import { changeProfile, GetPersonInfo } from '@/services/person';
+import { EditProfile, GetPersonInfo } from '@/services/person';
 import localStorage from 'localStorage';
 
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
   console.log(data, 999);
   return { data: data.data.own_moments };
-};
-const uploadProfile = async (values) => {
-  const res = await changeProfile(values);
-  if (res.code == 200) {
-    message.success('add successfully');
-  } else message.error('error');
 };
 
 const index_PersonInfo = async (values) => {
@@ -74,11 +58,29 @@ export default (props) => {
   }, []);
   console.log('111');
   console.log(personInfo.photo);
+
+  const formRef = useRef();
+
+  const uploadProfile = async (value) => {
+    console.log('Profile Data');
+    const res = await EditProfile(value);
+    console.log(res);
+    if (res.error_code == 200) {
+      message.success('add successfully');
+    } else message.error('error');
+  };
+
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
           <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
+          <Button className="Fans" id="text" onClick={null} size="large">
+            <b>Fans</b>
+          </Button>
+          <Button className="Followers" id="text" onClick={null} size="large">
+            <b>Followers</b>
+          </Button>
         </div>
         <div>
           <Card className="Card1">
@@ -92,6 +94,7 @@ export default (props) => {
                   render: () => [
                     <ModalForm
                       title={[<h2>Edit personal info</h2>]}
+                      formRef={formRef}
                       trigger={<Button style={{ color: 'blue', marginTop: 20 }}>EDIT</Button>}
                       autoFocusFirstInput
                       drawerProps={{
@@ -119,7 +122,7 @@ export default (props) => {
                           />
                           <ProFormUploadButton
                             title="Click to upload"
-                            name="upload"
+                            name="upAvatar"
                             label="Upload"
                             withCredentials={true}
                             max={1}

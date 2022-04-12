@@ -4,6 +4,18 @@ export const GetPersonInfo = async (params) => {
   return request('/api/user/currentUser/', { method: 'get', params: params });
 };
 
-export const changeProfile = async (params) => {
-  return request('/api/user/changeProfile/', { method: 'post', data: params });
+export const EditProfile = async (params) => {
+  console.log(params.upAvatar);
+  let photo = '';
+  if (params.upAvatar != null) {
+    console.log('name of avatar is');
+    console.log(params.upAvatar[0].name);
+    photo = params.upAvatar[0].name;
+  }
+  console.log(photo, 6931);
+  return request(`/api/posting/moment/`, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: `new_username=${params.username}&actual_name=${params.name}&gender=${params.gender}&birth=${params.birth}&city=${params.city}&signature=${params.text}&photo=${strr}`,
+  });
 };
