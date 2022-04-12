@@ -69,7 +69,7 @@ export default (props) => {
       message.success('add successfully');
     } else message.error('error');
   };
-
+  const cum1 = personInfo.gender > 0 ? 'male' : 'female'; 
   return (
     <PageContainer>
       <div>
@@ -101,8 +101,9 @@ export default (props) => {
                         destroyOnClose: true,
                       }}
                       onFinish={(value) => {
+                        console.log(value)
                         uploadProfile(value);
-                        location.reload();
+                        //location.reload();
                         return true;
                       }}
                     >
@@ -130,7 +131,7 @@ export default (props) => {
                               name: 'file',
                               listType: 'picture-card',
                             }}
-                            action="/upload.do"
+                            action="/api/user/images/"
                             extra="This is your avatar"
                           />
                         </ProFormGroup>
@@ -143,14 +144,15 @@ export default (props) => {
                           <ProFormRadio.Group
                             name="gender"
                             layout="vertical"
+                            initialValue={personInfo.gender}
                             options={[
                               {
                                 label: 'Male',
-                                value: 'male',
+                                value: '1',
                               },
                               {
                                 label: 'Female',
-                                value: 'female',
+                                value: '0',
                               },
                             ]}
                           />
@@ -187,7 +189,7 @@ export default (props) => {
                 {his_id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
-                {personInfo.gender}
+                {cum1}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="city" label="City">
                 {personInfo.city}

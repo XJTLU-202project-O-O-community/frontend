@@ -26,7 +26,7 @@ export default (props) => {
     const infoData = await index_PersonInfo(data1);
     setpersonInfo(infoData);
   }, []);
-
+  const cum1 = personInfo.gender > 0 ? 'male' : 'female'; 
   return (
     <PageContainer>
       <div>
@@ -66,7 +66,7 @@ export default (props) => {
                 {his_id}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="gender" label="Gender">
-                {personInfo.gender}
+                {cum1}
               </ProDescriptions.Item>
               <ProDescriptions.Item dataIndex="city" label="City">
                 {personInfo.city}

@@ -53,7 +53,7 @@ const Register = () => {
     //发送请求
     const ans = await this_register(data);
     console.log("已经收到结果");
-    if (ans.err_code === 200) {
+    if (ans.error_code === 200) {
       history.push({
         pathname: '/user/register-result',
         state: {
@@ -80,7 +80,7 @@ const Register = () => {
   const { loading: submitting, run: register } = useRequest(register, {
     manual: true,
     onSuccess: (data, params) => {
-      if (data.err_code === 200) {
+      if (data.error_code === 200) {
         message.success('注册成功！');
         history.push({
           pathname: '/user/register-result',
