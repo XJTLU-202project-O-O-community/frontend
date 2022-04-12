@@ -37,13 +37,13 @@ const index_postProfile = async (params) => {
 };
 
 const App = (values) => {
-  const list11 = values.toString().split(',');
-  list11.pop();
+  const list11 = values?.toString().split(',');
+  list11?.pop();
   console.log(list11);
   return (
     <Image.PreviewGroup>
       <div style={{ margin: 25 }}>
-        {list11.map((item) => (
+        {list11?.map((item) => (
           <Image width={90} height={90} src={'http://localhost:8000/media/moments/' + item} />
         ))}
       </div>
