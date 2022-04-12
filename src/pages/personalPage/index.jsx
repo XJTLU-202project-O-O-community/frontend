@@ -69,16 +69,16 @@ export default (props) => {
       message.success('add successfully');
     } else message.error('error');
   };
-  const cum1 = personInfo.gender > 0 ? 'male' : 'female'; 
+  const cum1 = personInfo.gender > 0 ? 'male' : 'female';
   return (
     <PageContainer>
       <div>
         <div className="pictureCard">
           <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
-          <Button className="Fans" id="text" onClick={null} size="large">
+          <Button className="fans" id="text" onClick={null} size="large">
             <b>Fans</b>
           </Button>
-          <Button className="Followers" id="text" onClick={null} size="large">
+          <Button className="followers" id="text" onClick={null} size="large">
             <b>Followers</b>
           </Button>
         </div>
@@ -101,7 +101,7 @@ export default (props) => {
                         destroyOnClose: true,
                       }}
                       onFinish={(value) => {
-                        console.log(value)
+                        console.log(value);
                         uploadProfile(value);
                         //location.reload();
                         return true;
