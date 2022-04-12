@@ -74,11 +74,11 @@ export default (props) => {
     <PageContainer>
       <div>
         <div className="pictureCard">
-          <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
-          <Button className="fans" id="text" onClick={null} size="large">
+          <Avatar size={150} src={'/api/media/' + personInfo.photo} />
+          <Button className="fans" id="text" href='./fanlist'  size="large">
             <b>Fans</b>
           </Button>
-          <Button className="followers" id="text" onClick={null} size="large">
+          <Button className="followers" id="text" href='./followinglist' size="large">
             <b>Followers</b>
           </Button>
         </div>

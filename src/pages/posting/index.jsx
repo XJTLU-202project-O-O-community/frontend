@@ -1,26 +1,19 @@
 import React from 'react';
-import { Button, Card, Image, message, Tooltip } from 'antd';
+import { Button, Card, Image, message } from 'antd';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { List, Avatar, Space } from 'antd';
+import { List, Avatar } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholePosts, add, Profile } from '@/services/posts';
-import logo from '/src/main.png';
-import { QueryFilter, ProFormText, ProFormDatePicker } from '@ant-design/pro-form';
-import { ProFormUploadDragger, ProFormUploadButton } from '@ant-design/pro-form';
+import { ProFormText } from '@ant-design/pro-form';
+import { ProFormUploadButton } from '@ant-design/pro-form';
 import { useRef } from 'react';
 import ProForm, {
-  DrawerForm,
   ModalForm,
-  ProFormDateRangePicker,
-  ProFormSelect,
 } from '@ant-design/pro-form';
-import ProDescriptions from '@ant-design/pro-descriptions';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
-import pic1 from '/media/rose.jpg';
-import pic2 from '/media/kobe.png';
 import { Link } from 'umi';
 import localStorage from 'localStorage';
 

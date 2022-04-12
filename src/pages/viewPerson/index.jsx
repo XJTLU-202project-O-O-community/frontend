@@ -7,6 +7,8 @@ import { Avatar, Button, Card } from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
 import './index.css';
 import { GetPersonInfo } from '@/services/person';
+import { sendSub,sendUnsub } from '@/services/sub&unsub';
+
 import localStorage from 'localStorage';
 
 const index_PersonInfo = async (values) => {
@@ -16,7 +18,7 @@ const index_PersonInfo = async (values) => {
 
 export default (props) => {
   const subT1 = 'Subscribe';
-  const subT2 = 'Subscribed';
+  const subT2 = 'Unsubscribe';
   const chatT = 'Chat';
   const his_id = localStorage.getItem('access_pk');
   const data1 = { his_id: his_id };
@@ -27,12 +29,29 @@ export default (props) => {
     setpersonInfo(infoData);
   }, []);
   const cum1 = personInfo.gender > 0 ? 'male' : 'female'; 
+
+  
+  const sendSubMes = async () => {
+    if(personInfo.name=""){
+      const res = await sendSub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
+      console.log(res, "send success");}
+    else{
+      const res = await sendUnsub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
+      console.log(res, "send success");
+    }
+  };
+
+  // const sendUnsubMes = async () => {
+  //   const res = await sendUnsub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
+  //   console.log(res, "send success");
+  // };
+
   return (
     <PageContainer>
       <div>
         <div className="pictureCardV">
-          <Avatar size={150} src={'http://localhost:8000/media/' + personInfo.photo} />
-          <Button className="sub" id="text" onClick={null} size="large">
+          <Avatar size={150} src={'/api/media/' + personInfo.photo} />
+          <Button className="sub" id="text" onClick={sendSubMes} size="large">
             <b>{subT1}</b>
           </Button>
           <Button className="chat" id="chat" onClick={null} size="large">

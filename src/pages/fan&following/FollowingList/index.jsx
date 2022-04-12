@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import React, { useState } from 'react';
-import { Avatar, Card, List } from 'antd';
+import { Avatar, Card, List, message } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less';
 import { queryFakeList } from './service';
+import { Input } from 'antd';
+import { searchWithinFan } from '../FanList/service';
 
 export const FanList = () => {
   const [list, setList] = useState([]);
@@ -11,6 +13,19 @@ export const FanList = () => {
   useEffect(() => {
     queryFanList();
   }, []);
+
+  const { Search } = Input;
+
+  const onSearch = async (value) => {
+    const res = await searchWithinFan({ user_id: localStorage.getItem('access_pk'), keyword: value });
+    if (res.error_code == 200) {
+      console.log(res)
+      setList(res.data.following_list)
+      message.success(res.msg)
+    } else {
+      message.error(res.msg)
+    }
+  };
 
   const queryFanList = async () => {
     const res = await queryFakeList({ user_id: localStorage.getItem('access_pk') });
@@ -36,6 +51,7 @@ export const FanList = () => {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
           >
+            <Search placeholder="input search text" onSearch={onSearch} enterButton />
             <List
               size="large"
               rowKey="id"
