@@ -24,11 +24,9 @@ const App = (props) => {
 
   useEffect(() => {
     init();
-    console.log(props)
   }, []);
 
   useLayoutEffect(() => {
-    // console.log(user_id.current)
     if (user_id.current) {
       ws.current = new WebSocket(
         `ws://127.0.0.1:8000/ws/chat/${localStorage.getItem('access_pk')}/`,
@@ -75,7 +73,7 @@ const App = (props) => {
     setFollowingList(following_lst);
     following_lst_ref.current = following_lst;
 
-    // handle target
+    // handle target_user
     const target_id = props.location.query.target_id;
     if(target_id){
       let flag = 0;
@@ -90,15 +88,15 @@ const App = (props) => {
         const res = await GetPersonInfo({his_id: target_id});
 
         if(res.error_code==200){
-          console.log(res.data[0])
+          const info = res.data.personal_data[0].fields;
           const target_info = {
-            message_user_id: res.data[0].pk,
-            username: res.data[0].fields.name, 
-            avatar: res.data[0].fields.photo
+            message_user_id: res.data.personal_data[0].pk,
+            username: info.name, 
+            avatar: info.photo
           }
-
           setMessage_list([...message_list_ref.current, target_info])
-          message_list_ref.current = message_list;
+          console.log(message_list)
+          message_list_ref.current = [...message_list_ref.current, target_info];
           handleTarget(target_info);
         }
       }

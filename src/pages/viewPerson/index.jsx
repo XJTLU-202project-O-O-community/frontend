@@ -13,7 +13,8 @@ import localStorage from 'localStorage';
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
-  return res.data[0].fields;
+  console.log((res))
+  return res.data.personal_data[0].fields;
 };
 
 export default (props) => {

@@ -26,7 +26,7 @@ const index_postList = async () => {
 
 const index_postProfile = async (params) => {
   const data = await Profile(params);
-  return data.data[0].fields;
+  return data.data[0]?.fields;
 };
 
 const App = (values) => {
@@ -206,10 +206,10 @@ const PostList = (props) => {
         style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 200 }}
         title="Personal Info"
       >
-        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson.photo} />,
-        <h2 style={{ marginTop: 20 }}>{dataPerson.name}</h2>
+        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />,
+        <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
-        <h5 style={{ textAlign: 'left' }}>{dataPerson.signature}</h5>
+        <h5 style={{ textAlign: 'left' }}>{dataPerson?.signature}</h5>
       </Card>
     </PageContainer>
   );

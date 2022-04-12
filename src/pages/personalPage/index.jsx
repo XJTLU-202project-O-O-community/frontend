@@ -26,8 +26,7 @@ const index_postList = async (values) => {
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
-  console.log(res.data[0].fields.name);
-  return res.data[0].fields;
+  return res.data.personal_data[0].fields;
 };
 
 const his_id = localStorage.getItem('access_pk');
@@ -75,10 +74,10 @@ export default (props) => {
       <div>
         <div className="pictureCard">
           <Avatar size={150} src={'/api/media/' + personInfo.photo} />
-          <Button className="fans" id="text" href='./fanlist'  size="large">
+          <Button className="fans" id="text" onClick={()=>props.history.push('/fanlist')} size="large">
             <b>Fans</b>
           </Button>
-          <Button className="followers" id="text" href='./followinglist' size="large">
+          <Button className="followers" id="text" onClick={()=>props.history.push('/followinglist')} size="large">
             <b>Followers</b>
           </Button>
         </div>
