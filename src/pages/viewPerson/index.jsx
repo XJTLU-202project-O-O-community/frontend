@@ -34,7 +34,7 @@ export default (props) => {
   
   const sendSubMes = async () => {
     if(personInfo.name=""){
-      const res = await sendSub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
+      const res = await sendSub({ user_id: localStorage.getItem('access_pk'),following_id: 2});
       console.log(res, "send success");}
     else{
       const res = await sendUnsub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
