@@ -7,13 +7,13 @@ import { Avatar, Button, Card } from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
 import './index.css';
 import { GetPersonInfo } from '@/services/person';
-import { sendSub,sendUnsub } from '@/services/sub&unsub';
+import { sendSub, sendUnsub } from '@/services/sub&unsub';
 
 import localStorage from 'localStorage';
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
-  console.log((res))
+  console.log(res);
   return res.data.personal_data[0].fields;
 };
 
@@ -29,16 +29,21 @@ export default (props) => {
     const infoData = await index_PersonInfo(data1);
     setpersonInfo(infoData);
   }, []);
-  const cum1 = personInfo.gender > 0 ? 'male' : 'female'; 
+  const cum1 = personInfo.gender > 0 ? 'male' : 'female';
 
-  
   const sendSubMes = async () => {
-    if(personInfo.name=""){
-      const res = await sendSub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
-      console.log(res, "send success");}
-    else{
-      const res = await sendUnsub({ user_id: localStorage.getItem('access_pk'),following_id: personInfo.id});
-      console.log(res, "send success");
+    if ((personInfo.name = '')) {
+      const res = await sendSub({
+        user_id: localStorage.getItem('access_pk'),
+        following_id: personInfo.id,
+      });
+      console.log(res, 'send success');
+    } else {
+      const res = await sendUnsub({
+        user_id: localStorage.getItem('access_pk'),
+        following_id: personInfo.id,
+      });
+      console.log(res, 'send success');
     }
   };
 
@@ -55,7 +60,12 @@ export default (props) => {
           <Button className="sub" id="text" onClick={sendSubMes} size="large">
             <b>{subT1}</b>
           </Button>
-          <Button className="chat" id="chat" onClick={()=>props.history.push(`/chat?target_id=${props.match.params.id}`)} size="large">
+          <Button
+            className="chat"
+            id="chat"
+            onClick={() => props.history.push(`/chat?target_id=${props.match.params.id}`)}
+            size="large"
+          >
             <b>{chatT}</b>
           </Button>
         </div>
@@ -68,11 +78,7 @@ export default (props) => {
                 {
                   title: '操作',
                   valueType: 'option',
-                  render: () => [
-                    <a href="/personal_edit" target="_blank" rel="noopener noreferrer" key="link">
-                      Edit
-                    </a>,
-                  ],
+                  render: () => [],
                 },
               ]}
             >
