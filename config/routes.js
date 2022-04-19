@@ -41,6 +41,11 @@ export default [
     component: './personalPage',
   },
   {
+    path: '/searchperson/:userid',
+    name: 'search page',
+    component: './personalPage/searching',
+  },
+  {
     path: '/personal_view/:id',
     name: 'View Person',
     icon: 'UserOutlined',
