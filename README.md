@@ -2,15 +2,15 @@
 
 This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
-## Environment Prepare
-
+## Environment Prepare (yarn must run in cmd, not powershell)
+Install `node.js`, version 16.14.2<br><br>
 Install `node_modules`:
 
 ```bash
-npm install
+npm install --global yarn
 ```
 
-or
+then
 
 ```bash
 yarn
@@ -25,7 +25,7 @@ Scripts provided in `package.json`. It's safe to modify or add additional script
 ### Start project (final step to run website)
 
 ```bash
-npm start
+yarn start
 ```
 
 ## Rest is for build or test.
