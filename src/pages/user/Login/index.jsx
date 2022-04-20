@@ -76,7 +76,7 @@ const Login = () => {
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
           title="O&O"
-          subTitle="这是咱的副标题"
+          subTitle=" "
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
@@ -99,7 +99,7 @@ const Login = () => {
                 }}
                 placeholder={intl.formatMessage({
                   id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
+                  defaultMessage: 'email',
                 })}
                 rules={[
                   {

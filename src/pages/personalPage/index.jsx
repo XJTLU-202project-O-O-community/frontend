@@ -89,7 +89,7 @@ export default (props) => {
             onClick={() => props.history.push('/followinglist')}
             size="large"
           >
-            <b>Followers</b>
+            <b>Followings</b>
           </Button>
         </div>
         <div>

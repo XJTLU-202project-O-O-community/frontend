@@ -126,7 +126,6 @@ const PostList = (props) => {
             />
           </div>,
 
-          <input type={'submit'} />,
           <ModalForm
             title="Write moments here"
             formRef={formRef}
