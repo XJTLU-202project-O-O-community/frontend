@@ -4,8 +4,8 @@ import { Avatar, Card } from 'antd';
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
-  console.log(res.data[0].fields.name);
-  return res.data[0].fields;
+
+  return res.data.personal_data[0].fields;
 };
 
 const Searching = (props) => {

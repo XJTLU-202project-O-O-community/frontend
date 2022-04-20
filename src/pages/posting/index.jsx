@@ -26,7 +26,7 @@ const index_postList = async () => {
 
 const index_postProfile = async (params) => {
   const data = await Profile(params);
-  return data.data[0]?.fields;
+  return data.data.personal_data[0]?.fields;
 };
 
 const App = (values) => {
@@ -228,7 +228,7 @@ const PostList = (props) => {
                     src={'http://localhost:8000/media/' + item.user_id__photo}
                   />
                 }
-                title={<Link to={`/personal_view/${item.userid}/`}>{item.user_id__name}</Link>}
+                title={<Link to={`/personal_view/${item.user_id}/`}>{item.user_id__name}</Link>}
                 description={item.user_id__signature}
               />
               {item.content}

@@ -27,7 +27,7 @@ const index_postList = async (values) => {
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
   console.log(res, 8888);
-  return res.data[0].fields;
+  return res.data.personal_data[0].fields;
 };
 
 const his_id = localStorage.getItem('access_pk');
