@@ -55,8 +55,10 @@ const Login = () => {
         history.push('../posts');
         return;
       }
+      else {
+        message.error(ans.msg);
+      }
       console.log(ans); // 如果失败去设置用户错误信息
-
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
