@@ -97,10 +97,7 @@ const Login = () => {
                   size: 'large',
                   prefix: <UserOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: 'email',
-                })}
+                placeholder="email"
                 rules={[
                   {
                     required: true,
@@ -119,10 +116,7 @@ const Login = () => {
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
-                })}
+                placeholder="password"
                 rules={[
                   {
                     required: true,
