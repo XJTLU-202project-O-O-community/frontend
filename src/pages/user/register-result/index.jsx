@@ -6,11 +6,11 @@ const actions = (
   <div className={styles.actions}>
     <a href="">
       <Button size="large" type="primary">
-        <span>查看邮箱</span>
+        <span>Check email</span>
       </Button>
     </a>
-    <Link to="/">
-      <Button size="large">返回首页</Button>
+    <Link to="/user/login">
+      <Button size="large">Go login</Button>
     </Link>
   </div>
 );
