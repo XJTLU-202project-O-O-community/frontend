@@ -61,6 +61,9 @@ const Register = () => {
         },
       });
     }
+    else {
+        message.error(ans.msg);
+    }
     console.log(ans)
   }
   
