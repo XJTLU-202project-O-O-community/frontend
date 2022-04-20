@@ -21,10 +21,12 @@ export const initialStateConfig = {
 export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
-      const msg = await currentUser(localStorage.getItem('access_pk'));
-      if (msg.data == null) {
+      const pk = localStorage.getItem('access_pk');
+      console.log(pk);
+      if (pk == null) {
         history.push(loginPath);
       }
+      const msg = await currentUser(localStorage.getItem('access_pk'));
       return msg.data;
     } catch (error) {
       history.push(loginPath);
