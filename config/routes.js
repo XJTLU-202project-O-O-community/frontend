@@ -84,19 +84,19 @@ export default [
     redirect: '/welcome',
   },
   {
-    // name: 'fan',
+    name: 'fan',
     icon: 'smile',
     path: '/fanlist',
     component: './fan&following/FanList',
   },
   {
-    // name: 'following',
+    name: 'following',
     icon: 'smile',
     path: '/followinglist',
     component: './fan&following/FollowingList',
   },
   {
-    name: 'user list',
+    //name: 'user list',
     icon: 'smile',
     path: '/userlist',
     component: './UserList',
