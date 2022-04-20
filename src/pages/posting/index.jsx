@@ -35,7 +35,6 @@ const exitFunction = () => {
   location.reload();
 };
 
-
 const App = (values) => {
   const list11 = values?.toString().split(',');
   list11?.pop();
@@ -81,16 +80,16 @@ const PostList = (props) => {
   const searching = async (value) => {
     const res = await searchPerson(value);
     console.log(res, 333);
-    if (res.err_code == 200) {
+    if (res.error_code == 200) {
       console.log(res, 333);
       if (res.data.length == 0) {
         message.error('No such person');
       } else {
         history.push(`/searchperson/${res.data[0].pk}`);
       }
-    } else if (res.err_code == 300) {
+    } else if (res.error_code == 400) {
       message.error('No such person');
-    } else if (res.err_code == 500) {
+    } else if (res.error_code == 500) {
       message.error('Counter problems');
     }
   };
