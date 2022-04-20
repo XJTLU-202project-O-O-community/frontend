@@ -148,7 +148,7 @@ const PostList = (props) => {
             onFinish={(value) => {
               console.log(value, 99999);
               uploadPosting(value);
-              //location.reload()
+              location.reload();
               return true;
             }}
           >
@@ -245,7 +245,7 @@ const PostList = (props) => {
       </Card>
 
       <Card
-        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 200 }}
+        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 260 }}
         title="Personal Info"
       >
         <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />

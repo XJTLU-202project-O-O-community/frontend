@@ -36,6 +36,13 @@ export const Delete = async (params) => {
   });
 };
 
+export const Edit = async (params) => {
+  return request('/api/posting/edit/', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: `id=${params.id}&content=${params.content}`,
+  });
+};
 export const Profile = async (params) => {
   return request('/api/user/currentUser/', { method: 'get', params: params });
 };

@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Avatar, Button, Card, List, message } from 'antd';
 import { LikeOutlined, StarOutlined } from '@ant-design/icons';
 import './index.css';
-import { add, Delete, getPersonalPosts, getWholePosts } from '@/services/posts';
+import { add, Delete, getPersonalPosts, getWholePosts, Edit } from '@/services/posts';
 import ProForm, {
   ModalForm,
   ProFormDatePicker,
@@ -47,6 +47,14 @@ export default (props) => {
     console.log(res, 88);
     if (res.error_code == 200) {
       message.success('delete successfully');
+    } else message.error('error');
+  };
+
+  const editMoment = async (value) => {
+    const res = await Edit(value);
+    console.log(res, 88);
+    if (res.error_code == 200) {
+      message.success('edit successfully');
     } else message.error('error');
   };
 
@@ -113,7 +121,7 @@ export default (props) => {
                       onFinish={(value) => {
                         console.log(value);
                         uploadProfile(value);
-                        //location.reload();
+                        location.reload();
                         return true;
                       }}
                     >
@@ -256,7 +264,7 @@ export default (props) => {
                     onFinish={() => {
                       deleteMoment({ id: item.id });
                       console.log({ id: item.id }, 99999);
-                      //location.reload();
+                      location.reload();
                       return true;
                     }}
                   >
@@ -268,18 +276,19 @@ export default (props) => {
 
                   <br />,
                   <ModalForm
-                    title={[<h2>Confirmation for deleting</h2>]}
+                    title={[<h2>Confirmation for Edit</h2>]}
                     trigger={<Button style={{ color: 'blue', marginTop: 20 }}>EDIT</Button>}
                     autoFocusFirstInput
                     drawerProps={{
                       destroyOnClose: true,
                     }}
-                    onFinish={() => {
-                      deleteMoment({ id: item.id });
+                    onFinish={(value) => {
+                      editMoment(value);
                       location.reload();
                       return true;
                     }}
                   >
+                    <ProFormText name="id" width="md" label="id" readonly initialValue={item.id} />
                     <ProForm.Group>
                       <ProFormText
                         name="description"
@@ -296,18 +305,6 @@ export default (props) => {
                       initialValue={item.content}
                       label="write whatever you want"
                       placeholder="请输入名称"
-                    />
-                    <ProFormUploadButton
-                      name="imgs"
-                      label="Upload"
-                      max={2}
-                      fieldProps={{
-                        name: 'file',
-                        listType: 'picture-card',
-                        max: 3,
-                      }}
-                      action="/upload.do"
-                      extra="your photo here"
                     />
                   </ModalForm>,
                 ]}
