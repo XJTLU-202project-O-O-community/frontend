@@ -49,6 +49,7 @@ const Login = () => {
         console.log(currentUserPk);
         localStorage.setItem('access_pk', currentUserPk);
         localStorage.setItem('user_info', JSON.stringify(currentUserInfo));
+        setUserLoginState(ans);
 
         if (!history) return;
         history.push('../posts');
@@ -56,7 +57,6 @@ const Login = () => {
       }
       console.log(ans); // 如果失败去设置用户错误信息
 
-      setUserLoginState(ans);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',

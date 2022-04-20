@@ -30,6 +30,12 @@ const index_postProfile = async (params) => {
   return data.data.personal_data[0]?.fields;
 };
 
+const exitFunction = () => {
+  localStorage.removeItem('access_pk');
+  location.reload();
+};
+
+
 const App = (values) => {
   const list11 = values?.toString().split(',');
   list11?.pop();
@@ -106,6 +112,7 @@ const PostList = (props) => {
 
         extra: [
           // <input />,
+          <Button onClick={exitFunction}>Exit</Button>,
           <div
             style={{
               textAlign: 'right',
