@@ -26,6 +26,7 @@ const index_postList = async () => {
 
 const index_postProfile = async (params) => {
   const data = await Profile(params);
+  console.log(data);
   return data.data.personal_data[0]?.fields;
 };
 
