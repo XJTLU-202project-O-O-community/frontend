@@ -325,15 +325,6 @@ export default (props) => {
             )}
           />
         </Card>
-
-        <div className="bt2">
-          <Button className="bt1" onClick={null}>
-            Modify Password
-          </Button>
-          <Button className="bt1" onClick={null}>
-            Cancellation
-          </Button>
-        </div>
       </div>
     </PageContainer>
   );
