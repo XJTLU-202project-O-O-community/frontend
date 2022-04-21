@@ -41,6 +41,7 @@ export default (props) => {
       following_id: his,
     });
     console.log(res, 'send success');
+    location.reload();
   };
 
   const sendUnsubmes = async () => {
@@ -49,6 +50,7 @@ export default (props) => {
       following_id: his,
     });
     console.log(res, 'send success');
+    location.reload();
   };
 
   const subbutton = () => {
