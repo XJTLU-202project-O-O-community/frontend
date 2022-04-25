@@ -40,6 +40,7 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
+    location.reload();
     console.log(res, 'send success');
     location.reload();
   };
@@ -49,6 +50,7 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
+    location.reload();
     console.log(res, 'send success');
     location.reload();
   };

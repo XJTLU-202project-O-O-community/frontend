@@ -99,6 +99,9 @@ const PostList = (props) => {
     console.log(res, 333);
     if (res.error_code == 200) {
       message.success('add successfully');
+      location.reload();
+    } else if (res.error_code == 300) {
+      message.error('please type in some content');
     } else message.error('error');
   };
 
@@ -148,7 +151,7 @@ const PostList = (props) => {
             onFinish={(value) => {
               console.log(value, 99999);
               uploadPosting(value);
-              location.reload();
+
               return true;
             }}
           >
