@@ -20,6 +20,14 @@ export const EditProfile = async (params) => {
   });
 };
 
+export const changePicB = async (params) => {
+  return request(`/api/user/personal_info_edit/`, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: `background=${params}`,
+  });
+};
+
 export const searchPerson = async (params) => {
   return request(`/api/user/search/?username=${params}`, { method: 'get' });
 };

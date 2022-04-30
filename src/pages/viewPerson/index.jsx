@@ -40,7 +40,9 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
+    location.reload();
     console.log(res, 'send success');
+    location.reload();
   };
 
   const sendUnsubmes = async () => {
@@ -48,7 +50,9 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
+    location.reload();
     console.log(res, 'send success');
+    location.reload();
   };
 
   const subbutton = () => {
@@ -71,8 +75,13 @@ export default (props) => {
   //   console.log(res, "send success");
   // };
 
+  let picName = 'default.jpg';
+  //  这里后端改完要变成
+  // let picName = personInfo.background;
+
   return (
-    <PageContainer>
+    <div className='background' style={{backgroundImage:"url("+require('.//media/'+picName)+")"}}>
+    <PageContainer >
       <div>
         <div className="pictureCardV">
           <Avatar size={150} src={'/api/media/' + personInfo.photo} />
@@ -126,5 +135,6 @@ export default (props) => {
         </div>
       </div>
     </PageContainer>
+    </div>
   );
 };

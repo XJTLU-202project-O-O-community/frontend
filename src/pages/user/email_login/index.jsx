@@ -3,7 +3,7 @@ import { Alert, message } from 'antd';
 import React, { useState } from 'react';
 import { ProFormText, LoginForm } from '@ant-design/pro-form';
 import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
-import { login } from '@/services/ant-design-pro/api';
+import { email_login } from '@/services/ant-design-pro/api';
 import styles from './index.less';
 import { Link } from 'umi';
 
@@ -34,7 +34,7 @@ const Login = () => {
   const handleSubmit = async (values) => {
     try {
       // 登录
-      const ans = await login({ ...values });
+      const ans = await email_login({ ...values });
       console.log(ans, '===========');
       if (ans.error_code === 200) {
         const defaultLoginSuccessMessage = intl.formatMessage({
@@ -45,12 +45,8 @@ const Login = () => {
 
         const currentUserPk = ans.data[0]['pk'];
         const currentUserInfo = ans.data[0]['fields'];
-        const background1 = ans.data[0]['fields']['background'];
         console.log('pk是');
         console.log(currentUserPk);
-        console.log('背景是');
-        console.log(background1);
-        localStorage.setItem('picName',background1);
         localStorage.setItem('access_pk', currentUserPk);
         localStorage.setItem('user_info', JSON.stringify(currentUserInfo));
         setUserLoginState(ans);
@@ -73,7 +69,6 @@ const Login = () => {
     }
   };
 
-  const { status } = userLoginState;
   return (
     <div className={styles.container}>
       <div className={styles.lang} data-lang>
@@ -83,19 +78,11 @@ const Login = () => {
         <LoginForm
           logo={<img alt="logo" src="/logo.svg" />}
           title="O&O"
-          subTitle=" "
+          subTitle="正在使用邮箱验证码登录"
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
         >
-          {status === 'error' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
-              })}
-            />
-          )}
           {
             <>
               <ProFormText
@@ -111,26 +98,26 @@ const Login = () => {
                     message: (
                       <FormattedMessage
                         id="pages.login.username.required"
-                        defaultMessage="请输入用户名!"
+                        defaultMessage="请输入!"
                       />
                     ),
                   },
                 ]}
               />
               <ProFormText.Password
-                name="password"
+                name="given_verification"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined className={styles.prefixIcon} />,
                 }}
-                placeholder="password"
+                placeholder="verification code"
                 rules={[
                   {
                     required: true,
                     message: (
                       <FormattedMessage
                         id="pages.login.password.required"
-                        defaultMessage="请输入密码！"
+                        defaultMessage="请输入验证码！"
                       />
                     ),
                   },
@@ -138,27 +125,6 @@ const Login = () => {
               />
             </>
           }
-
-          <div>
-            <Link
-              to="email_verification_login"
-              style={{
-                float: 'right',
-              }}
-            >
-              <FormattedMessage id="pages.login.register" defaultMessage="验证码登录" />
-            </Link>
-          </div>
-          <div>
-            <Link
-              to="email_verification"
-              style={{
-                float: 'left',
-              }}
-            >
-              <FormattedMessage id="pages.login.register" defaultMessage="创建新账户" />
-            </Link>
-          </div>
         </LoginForm>
       </div>
     </div>

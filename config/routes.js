@@ -12,6 +12,21 @@ export default [
             component: './user/Login',
           },
           {
+            name: 'email_verification',
+            path: '/user/email_verification',
+            component: './user/email_verification',
+          },
+          {
+            name: 'email_verification_login',
+            path: '/user/email_verification_login',
+            component: './user/email_verification_login',
+          },
+          {
+            name: 'email_login',
+            path: '/user/email_login',
+            component: './user/email_login',
+          },
+          {
             name: 'register',
             path: '/user/register',
             component: './user/register',
