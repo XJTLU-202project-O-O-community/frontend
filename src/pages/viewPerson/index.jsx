@@ -75,12 +75,12 @@ export default (props) => {
   //   console.log(res, "send success");
   // };
 
-  let picName = 'default.jpg';
+  //let picName = 'default.jpg';
   //  这里后端改完要变成
   // let picName = personInfo.background;
 
   return (
-    <div className='background' style={{backgroundImage:"url("+require('.//media/'+picName)+")"}}>
+    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("picName"))+")"}}>
     <PageContainer >
       <div>
         <div className="pictureCardV">
