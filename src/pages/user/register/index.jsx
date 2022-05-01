@@ -5,7 +5,6 @@ import { this_register } from '@/services/ant-design-pro/api';
 import styles from './style.less';
 import { values } from 'lodash';
 
-
 const FormItem = Form.Item;
 const { Option } = Select;
 const InputGroup = Input.Group;
@@ -48,18 +47,18 @@ const Register = () => {
   );
 
   const onFinish = (values) => {
-    values["email"] = register_email;
-    console.log("正在提交数据");
+    values['email'] = register_email;
+    console.log('正在提交数据');
     console.log(values);
     submit(values);
   };
 
   const submit = async (data) => {
-    console.log("正在注册请求");
+    console.log('正在注册请求');
     console.log(data);
     //发送请求
     const ans = await this_register(data);
-    console.log("收到注册结果");
+    console.log('收到注册结果');
     if (ans.error_code === 200) {
       history.push({
         pathname: '/user/register-result',
@@ -67,12 +66,11 @@ const Register = () => {
           account: ans.email,
         },
       });
-    }
-    else {
+    } else {
       message.error(ans.msg);
     }
-    console.log(ans)
-  }
+    console.log(ans);
+  };
 
   const getPasswordStatus = () => {
     const value = form.getFieldValue('password');
@@ -143,7 +141,7 @@ const Register = () => {
     ) : null;
   };
 
-  const register_email = "test2@2.com";
+  const register_email = localStorage.getItem('register_email');
 
   return (
     <div className={styles.main}>
@@ -272,13 +270,7 @@ const Register = () => {
           <Input size="large" placeholder="生日（可选）" />
         </FormItem>
         <FormItem>
-          <Button
-            size="large"
-
-            className={styles.submit}
-            type="primary"
-            htmlType="submit"
-          >
+          <Button size="large" className={styles.submit} type="primary" htmlType="submit">
             <span>注册</span>
           </Button>
           <Link className={styles.login} to="/user/login">

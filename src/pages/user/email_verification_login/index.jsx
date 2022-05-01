@@ -5,7 +5,6 @@ import { email_verification } from '@/services/ant-design-pro/api';
 import styles from './style.less';
 import { values } from 'lodash';
 
-
 const FormItem = Form.Item;
 const { Option } = Select;
 const InputGroup = Input.Group;
@@ -21,28 +20,27 @@ const Email_verification = () => {
   );
 
   const submit = async (data) => {
-    console.log("正在发送数据");
+    console.log('正在发送数据');
     console.log(data);
     //发送请求
     const ans = await email_verification(data);
-    console.log("已经收到结果");
+    console.log('已经收到结果');
     if (ans.error_code === 200) {
-      //localStorage.setItem("register_email", ans.data['author_email']);
+      localStorage.setItem('register_email', ans['author_email']);
       history.push({
         pathname: '/user/email_login',
         state: {
           account: ans.email,
         },
       });
-    }
-    else {
+    } else {
       message.error(ans.msg);
     }
-    console.log(ans)
-  }
+    console.log(ans);
+  };
 
   const onFinish = (values) => {
-    console.log("发送验证码请求");
+    console.log('发送验证码请求');
     console.log(values);
     submit(values);
   };
@@ -67,13 +65,7 @@ const Email_verification = () => {
           <Input size="large" placeholder="邮箱" />
         </FormItem>
         <FormItem>
-          <Button
-            size="large"
-
-            className={styles.submit}
-            type="primary"
-            htmlType="submit"
-          >
+          <Button size="large" className={styles.submit} type="primary" htmlType="submit">
             <span>发送验证码</span>
           </Button>
           <Link className={styles.login} to="/user/login">

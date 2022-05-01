@@ -65,7 +65,7 @@ export async function this_register(body, options) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data: `username=${body.username}&password=${body.password}&email=${body.email}&given_verification=${body.given_verification}&gender=${body.gender}actualName=${body.actualName}birth=${body.birth}`,
+    data: `username=${body.username}&password=${body.password}&email=${body.email}&given_verification=${body.given_verification}&gender=${body.gender}&actual_name=${body.actualName}&birth=${body.birth}`,
     ...(options || {}),
   });
 }
