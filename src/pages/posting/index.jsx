@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { List, Avatar } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
-import { getWholePosts, add, Profile } from '@/services/posts';
+import { getWholePosts, add, Profile, getComment, postComment } from '@/services/posts';
 import { ProFormText } from '@ant-design/pro-form';
 import { ProFormUploadButton } from '@ant-design/pro-form';
 import { useRef } from 'react';
@@ -13,10 +13,12 @@ import ProForm, { ModalForm } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
 import { Link } from 'umi';
-// import localStorage from 'localStorage';
+
 import HeaderSearch from '@/components/HeaderSearch';
 import { searchPerson } from '@/services/person';
 import { history } from 'umi';
+import { Comment, Tooltip } from 'antd';
+import moment from 'moment';
 
 const index_postList = async () => {
   const data = await getWholePosts();
@@ -24,9 +26,41 @@ const index_postList = async () => {
   return { data: data.data.moments };
 };
 
+const upload_comment = async (value) => {
+  const res = await postComment(value);
+  if (res.code == 200) {
+    message.success('Comment successful');
+  } else message.error('Can not add comment');
+};
+
+const showComment = (value) => {
+  if (value?.length > 0) {
+    return (
+      <div>
+        <List
+          className="comment-list"
+          itemLayout="horizontal"
+          dataSource={value}
+          renderItem={(item1) => (
+            <li>
+              <Comment
+                actions={item1.actions}
+                author={item1.poster__name}
+                avatar={'http://localhost:8000/media/' + item1.poster__photo}
+                content={item1.content}
+                datetime={item1.ctime}
+              />
+            </li>
+          )}
+        />
+      </div>
+    );
+  } else return <div>No comment</div>;
+};
+
 const index_postProfile = async (params) => {
   const data = await Profile(params);
-  console.log(data);
+  console.log(data, 9000);
   return data.data.personal_data[0]?.fields;
 };
 
@@ -57,10 +91,18 @@ const PostList = (props) => {
   let [data, setData] = useState([]);
 
   let [dataPerson, setPersonData] = useState([]);
+  let [comments, setComment] = useState([]);
+
+  useEffect(async () => {
+    const resData = await getComment();
+    console.log(resData.data.comments['14'], 99999);
+    setComment(resData.data.comments);
+  }, []);
+
   //动态信息
   useEffect(async () => {
     const resData = await index_postList();
-
+    console.log(resData.data, 1000);
     setData(resData.data);
   }, []);
   //个人信息
@@ -192,10 +234,8 @@ const PostList = (props) => {
           itemLayout="vertical"
           size="large"
           pagination={{
-            onChange: (page) => {
-              console.log(page);
-            },
-            pageSize: 10,
+            onChange: async (page) => {},
+            pageSize: 5,
           }}
           dataSource={data}
           footer={
@@ -204,31 +244,7 @@ const PostList = (props) => {
             </div>
           }
           renderItem={(item) => (
-            <List.Item
-              key={item.title}
-              actions={[
-                <div className="site-button-ghost-wrapper">
-                  {/*<Button onClick={handleClick(item)}><IconText icon={StarOutlined} text={item.thumb} key="list-vertical-star-o" /></Button>,*/}
-                  {/*<IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,*/}
-                  {/*<IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,*/}
-
-                  <Button style={{ width: 220 }} icon={<StarOutlined />}>
-                    {' '}
-                    {item.likes}
-                  </Button>
-
-                  <Button style={{ width: 220 }} icon={<LikeOutlined />}>
-                    {' '}
-                    {item.thumbs}
-                  </Button>
-
-                  <Button style={{ width: 220 }} icon={<MessageOutlined />}>
-                    {' '}
-                    {numComment}
-                  </Button>
-                </div>,
-              ]}
-            >
+            <List.Item key={item.title}>
               <List.Item.Meta
                 avatar={
                   <Avatar
@@ -242,13 +258,77 @@ const PostList = (props) => {
               />
               {item.content}
               {App(item.url)}
+
+              <div className="site-button-ghost-wrapper">
+                {/*<Button onClick={handleClick(item)}><IconText icon={StarOutlined} text={item.thumb} key="list-vertical-star-o" /></Button>,*/}
+                {/*<IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,*/}
+                {/*<IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,*/}
+
+                <Button style={{ width: 180 }} icon={<StarOutlined />}>
+                  {' '}
+                  {item.likes}
+                </Button>
+
+                <Button style={{ width: 180 }} icon={<LikeOutlined />}>
+                  {' '}
+                  {item.thumbs}
+                </Button>
+
+                <Button
+                  onClick={() => (item.show = true)}
+                  style={{ width: 180 }}
+                  icon={<MessageOutlined />}
+                >
+                  {numComment}
+                </Button>
+
+                <ModalForm
+                  title="Write moments here"
+                  formRef={formRef}
+                  trigger={
+                    <Button type="primary">
+                      <PlusOutlined />
+                      Add
+                    </Button>
+                  }
+                  autoFocusFirstInput
+                  drawerProps={{
+                    destroyOnClose: true,
+                  }}
+                  onFinish={(value) => {
+                    value['user_id'] = localStorage.getItem('access_pk');
+                    console.log(value, 99999);
+                    upload_comment(value);
+                    return true;
+                  }}
+                >
+                  <ProFormText
+                    name="moment_id"
+                    width="md"
+                    label="Moment id"
+                    readonly
+                    initialValue={item.id}
+                  />
+                  <ProForm.Group>
+                    <ProFormText
+                      name="content"
+                      width="md"
+                      label="Put the description here"
+                      tooltip="最长为 24 位"
+                      placeholder="请输入名称"
+                    />
+                  </ProForm.Group>
+                </ModalForm>
+              </div>
+
+              {showComment(comments[item.id.toString()])}
             </List.Item>
           )}
         />
       </Card>
 
       <Card
-        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 260 }}
+        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -800 }}
         title="Personal Info"
       >
         <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
