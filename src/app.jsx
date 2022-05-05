@@ -7,6 +7,8 @@ import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const registerPath = '/user/register';
+import { currentUser } from './services/ant-design-pro/api';
+import localStorage from 'localStorage';
 /** 获取用户信息比较慢的时候会展示一个 loading */
 
 export const initialStateConfig = {
@@ -19,7 +21,12 @@ export const initialStateConfig = {
 export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
+      const pk = localStorage.getItem('access_pk');
+      console.log(pk);
+      if (pk == null) {
+        history.push(loginPath);
+      }
+      const msg = await currentUser(localStorage.getItem('access_pk'));
       return msg.data;
     } catch (error) {
       history.push(loginPath);
@@ -51,7 +58,7 @@ export const layout = ({ initialState }) => {
       content: initialState?.currentUser?.name,
     },
     footerRender: () => <Footer />,
-    /** 
+    /**
     onPageChange: () => {
       const { location } = history; // 如果没有登录，重定向到 login
 

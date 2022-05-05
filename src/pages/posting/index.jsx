@@ -9,24 +9,30 @@ import { getWholePosts, add, Profile } from '@/services/posts';
 import { ProFormText } from '@ant-design/pro-form';
 import { ProFormUploadButton } from '@ant-design/pro-form';
 import { useRef } from 'react';
-import ProForm, {
-  ModalForm,
-} from '@ant-design/pro-form';
+import ProForm, { ModalForm } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
 import { Link } from 'umi';
-import localStorage from 'localStorage';
+// import localStorage from 'localStorage';
+import HeaderSearch from '@/components/HeaderSearch';
+import { searchPerson } from '@/services/person';
+import { history } from 'umi';
 
 const index_postList = async () => {
   const data = await getWholePosts();
   console.log(data, 999);
-  //return { data: data };
   return { data: data.data.moments };
 };
 
 const index_postProfile = async (params) => {
   const data = await Profile(params);
-  return data.data[0]?.fields;
+  console.log(data);
+  return data.data.personal_data[0]?.fields;
+};
+
+const exitFunction = () => {
+  localStorage.removeItem('access_pk');
+  location.reload();
 };
 
 const App = (values) => {
@@ -71,12 +77,31 @@ const PostList = (props) => {
   const [like, setLike] = useState(1); // useState(data.like)
   const [numComment, setNum] = useState(10); //useState(len(data.comment))
 
+  const searching = async (value) => {
+    const res = await searchPerson(value);
+    console.log(res, 333);
+    if (res.error_code == 200) {
+      console.log(res, 333);
+      if (res.data.length == 0) {
+        message.error('No such person');
+      } else {
+        history.push(`/searchperson/${res.data[0].pk}`);
+      }
+    } else if (res.error_code == 400) {
+      message.error('No such person');
+    } else if (res.error_code == 500) {
+      message.error('Counter problems');
+    }
+  };
   const uploadPosting = async (value) => {
     console.log(11111111);
     const res = await add(value);
     console.log(res, 333);
     if (res.error_code == 200) {
       message.success('add successfully');
+      location.reload();
+    } else if (res.error_code == 300) {
+      message.error('please type in some content');
     } else message.error('error');
   };
 
@@ -88,8 +113,28 @@ const PostList = (props) => {
         ghost: true,
 
         extra: [
-          <input />,
-          <input type={'submit'} />,
+          // <input />,
+          <Button onClick={exitFunction}>Exit</Button>,
+          <div
+            style={{
+              textAlign: 'right',
+              height: '40px',
+              lineHeight: '40px',
+              boxShadow: '0 1px 4px rgba(0,21,41,.12)',
+              padding: '0 32px',
+              width: '300px',
+            }}
+          >
+            <HeaderSearch
+              placeholder="站内搜索"
+              dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
+              onSearch={(value) => {
+                searching(value);
+                return true; // eslint-disable-line
+              }}
+            />
+          </div>,
+
           <ModalForm
             title="Write moments here"
             formRef={formRef}
@@ -106,7 +151,7 @@ const PostList = (props) => {
             onFinish={(value) => {
               console.log(value, 99999);
               uploadPosting(value);
-              //location.reload()
+
               return true;
             }}
           >
@@ -192,7 +237,7 @@ const PostList = (props) => {
                     src={'http://localhost:8000/media/' + item.user_id__photo}
                   />
                 }
-                title={<Link to={`/personal_view/${item.userid}/`}>{item.user_id__name}</Link>}
+                title={<Link to={`/personal_view/${item.user_id}/`}>{item.user_id__name}</Link>}
                 description={item.user_id__signature}
               />
               {item.content}
@@ -203,11 +248,11 @@ const PostList = (props) => {
       </Card>
 
       <Card
-        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 200 }}
+        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -data.length * 260 }}
         title="Personal Info"
       >
-        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />,
-        <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
+        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
+        ,<h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
         <h5 style={{ textAlign: 'left' }}>{dataPerson?.signature}</h5>
       </Card>

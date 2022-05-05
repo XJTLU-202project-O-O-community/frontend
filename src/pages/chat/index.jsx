@@ -60,19 +60,28 @@ const App = (props) => {
 
     // fetchFollowingList
     const res = await getFollowingList(user_id.current);
-    let following_lst = res.data.following_list;
-    for (let index in following_lst) {
-      following_lst[index] = {
-        id: following_lst[index].id,
-        message_user_id: following_lst[index].id,
-        username: following_lst[index].username,
-        avatar: following_lst[index].photo,
-        moment: following_lst[index].moment,
-      };
+    console.log(res)
+    let following_lst = res.data?.following_list;
+    let lst = []
+    if(following_lst){
+      for (let group_index in following_lst) {
+        for (let index in following_lst[group_index].group_members){
+          let group_members = following_lst[group_index].group_members[index]
+          lst.push( {
+            id: group_members.id,
+            message_user_id: group_members.id,
+            username: group_members.username,
+            avatar: group_members.photo,
+            moment: group_members.moment,
+          })
+        }
+      }
+      console.log(lst)
+      setFollowingList(lst);
+      following_lst_ref.current = lst;
     }
-    setFollowingList(following_lst);
-    following_lst_ref.current = following_lst;
-
+    
+  
     // handle target_user
     const target_id = props.location.query.target_id;
     if(target_id){

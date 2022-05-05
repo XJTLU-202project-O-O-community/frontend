@@ -2,10 +2,10 @@ import React from 'react';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState, useEffect, useRef } from 'react';
-import { Avatar, Button, Card, List, message } from 'antd';
-import { LikeOutlined, StarOutlined } from '@ant-design/icons';
+import { Avatar, Button, Card, List, message, Menu, Dropdown,Space } from 'antd';
+import { LikeOutlined, StarOutlined,DownOutlined  } from '@ant-design/icons';
 import './index.css';
-import { add, Delete, getPersonalPosts, getWholePosts } from '@/services/posts';
+import { add, Delete, getPersonalPosts, getWholePosts, Edit } from '@/services/posts';
 import ProForm, {
   ModalForm,
   ProFormDatePicker,
@@ -15,8 +15,9 @@ import ProForm, {
   ProFormTextArea,
   ProFormUploadButton,
 } from '@ant-design/pro-form';
-import { EditProfile, GetPersonInfo } from '@/services/person';
+import { EditProfile, GetPersonInfo, changePicB } from '@/services/person';
 import localStorage from 'localStorage';
+import { set } from 'lodash';
 
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
@@ -26,12 +27,16 @@ const index_postList = async (values) => {
 
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
+  console.log(res, 8888);
   return res.data.personal_data[0].fields;
 };
+
 
 const his_id = localStorage.getItem('access_pk');
 const data1 = { his_id: his_id };
 const data2 = { userid: his_id };
+
+
 
 export default (props) => {
   let [own_data, setData] = useState([]);
@@ -46,6 +51,14 @@ export default (props) => {
     console.log(res, 88);
     if (res.error_code == 200) {
       message.success('delete successfully');
+    } else message.error('error');
+  };
+
+  const editMoment = async (value) => {
+    const res = await Edit(value);
+    console.log(res, 88);
+    if (res.error_code == 200) {
+      message.success('edit successfully');
     } else message.error('error');
   };
 
@@ -68,17 +81,84 @@ export default (props) => {
       message.success('add successfully');
     } else message.error('error');
   };
+
+  const changeBack = async (value) => {
+    console.log('Back_Pic',value);
+    const res = await changePicB(value);
+    if (res.error_code == 200) {
+      message.success('change successfully');
+      localStorage.setItem("picName",value);
+      location.reload();
+    } else message.error('error');
+  };
+
+  const onClick1 = ({ key }) => {
+    changeBack(key);
+    // localStorage.setItem("picName",key);
+    //location.reload();
+  };
+  
+  // const picName = 'default.jpg';
+  // 这里后端改完要变成
+  // let picName = personInfo.background;
+  
+  const backgroundpic = (
+    <Menu onClick={onClick1}>
+    <Menu.Item key="blue.jpg">
+        blue
+    </Menu.Item>
+    <Menu.Item key="purple.jpg">
+        purple
+    </Menu.Item>
+    <Menu.Item key="orange.jpg">
+        orange
+    </Menu.Item>
+    <Menu.Item key="green.jpg">
+        green
+    </Menu.Item>
+    <Menu.Item key="default.jpg">
+        default
+    </Menu.Item>
+    </Menu>
+  );
+
+
   const cum1 = personInfo.gender > 0 ? 'male' : 'female';
+
   return (
-    <PageContainer>
-      <div>
+    
+    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("picName"))+")"}}>
+    <PageContainer >
+      {/* 用链接时用上一个，文件时用下一个 */}
+      {/* <div className='background' style={{backgroundImage: 'url('+"https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"+')'}}> */}
+      <div >
+        <div>
+          <Dropdown className='backPicbtn' overlay={backgroundpic} placement="bottom" arrow>
+              <Button onClick={e => e.preventDefault()}>
+               <Space>
+                Change Background
+                <DownOutlined />
+                </Space>
+                </Button>
+          </Dropdown>
+          </div>
         <div className="pictureCard">
           <Avatar size={150} src={'/api/media/' + personInfo.photo} />
-          <Button className="fans" id="text" onClick={()=>props.history.push('/fanlist')} size="large">
+          <Button
+            className="fans"
+            id="text"
+            onClick={() => props.history.push('/fanlist')}
+            size="large"
+          >
             <b>Fans</b>
           </Button>
-          <Button className="followers" id="text" onClick={()=>props.history.push('/followinglist')} size="large">
-            <b>Followers</b>
+          <Button
+            className="followers"
+            id="text"
+            onClick={() => props.history.push('/followinglist')}
+            size="large"
+          >
+            <b>Followings</b>
           </Button>
         </div>
         <div>
@@ -102,7 +182,7 @@ export default (props) => {
                       onFinish={(value) => {
                         console.log(value);
                         uploadProfile(value);
-                        //location.reload();
+                        location.reload();
                         return true;
                       }}
                     >
@@ -245,7 +325,7 @@ export default (props) => {
                     onFinish={() => {
                       deleteMoment({ id: item.id });
                       console.log({ id: item.id }, 99999);
-                      //location.reload();
+                      location.reload();
                       return true;
                     }}
                   >
@@ -257,18 +337,19 @@ export default (props) => {
 
                   <br />,
                   <ModalForm
-                    title={[<h2>Confirmation for deleting</h2>]}
+                    title={[<h2>Confirmation for Edit</h2>]}
                     trigger={<Button style={{ color: 'blue', marginTop: 20 }}>EDIT</Button>}
                     autoFocusFirstInput
                     drawerProps={{
                       destroyOnClose: true,
                     }}
-                    onFinish={() => {
-                      deleteMoment({ id: item.id });
+                    onFinish={(value) => {
+                      editMoment(value);
                       location.reload();
                       return true;
                     }}
                   >
+                    <ProFormText name="id" width="md" label="id" readonly initialValue={item.id} />
                     <ProForm.Group>
                       <ProFormText
                         name="description"
@@ -285,18 +366,6 @@ export default (props) => {
                       initialValue={item.content}
                       label="write whatever you want"
                       placeholder="请输入名称"
-                    />
-                    <ProFormUploadButton
-                      name="imgs"
-                      label="Upload"
-                      max={2}
-                      fieldProps={{
-                        name: 'file',
-                        listType: 'picture-card',
-                        max: 3,
-                      }}
-                      action="/upload.do"
-                      extra="your photo here"
                     />
                   </ModalForm>,
                 ]}
@@ -317,16 +386,8 @@ export default (props) => {
             )}
           />
         </Card>
-
-        <div className="bt2">
-          <Button className="bt1" onClick={null}>
-            Modify Password
-          </Button>
-          <Button className="bt1" onClick={null}>
-            Cancellation
-          </Button>
-        </div>
       </div>
     </PageContainer>
+    </div>
   );
 };

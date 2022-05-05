@@ -5,7 +5,6 @@ import { this_register } from '@/services/ant-design-pro/api';
 import styles from './style.less';
 import { values } from 'lodash';
 
-
 const FormItem = Form.Item;
 const { Option } = Select;
 const InputGroup = Input.Group;
@@ -47,12 +46,19 @@ const Register = () => {
     [interval],
   );
 
+  const onFinish = (values) => {
+    values['email'] = register_email;
+    console.log('正在提交数据');
+    console.log(values);
+    submit(values);
+  };
+
   const submit = async (data) => {
-    console.log("正在发送数据");
+    console.log('正在注册请求');
     console.log(data);
     //发送请求
     const ans = await this_register(data);
-    console.log("已经收到结果");
+    console.log('收到注册结果');
     if (ans.error_code === 200) {
       history.push({
         pathname: '/user/register-result',
@@ -60,38 +66,12 @@ const Register = () => {
           account: ans.email,
         },
       });
+    } else {
+      message.error(ans.msg);
     }
-    console.log(ans)
-  }
-  
-  const onGetCaptcha = () => {
-    let counts = 59;
-    setCount(counts);
-    interval = window.setInterval(() => {
-      counts -= 1;
-      setCount(counts);
-
-      if (counts === 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
+    console.log(ans);
   };
- 
-  const { loading: submitting, run: register } = useRequest(register, {
-    manual: true,
-    onSuccess: (data, params) => {
-      if (data.error_code === 200) {
-        message.success('注册成功！');
-        history.push({
-          pathname: '/user/register-result',
-          state: {
-            account: params.email,
-          },
-        });
-      }
-    },
-  });
-  
+
   const getPasswordStatus = () => {
     const value = form.getFieldValue('password');
 
@@ -104,12 +84,6 @@ const Register = () => {
     }
 
     return 'poor';
-  };
-
-  const onFinish = (values) => {
-    console.log("正在提交数据");
-    console.log(values);
-    submit(values);
   };
 
   const checkConfirm = (_, value) => {
@@ -167,24 +141,22 @@ const Register = () => {
     ) : null;
   };
 
+  const register_email = localStorage.getItem('register_email');
+
   return (
     <div className={styles.main}>
-      <h3>注册</h3>
+      <h3>一封验证邮件已发送</h3>
       <Form form={form} name="UserRegister" onFinish={onFinish}>
         <FormItem
-          name="email"
+          name="given_verification"
           rules={[
             {
               required: true,
-              message: '请输入邮箱地址!',
-            },
-            {
-              type: 'email',
-              message: '邮箱地址格式错误!',
+              message: '请输入验证码!',
             },
           ]}
         >
-          <Input size="large" placeholder="邮箱" />
+          <Input size="large" placeholder="验证码(1111)" />
         </FormItem>
         <FormItem
           name="username"
@@ -298,13 +270,7 @@ const Register = () => {
           <Input size="large" placeholder="生日（可选）" />
         </FormItem>
         <FormItem>
-          <Button
-            size="large"
-            loading={submitting}
-            className={styles.submit}
-            type="primary"
-            htmlType="submit"
-          >
+          <Button size="large" className={styles.submit} type="primary" htmlType="submit">
             <span>注册</span>
           </Button>
           <Link className={styles.login} to="/user/login">

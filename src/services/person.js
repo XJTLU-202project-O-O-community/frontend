@@ -19,3 +19,15 @@ export const EditProfile = async (params) => {
     data: `new_username=${params.username}&actual_name=${params.name}&gender=${params.gender}&birth=${params.birth}&city=${params.city}&signature=${params.text}&photo=${photo}`,
   });
 };
+
+export const changePicB = async (params) => {
+  return request(`/api/user/personal_info_edit/`, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: `background=${params}`,
+  });
+};
+
+export const searchPerson = async (params) => {
+  return request(`/api/user/search/?username=${params}`, { method: 'get' });
+};

@@ -5,7 +5,7 @@ import { request } from 'umi';
 /** 获取当前的用户 GET /api/currentUser */
 
 export async function currentUser(options) {
-  return request('/api/currentUser', {
+  return request('/api/user/currentUser', {
     method: 'GET',
     ...(options || {}),
   });
@@ -26,12 +26,38 @@ export async function login(body, options) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data: `email=${body.username}&password=${body.password}`,
+    data: `email=${body.email}&password=${body.password}`,
     ...(options || {}),
   });
 }
 
-/** 注册接口 POST /api/user/register */
+/** 邮箱登录接口 POST /api/user/email_login/ */
+
+export async function email_login(body, options) {
+  return request('/api/user/email_login/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: `email=${body.email}&given_verification=${body.given_verification}`,
+    ...(options || {}),
+  });
+}
+
+/** 邮箱验证接口 GET /api/user/send_email/ */
+
+export async function email_verification(body, options) {
+  return request('/api/user/send_email/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: `email=${body.email}`,
+    ...(options || {}),
+  });
+}
+
+/** 注册接口 POST /api/user/register/ */
 
 export async function this_register(body, options) {
   return request('/api/user/register/', {
@@ -39,7 +65,7 @@ export async function this_register(body, options) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    data: `username=${body.username}&password=${body.password}&email=${body.email}`,
+    data: `username=${body.username}&password=${body.password}&email=${body.email}&given_verification=${body.given_verification}&gender=${body.gender}&actual_name=${body.actualName}&birth=${body.birth}`,
     ...(options || {}),
   });
 }

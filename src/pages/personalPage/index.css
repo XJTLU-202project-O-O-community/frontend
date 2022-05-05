@@ -1,3 +1,8 @@
+.background{
+ /* background: url("https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"); */
+ background-repeat: no-repeat;
+ background-size: 100%
+}
 .pictureCard{
   text-align: center;
 }
@@ -6,6 +11,8 @@
   margin-left: 25%;
   margin-top: 60px;
   width: 50%;
+  opacity: 0.8;
+  filter: alpha(opacity=80); 
 }
 .button1{
   width: 30%;
@@ -25,10 +32,22 @@
   padding-right: 10%;
 }
 .followers{
-  margin-left: 20%;
-  border-radius: 25px;
-}
-.fans{
   margin-left: 2%;
   border-radius: 25px;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+.fans{
+  margin-left: 20%;
+  border-radius: 25px;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+.backPicbtn{
+  position: relative;
+  top: 20px;
+  left: 80%;
+  border-radius: 25px;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
 }
