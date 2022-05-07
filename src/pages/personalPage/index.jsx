@@ -35,7 +35,7 @@ const his_id = localStorage.getItem('access_pk');
 const data1 = { his_id: his_id };
 const data2 = { userid: his_id };
 
-export default () => {
+export default (props) => {
   let [own_data, setData] = useState([]);
   useEffect(async () => {
     const resData = await index_postList(data2);
