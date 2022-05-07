@@ -118,8 +118,8 @@ export default () => {
   return (
     <div
       className="background"
-      style={{ backgroundImage: 'url(' + require('.//media/' + personInfo.background) + ')' }}
-    >
+      style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("background"))+")"}}>
+
       <PageContainer>
         {/* 用链接时用上一个，文件时用下一个 */}
         {/* <div className='background' style={{backgroundImage: 'url('+"https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"+')'}}> */}

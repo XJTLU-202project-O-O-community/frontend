@@ -80,7 +80,7 @@ export default (props) => {
   // let picName = personInfo.background;
 
   return (
-    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("picName"))+")"}}>
+    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("background"))+")"}}>
     <PageContainer >
       <div>
         <div className="pictureCardV">
