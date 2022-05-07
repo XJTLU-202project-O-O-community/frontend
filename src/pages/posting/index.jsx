@@ -23,39 +23,11 @@ import moment from 'moment';
 const index_postList = async () => {
   const data = await getWholePosts();
   console.log(data, 999);
-  return { data: data.data.moments };
-};
-
-const upload_comment = async (value) => {
-  const res = await postComment(value);
-  if (res.code == 200) {
-    message.success('Comment successful');
-  } else message.error('Can not add comment');
-};
-
-const showComment = (value) => {
-  if (value?.length > 0) {
-    return (
-      <div>
-        <List
-          className="comment-list"
-          itemLayout="horizontal"
-          dataSource={value}
-          renderItem={(item1) => (
-            <li>
-              <Comment
-                actions={item1.actions}
-                author={item1.poster__name}
-                avatar={'http://localhost:8000/media/' + item1.poster__photo}
-                content={item1.content}
-                datetime={item1.ctime}
-              />
-            </li>
-          )}
-        />
-      </div>
-    );
-  } else return <div>No comment</div>;
+  const data1 = data.data.moments;
+  for (var i = 0; i < data1.length; i++) {
+    data1[i]['show'] = false;
+  }
+  return { data: data1 };
 };
 
 const index_postProfile = async (params) => {
@@ -89,6 +61,7 @@ const PostList = (props) => {
   const own_id = { his_id: data1 };
   console.log(data1, 7355608);
   let [data, setData] = useState([]);
+  let [show, setShow] = useState({});
 
   let [dataPerson, setPersonData] = useState([]);
   let [comments, setComment] = useState([]);
@@ -113,11 +86,38 @@ const PostList = (props) => {
   }, []);
 
   //data=getRequst
+
   const [thumb, setThumb] = useState(false); //useState(data.thumb)
   const [count, setCount] = useState(0);
   const formRef = useRef();
   const [like, setLike] = useState(1); // useState(data.like)
   const [numComment, setNum] = useState(10); //useState(len(data.comment))
+
+  const showComment = (value, num) => {
+    console.log(num);
+    if (num && value.length > 0) {
+      return (
+        <div>
+          <List
+            className="comment-list"
+            itemLayout="horizontal"
+            dataSource={value}
+            renderItem={(item1) => (
+              <li>
+                <Comment
+                  actions={item1.actions}
+                  author={item1.poster__name}
+                  avatar={'http://localhost:8000/media/' + item1.poster__photo}
+                  content={item1.content}
+                  datetime={item1.ctime}
+                />
+              </li>
+            )}
+          />
+        </div>
+      );
+    } else if (num && value.length <= 0) return <h3>no comments here</h3>;
+  };
 
   const searching = async (value) => {
     const res = await searchPerson(value);
@@ -141,10 +141,20 @@ const PostList = (props) => {
     console.log(res, 333);
     if (res.error_code == 200) {
       message.success('add successfully');
-      location.reload();
+      const data1 = await index_postList();
+      setData(data1.data);
     } else if (res.error_code == 300) {
       message.error('please type in some content');
     } else message.error('error');
+  };
+  const upload_comment = async (value) => {
+    const res = await postComment(value);
+    if (res.code == 200) {
+      message.success('Comment successful');
+      const resData = await getComment();
+      console.log(resData.data.comments['14'], 99999);
+      setComment(resData.data.comments);
+    } else message.error('Can not add comment');
   };
 
   return (
@@ -275,7 +285,7 @@ const PostList = (props) => {
                 </Button>
 
                 <Button
-                  onClick={() => (item.show = true)}
+                  onClick={() => setShow(item.show ? (item.show = false) : (item.show = true))}
                   style={{ width: 180 }}
                   icon={<MessageOutlined />}
                 >
@@ -321,18 +331,15 @@ const PostList = (props) => {
                 </ModalForm>
               </div>
 
-              {showComment(comments[item.id.toString()])}
+              {showComment(comments[item.id.toString()], item.show)}
             </List.Item>
           )}
         />
       </Card>
 
-      <Card
-        style={{ textAlign: 'center', width: 300, float: 'right', marginTop: -800 }}
-        title="Personal Info"
-      >
+      <Card style={{ textAlign: 'center', position: 'fixed', width: 300 }} title="Personal Info">
         <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
-        ,<h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
+        <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
         <h5 style={{ textAlign: 'left' }}>{dataPerson?.signature}</h5>
       </Card>

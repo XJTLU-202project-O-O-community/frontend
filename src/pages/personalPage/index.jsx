@@ -59,6 +59,8 @@ export default () => {
     console.log(res, 88);
     if (res.error_code == 200) {
       message.success('delete successfully');
+      const resData = await index_postList(data2);
+      setData(resData.data);
     } else message.error('error');
   };
 
@@ -67,6 +69,9 @@ export default () => {
     console.log(res, 88);
     if (res.error_code == 200) {
       message.success('edit successfully');
+      const resData = await index_postList(data2);
+      console.log(resData, 300);
+      setData(resData.data);
     } else message.error('error');
   };
 
@@ -137,7 +142,14 @@ export default () => {
             </Dropdown>
           </div>
           <div className="pictureCard">
-            <Avatar size={150} src={'/api/media/' + personInfo.photo} />
+            <Avatar
+              size={150}
+              src={
+                personInfo.photo
+                  ? '/api/media/' + personInfo.photo
+                  : '/api/media/' + 'photo/default.jpg'
+              }
+            />
             <Button
               className="fans"
               id="text"
@@ -319,7 +331,6 @@ export default () => {
                       onFinish={() => {
                         deleteMoment({ id: item.id });
                         console.log({ id: item.id }, 99999);
-                        location.reload();
                         return true;
                       }}
                     >
@@ -339,7 +350,6 @@ export default () => {
                       }}
                       onFinish={(value) => {
                         editMoment(value);
-                        location.reload();
                         return true;
                       }}
                     >
