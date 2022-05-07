@@ -86,7 +86,7 @@ export default () => {
     const res = await changePicB(value);
     if (res.error_code == 200) {
       message.success('change successfully');
-      localStorage.setItem('picName', value);
+      localStorage.setItem('background', value);
       location.reload();
     } else message.error('error');
   };
