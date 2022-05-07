@@ -9,6 +9,18 @@ export const getPersonalPosts = async (params) => {
   return request(`/api/posting/moment/?userid=${params.userid}`, { method: 'get' });
 };
 
+export const getComment = async () => {
+  return request(`/api/posting/view_comment/`, { method: 'get' });
+};
+
+export const postComment = async (params) => {
+  return request(`/api/posting/newcomment/`, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: `poster_id=${params.user_id}&content=${params.content}&moment=${params.moment_id}`,
+  });
+};
+
 export const add = async (params) => {
   console.log(params.imgs);
 
