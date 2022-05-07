@@ -117,7 +117,7 @@ export default () => {
   return (
     <div
       className="background"
-      style={{ backgroundImage: 'url(' + require('.//media/' + personInfo.background) + ')' }}
+      style={{ backgroundImage: 'url(' + require('.//media/' + localStorage.background) + ')' }}
     >
       <PageContainer>
         {/* 用链接时用上一个，文件时用下一个 */}
