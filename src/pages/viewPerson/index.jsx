@@ -80,61 +80,66 @@ export default (props) => {
   // let picName = personInfo.background;
 
   return (
-    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("picName"))+")"}}>
-    <PageContainer >
-      <div>
-        <div className="pictureCardV">
-          <Avatar size={150} src={'/api/media/' + personInfo.photo} />
-          {subbutton()}
-          <Button
-            className="chat"
-            id="chat"
-            onClick={() => props.history.push(`/chat?target_id=${props.match.params.id}`)}
-            size="large"
-          >
-            <b>{chatT}</b>
-          </Button>
-        </div>
-        <div className="infoV">
-          <Card hoverable={true}>
-            <ProDescriptions
-              className="personaltext"
-              title="Personal Information"
-              columns={[
-                {
-                  title: '操作',
-                  valueType: 'option',
-                  render: () => [],
-                },
-              ]}
+    <div
+      className="background"
+      style={{
+        backgroundImage: 'url(' + require('.//media/' + localStorage.getItem('background')) + ')',
+      }}
+    >
+      <PageContainer>
+        <div>
+          <div className="pictureCardV">
+            <Avatar size={150} src={'/api/media/' + personInfo.photo} />
+            {subbutton()}
+            <Button
+              className="chat"
+              id="chat"
+              onClick={() => props.history.push(`/chat?target_id=${props.match.params.id}`)}
+              size="large"
             >
-              <ProDescriptions.Item dataIndex="username" label="Username">
-                {personInfo.name}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="name" label="Name">
-                {personInfo.actual_name}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="id" label="ID">
-                {his_id}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="gender" label="Gender">
-                {cum1}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="city" label="City">
-                {personInfo.city}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="date" label="Birthday">
-                {personInfo.birth}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item dataIndex="text" label="Personalized Signature">
-                {' '}
-                {personInfo.signature}{' '}
-              </ProDescriptions.Item>
-            </ProDescriptions>
-          </Card>
+              <b>{chatT}</b>
+            </Button>
+          </div>
+          <div className="infoV">
+            <Card hoverable={true}>
+              <ProDescriptions
+                className="personaltext"
+                title="Personal Information"
+                columns={[
+                  {
+                    title: '操作',
+                    valueType: 'option',
+                    render: () => [],
+                  },
+                ]}
+              >
+                <ProDescriptions.Item dataIndex="username" label="Username">
+                  {personInfo.name}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item dataIndex="name" label="Name">
+                  {personInfo.actual_name}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item dataIndex="id" label="ID">
+                  {his_id}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item dataIndex="gender" label="Gender">
+                  {cum1}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item dataIndex="city" label="City">
+                  {personInfo.city}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item dataIndex="date" label="Birthday">
+                  {personInfo.birth}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item dataIndex="text" label="Personalized Signature">
+                  {' '}
+                  {personInfo.signature}{' '}
+                </ProDescriptions.Item>
+              </ProDescriptions>
+            </Card>
+          </div>
         </div>
-      </div>
-    </PageContainer>
+      </PageContainer>
     </div>
   );
 };

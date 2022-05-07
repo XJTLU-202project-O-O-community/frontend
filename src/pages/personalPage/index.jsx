@@ -35,7 +35,7 @@ const his_id = localStorage.getItem('access_pk');
 const data1 = { his_id: his_id };
 const data2 = { userid: his_id };
 
-export default (props) => {
+export default () => {
   let [own_data, setData] = useState([]);
   useEffect(async () => {
     const resData = await index_postList(data2);
@@ -86,7 +86,7 @@ export default (props) => {
     const res = await changePicB(value);
     if (res.error_code == 200) {
       message.success('change successfully');
-      localStorage.setItem('picName', value);
+      localStorage.setItem('background', value);
       location.reload();
     } else message.error('error');
   };
@@ -118,7 +118,9 @@ export default (props) => {
   return (
     <div
       className="background"
-      style={{ backgroundImage: 'url(' + require('.//media/' + localStorage.background) + ')' }}
+      style={{
+        backgroundImage: 'url(' + require('.//media/' + localStorage.getItem('background')) + ')',
+      }}
     >
       <PageContainer>
         {/* 用链接时用上一个，文件时用下一个 */}

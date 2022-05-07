@@ -45,10 +45,12 @@ const Login = () => {
 
         const currentUserPk = ans.data[0]['pk'];
         const currentUserInfo = ans.data[0]['fields'];
+        const background = ans.data[0]['fields']['background'];
         console.log('pk是');
         console.log(currentUserPk);
         localStorage.setItem('access_pk', currentUserPk);
         localStorage.setItem('user_info', JSON.stringify(currentUserInfo));
+        localStorage.setItem('background', background);
         setUserLoginState(ans);
 
         if (!history) return;
