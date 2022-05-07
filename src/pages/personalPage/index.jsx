@@ -16,7 +16,7 @@ import ProForm, {
   ProFormUploadButton,
 } from '@ant-design/pro-form';
 import { EditProfile, GetPersonInfo, changePicB } from '@/services/person';
-import localStorage from 'localStorage';
+// import localStorage from 'localStorage';
 import { set } from 'lodash';
 
 const index_postList = async (values) => {
