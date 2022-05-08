@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import React, { useState } from 'react';
-import { Avatar, Card, List, message } from 'antd';
+import { Avatar, Card, List, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { queryFakeList, searchWithinFan } from './service';
 import styles from './style.less';
 import { Input } from 'antd';
+import { Link } from 'umi';
 
 export const FanList = (props) => {
   const [list, setList] = useState([]);
@@ -12,7 +13,6 @@ export const FanList = (props) => {
   useEffect(() => {
     queryFanList();
   }, []);
-
 
   const queryFanList = async () => {
     const res = await queryFakeList({ user_id: localStorage.getItem('access_pk') });
@@ -25,7 +25,10 @@ export const FanList = (props) => {
   //   console.log(res, 999);
   //   setList(res.data.fans_list);
   // };
-
+  const exitFunction = () => {
+    localStorage.removeItem('access_pk');
+    location.reload();
+  };
   const paginationProps = {
     showSizeChanger: true,
     showQuickJumper: true,
@@ -43,6 +46,7 @@ export const FanList = (props) => {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
           >
+            {/* <Button onClick={exitFunction}>Exit</Button> */}
             <List
               size="large"
               rowKey="id"
@@ -52,7 +56,7 @@ export const FanList = (props) => {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar src={'/api/media/' + item.photo} shape="square" size="large" />}
-                    title={<a href={item.href}>{item.username}</a>}
+                    title={<Link to={`/personal_view/${item.id}/`}>{item.username}</Link>}
                     description={item.moment}
                   />
                 </List.Item>
