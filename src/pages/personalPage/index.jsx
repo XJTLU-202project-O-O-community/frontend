@@ -52,7 +52,7 @@ export default (props) => {
   const getPersonalInfo = async () => {
     const infoData = await index_PersonInfo(data1);
     console.log(infoData, 400);
-    localStorage.setItem('picName', infoData.background);
+    localStorage.setItem('background', infoData.background);
     setpersonInfo(infoData);
     setBackground(infoData.background);
   };
