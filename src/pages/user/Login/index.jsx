@@ -50,7 +50,7 @@ const Login = () => {
         console.log(currentUserPk);
         localStorage.setItem('access_pk', currentUserPk);
         localStorage.setItem('user_info', JSON.stringify(currentUserInfo));
-        localStorage.setItem('background',background)
+        localStorage.setItem('background', background);
         setUserLoginState(ans);
 
         if (!history) return;

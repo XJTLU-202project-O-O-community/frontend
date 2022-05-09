@@ -57,20 +57,16 @@ export default [
   },
   {
     path: '/searchperson/:userid',
-
     component: './personalPage/searching',
   },
   {
     path: '/personal_view/:id',
-
     component: './viewPerson',
   },
   {
     path: '/welcome',
-
     component: './Welcome',
-  },
-  // {
+  }, // {
   //   path: '/admin',
   //   name: 'admin',
   //   icon: 'crown',
