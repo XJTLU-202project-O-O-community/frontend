@@ -16,7 +16,7 @@ export const EditProfile = async (params) => {
   return request(`/api/user/personal_info_edit/`, {
     method: 'post',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    data: `new_username=${params.username}&actual_name=${params.name}&gender=${params.gender}&birth=${params.birth}&city=${params.city}&signature=${params.text}&photo=${photo}`,
+    data: `new_username=${params.username}&actual_name=${params.name}&gender=${params.gender}&birth=${params.birth}&city=${params.city}&signature=${params.text}&photo=${photo}&user_id=${params.user_id}`,
   });
 };
 

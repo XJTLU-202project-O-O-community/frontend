@@ -87,6 +87,7 @@ export default (props) => {
 
   const uploadProfile = async (value) => {
     console.log('Profile Data');
+
     const res = await EditProfile(value);
     console.log(res);
     if (res.error_code == 200) {
@@ -209,6 +210,8 @@ export default (props) => {
                         }}
                         onFinish={(value) => {
                           console.log(value);
+                          console.log(his_id, 777);
+                          value['user_id'] = his_id;
                           uploadProfile(value);
                           return true;
                         }}
