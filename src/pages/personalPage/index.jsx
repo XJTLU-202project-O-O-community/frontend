@@ -17,7 +17,6 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { EditProfile, GetPersonInfo, changePicB } from '@/services/person';
 import { set } from 'lodash';
-import { UserOutlined } from '@ant-design/icons';
 
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
@@ -85,7 +84,6 @@ export default (props) => {
 
   const uploadProfile = async (value) => {
     console.log('Profile Data');
-
     const res = await EditProfile(value);
     console.log(res);
     if (res.error_code == 200) {
@@ -132,7 +130,7 @@ export default (props) => {
     <div
       className="background"
       style={{
-        backgroundImage: `url(/api/media/background/${personInfo.background}/)`,
+        backgroundImage: `url(/api/media/background/${background}/)`,
       }}
     >
       <PageContainer>
@@ -140,15 +138,14 @@ export default (props) => {
         {/* <div className='background' style={{backgroundImage: 'url('+"https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"+')'}}> */}
         <div>
           <div>
-            <Dropdown.Button
-              className="backPicbtn"
-              overlay={backgroundpic}
-              placement="bottom"
-              arrow
-              icon={<DownOutlined />}
-            >
-              Change Background
-            </Dropdown.Button>
+            <Dropdown className="backPicbtn" overlay={backgroundpic} arrow>
+              <Button onClick={(e) => e.preventDefault()}>
+                <Space>
+                  Change Background
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
           </div>
           <div className="pictureCard">
             <Avatar
@@ -196,8 +193,6 @@ export default (props) => {
                         }}
                         onFinish={(value) => {
                           console.log(value);
-                          console.log(his_id, 777);
-                          value['user_id'] = his_id;
                           uploadProfile(value);
                           return true;
                         }}
