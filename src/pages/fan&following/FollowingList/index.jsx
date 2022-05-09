@@ -169,8 +169,12 @@ export const FanList = () => {
             visible={this.state.visible}
             bodyStyle={{ paddingBottom: 0 }}
           >
+<<<<<<< HEAD
             <Form layout="vertical" hideRequiredMark
               onFinish={changeGroupName1}>
+=======
+            <Form layout="vertical" hideRequiredMark >
+>>>>>>> 0d0ba152f3a53ebb5c3d77fcfc80753e10f8498d
               <Row gutter={16}>
                 <Form.Item
                   name="groupId"

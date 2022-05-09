@@ -13,7 +13,6 @@ import ProForm, { ModalForm } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 import './index.css';
 import { Link } from 'umi';
-
 import HeaderSearch from '@/components/HeaderSearch';
 import { searchPerson } from '@/services/person';
 import { history } from 'umi';
@@ -63,21 +62,28 @@ const PostList = (props) => {
   let [data, setData] = useState([]);
   let [show, setShow] = useState({});
 
+  const [moments, setMoments] = useState([]);
   let [dataPerson, setPersonData] = useState([]);
   let [comments, setComment] = useState([]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    const resData = await getComment();
-    console.log(resData.data.comments['14'], 99999);
-    setComment(resData.data.comments);
+    const resData = await getWholePosts();
+    console.log(resData.data.moments, 999);
+    resData.data.moments.map((item) => {
+      item.show_comment = false;
+      return item;
+    });
+    console.log(resData.data.moments, 999);
+    setMoments(resData.data.moments);
   }, []);
 
-  //动态信息
-  useEffect(async () => {
-    const resData = await index_postList();
-    console.log(resData.data, 1000);
-    setData(resData.data);
-  }, []);
+  // //动态信息
+  // useEffect(async () => {
+  //   const resData = await index_postList();
+  //   console.log(resData.data, 1000);
+  //   setData(resData.data);
+  // }, []);
   //个人信息
   useEffect(async () => {
     const res1Data = await index_postProfile(own_id);
@@ -95,6 +101,9 @@ const PostList = (props) => {
 
   const showComment = (value, num) => {
     console.log(num);
+    if (num && value == undefined) {
+      return <h3>no comments here</h3>;
+    }
     if (num && value.length > 0) {
       return (
         <div>
@@ -247,7 +256,7 @@ const PostList = (props) => {
             onChange: async (page) => {},
             pageSize: 5,
           }}
-          dataSource={data}
+          dataSource={moments}
           footer={
             <div>
               <b>ant design</b> footer part
@@ -257,11 +266,7 @@ const PostList = (props) => {
             <List.Item key={item.title}>
               <List.Item.Meta
                 avatar={
-                  <Avatar
-                    shape="square"
-                    size={50}
-                    src={'http://localhost:8000/media/' + item.user_id__photo}
-                  />
+                  <Avatar shape="square" size={50} src={'/server/media/' + item.user_id__photo} />
                 }
                 title={<Link to={`/personal_view/${item.user_id}/`}>{item.user_id__name}</Link>}
                 description={item.user_id__signature}
@@ -275,12 +280,10 @@ const PostList = (props) => {
                 {/*<IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,*/}
 
                 <Button style={{ width: 180 }} icon={<StarOutlined />}>
-                  {' '}
                   {item.likes}
                 </Button>
 
                 <Button style={{ width: 180 }} icon={<LikeOutlined />}>
-                  {' '}
                   {item.thumbs}
                 </Button>
 
@@ -336,8 +339,7 @@ const PostList = (props) => {
           )}
         />
       </Card>
-
-      <Card style={{ textAlign: 'center', position: 'fixed', width: 300 }} title="Personal Info">
+      <Card className="indexc" title="Personal Info">
         <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
         <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>

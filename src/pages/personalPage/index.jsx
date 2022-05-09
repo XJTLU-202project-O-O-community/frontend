@@ -16,7 +16,6 @@ import ProForm, {
   ProFormUploadButton,
 } from '@ant-design/pro-form';
 import { EditProfile, GetPersonInfo, changePicB } from '@/services/person';
-
 import { set } from 'lodash';
 
 const index_postList = async (values) => {
@@ -44,13 +43,20 @@ export default (props) => {
   }, []);
 
   let [personInfo, setpersonInfo] = useState([]);
+  let [background, setBackground] = useState('default.jpg');
 
-  useEffect(async () => {
+  useEffect(() => {
+    getPersonalInfo();
+  }, []);
+
+  const getPersonalInfo = async () => {
     const infoData = await index_PersonInfo(data1);
     console.log(infoData, 400);
     localStorage.setItem('picName', infoData.background);
     setpersonInfo(infoData);
-  }, []);
+    setBackground(infoData.background);
+  };
+
   console.log('111');
   console.log(personInfo.photo);
 
@@ -83,6 +89,7 @@ export default (props) => {
     console.log(res);
     if (res.error_code == 200) {
       message.success('add successfully');
+      getPersonalInfo();
     } else message.error('error');
   };
 
@@ -92,7 +99,7 @@ export default (props) => {
     if (res.error_code == 200) {
       message.success('change successfully');
       localStorage.setItem('background', value);
-      location.reload();
+      setBackground(value);
     } else message.error('error');
   };
 
@@ -124,7 +131,7 @@ export default (props) => {
     <div
       className="background"
       style={{
-        backgroundImage: 'url(' + require('.//media/' + localStorage.getItem('background')) + ')',
+        backgroundImage: `url(/api/media/background/${background}/)`,
       }}
     >
       <PageContainer>
@@ -132,7 +139,7 @@ export default (props) => {
         {/* <div className='background' style={{backgroundImage: 'url('+"https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"+')'}}> */}
         <div>
           <div>
-            <Dropdown className="backPicbtn" overlay={backgroundpic} placement="bottom" arrow>
+            <Dropdown className="backPicbtn" overlay={backgroundpic} arrow>
               <Button onClick={(e) => e.preventDefault()}>
                 <Space>
                   Change Background
@@ -188,7 +195,6 @@ export default (props) => {
                         onFinish={(value) => {
                           console.log(value);
                           uploadProfile(value);
-                          location.reload();
                           return true;
                         }}
                       >
