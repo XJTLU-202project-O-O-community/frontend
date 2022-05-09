@@ -105,12 +105,18 @@ export default (props) => {
   let [personInfo, setpersonInfo] = useState([]);
   let [fan, setFan] = useState([]);
   let [his, setHis] = useState([]);
-  useEffect(async () => {
+  
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
     const infoData = await index_PersonInfo(data1);
     setpersonInfo(infoData.personal_data[0].fields);
     setFan(infoData.isFan);
     setHis(infoData.personal_data[0].pk);
-  }, []);
+  }
+
   const cum1 = personInfo.gender > 0 ? 'male' : 'female';
 
   const sendSubMes = async () => {

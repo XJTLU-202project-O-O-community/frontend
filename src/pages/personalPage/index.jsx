@@ -16,8 +16,9 @@ import ProForm, {
   ProFormUploadButton,
 } from '@ant-design/pro-form';
 import { EditProfile, GetPersonInfo, changePicB } from '@/services/person';
-
 import { set } from 'lodash';
+import { UserOutlined } from '@ant-design/icons';
+
 
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
@@ -44,13 +45,20 @@ export default (props) => {
   }, []);
 
   let [personInfo, setpersonInfo] = useState([]);
+  let [background, setBackground] = useState('default.jpg');
 
-  useEffect(async () => {
+  useEffect(()=>{
+    getPersonalInfo();
+  }, []);
+
+  const getPersonalInfo = async () => {
     const infoData = await index_PersonInfo(data1);
     console.log(infoData, 400);
     localStorage.setItem('picName', infoData.background);
     setpersonInfo(infoData);
-  }, []);
+  }
+
+  
   console.log('111');
   console.log(personInfo.photo);
 
@@ -84,7 +92,9 @@ export default (props) => {
     console.log(res);
     if (res.error_code == 200) {
       message.success('add successfully');
+      getPersonalInfo();
     } else message.error('error');
+
   };
 
   const changeBack = async (value) => {
@@ -93,7 +103,7 @@ export default (props) => {
     if (res.error_code == 200) {
       message.success('change successfully');
       localStorage.setItem('background', value);
-      location.reload();
+      setBackground(value);
     } else message.error('error');
   };
 
@@ -108,12 +118,29 @@ export default (props) => {
   // let picName = personInfo.background;
 
   const backgroundpic = (
-    <Menu onClick={onClick1}>
-      <Menu.Item key="blue.jpg">blue</Menu.Item>
+    <Menu onClick={onClick1}
+      items={[
+      {
+        label: '1st menu item',
+        key: '1',
+        icon: <UserOutlined />,
+      },
+      {
+        label: '2nd menu item',
+        key: '2',
+        icon: <UserOutlined />,
+      },
+      {
+        label: '3rd menu item',
+        key: '3',
+        icon: <UserOutlined />,
+      },
+    ]}>
+      {/* <Menu.Item key="blue.jpg">blue</Menu.Item>
       <Menu.Item key="purple.jpg">purple</Menu.Item>
       <Menu.Item key="orange.jpg">orange</Menu.Item>
       <Menu.Item key="green.jpg">green</Menu.Item>
-      <Menu.Item key="default.jpg">default</Menu.Item>
+      <Menu.Item key="default.jpg">default</Menu.Item> */}
     </Menu>
   );
 
@@ -125,7 +152,7 @@ export default (props) => {
     <div
       className="background"
       style={{
-        backgroundImage: 'url(' + require('.//media/' + localStorage.getItem('background')) + ')',
+        backgroundImage: `url(/api/media/background/${personInfo.background}/)`,
       }}
     >
       <PageContainer>
@@ -133,14 +160,9 @@ export default (props) => {
         {/* <div className='background' style={{backgroundImage: 'url('+"https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"+')'}}> */}
         <div>
           <div>
-            <Dropdown className="backPicbtn" overlay={backgroundpic} placement="bottom" arrow>
-              <Button onClick={(e) => e.preventDefault()}>
-                <Space>
+            <Dropdown.Button className="backPicbtn" overlay={backgroundpic} placement="bottom" arrow icon={<DownOutlined />}>
                   Change Background
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
+            </Dropdown.Button>
           </div>
           <div className="pictureCard">
             <Avatar
@@ -191,7 +213,6 @@ export default (props) => {
                           console.log(his_id, 777);
                           value['user_id'] = his_id;
                           uploadProfile(value);
-                          location.reload();
                           return true;
                         }}
                       >
