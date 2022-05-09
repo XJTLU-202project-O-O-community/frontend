@@ -54,6 +54,7 @@ export default (props) => {
     console.log(infoData, 400);
     localStorage.setItem('picName', infoData.background);
     setpersonInfo(infoData);
+    setBackground(infoData.background);
   };
 
   console.log('111');
