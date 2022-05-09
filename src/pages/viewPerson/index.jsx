@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import './index.css';
 import { GetPersonInfo } from '@/services/person';
 import { sendSub, sendUnsub } from '@/services/sub&unsub';
-import localStorage from 'localStorage';
+
 import { Avatar, Button, Card, Drawer, Form, Col, Row, message, Select, Space } from 'antd';
 import { queryFakeList } from '@/pages/fan&following/FollowingList/service';
 
