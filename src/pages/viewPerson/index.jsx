@@ -15,7 +15,13 @@ const { Option } = Select;
 const index_PersonInfo = async (values) => {
   const res = await GetPersonInfo(values);
   // console.log(res);
-  return res.data;
+  if (res.error_code == 200) {
+    // message.success(res.msg);
+    return res.data;
+  } else {
+    message.error(res.msg);
+  }
+  
 };
 
 export default (props) => {
@@ -106,11 +112,15 @@ export default (props) => {
   let [fan, setFan] = useState([]);
   let [his, setHis] = useState([]);
   useEffect(async () => {
+    initialInf();
+  }, []);
+
+  const initialInf = async()=>{
     const infoData = await index_PersonInfo(data1);
     setpersonInfo(infoData.personal_data[0].fields);
     setFan(infoData.isFan);
     setHis(infoData.personal_data[0].pk);
-  }, []);
+  }
   const cum1 = personInfo.gender > 0 ? 'male' : 'female';
 
   const sendSubMes = async () => {
@@ -118,9 +128,15 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
-    // location.reload();
-    console.log(res, 'send success');
-    // location.reload();
+    if (res.error_code == 200) {
+      message.success(res.msg);
+      console.log(res, 'send success');
+      initialInf();
+    } else {
+      message.error(res.msg);
+    }
+    // initialInf();
+    
   };
 
   const sendSubGroup = async (value) => {
@@ -131,12 +147,11 @@ export default (props) => {
     });
     if (res.error_code == 200) {
       message.success(res.msg);
-      location.reload();
+      initialInf();
     } else {
       message.error(res.msg);
     }
-    location.reload();
-    // location.reload();
+    
   };
 
   const [deleteList, setDeleteList] = useState([]); //分组名称
@@ -158,6 +173,9 @@ export default (props) => {
       }
       setDeleteList(deleteCaiDan);
     }
+    else {
+      message.error(res.msg);
+    }
   };
 
   const sendUnsubmes = async () => {
@@ -165,9 +183,13 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
-    location.reload();
-    // console.log(res, 'send success');
-    location.reload();
+    console.log(res, 'send success');
+    if (res.error_code == 200) {
+      message.success(res.msg);
+      initialInf();
+    } else {
+      message.error(res.msg);
+    }
   };
 
   const subbutton = () => {
