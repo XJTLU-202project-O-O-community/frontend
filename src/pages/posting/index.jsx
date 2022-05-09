@@ -62,19 +62,19 @@ const PostList = (props) => {
   let [data, setData] = useState([]);
   let [show, setShow] = useState({});
 
-  const [moments, setMoments] = useState([])
+  const [moments, setMoments] = useState([]);
   let [dataPerson, setPersonData] = useState([]);
   let [comments, setComment] = useState([]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     const resData = await getWholePosts();
-    console.log(resData.data.moments, 999)
-    resData.data.moments.map((item)=>{
+    console.log(resData.data.moments, 999);
+    resData.data.moments.map((item) => {
       item.show_comment = false;
       return item;
-    })
-    console.log(resData.data.moments, 999)
+    });
+    console.log(resData.data.moments, 999);
     setMoments(resData.data.moments);
   }, []);
 
@@ -101,6 +101,9 @@ const PostList = (props) => {
 
   const showComment = (value, num) => {
     console.log(num);
+    if (num && value == undefined) {
+      return <h3>no comments here</h3>;
+    }
     if (num && value.length > 0) {
       return (
         <div>
@@ -263,11 +266,7 @@ const PostList = (props) => {
             <List.Item key={item.title}>
               <List.Item.Meta
                 avatar={
-                  <Avatar
-                    shape="square"
-                    size={50}
-                    src={'/server/media/' + item.user_id__photo}
-                  />
+                  <Avatar shape="square" size={50} src={'/server/media/' + item.user_id__photo} />
                 }
                 title={<Link to={`/personal_view/${item.user_id}/`}>{item.user_id__name}</Link>}
                 description={item.user_id__signature}

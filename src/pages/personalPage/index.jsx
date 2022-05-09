@@ -19,7 +19,6 @@ import { EditProfile, GetPersonInfo, changePicB } from '@/services/person';
 import { set } from 'lodash';
 import { UserOutlined } from '@ant-design/icons';
 
-
 const index_postList = async (values) => {
   const data = await getPersonalPosts(values);
   console.log(data, 999);
@@ -47,7 +46,7 @@ export default (props) => {
   let [personInfo, setpersonInfo] = useState([]);
   let [background, setBackground] = useState('default.jpg');
 
-  useEffect(()=>{
+  useEffect(() => {
     getPersonalInfo();
   }, []);
 
@@ -56,9 +55,8 @@ export default (props) => {
     console.log(infoData, 400);
     localStorage.setItem('picName', infoData.background);
     setpersonInfo(infoData);
-  }
+  };
 
-  
   console.log('111');
   console.log(personInfo.photo);
 
@@ -94,7 +92,6 @@ export default (props) => {
       message.success('add successfully');
       getPersonalInfo();
     } else message.error('error');
-
   };
 
   const changeBack = async (value) => {
@@ -118,29 +115,12 @@ export default (props) => {
   // let picName = personInfo.background;
 
   const backgroundpic = (
-    <Menu onClick={onClick1}
-      items={[
-      {
-        label: '1st menu item',
-        key: '1',
-        icon: <UserOutlined />,
-      },
-      {
-        label: '2nd menu item',
-        key: '2',
-        icon: <UserOutlined />,
-      },
-      {
-        label: '3rd menu item',
-        key: '3',
-        icon: <UserOutlined />,
-      },
-    ]}>
-      {/* <Menu.Item key="blue.jpg">blue</Menu.Item>
+    <Menu onClick={onClick1}>
+      <Menu.Item key="blue.jpg">blue</Menu.Item>
       <Menu.Item key="purple.jpg">purple</Menu.Item>
       <Menu.Item key="orange.jpg">orange</Menu.Item>
       <Menu.Item key="green.jpg">green</Menu.Item>
-      <Menu.Item key="default.jpg">default</Menu.Item> */}
+      <Menu.Item key="default.jpg">default</Menu.Item>
     </Menu>
   );
 
@@ -160,8 +140,14 @@ export default (props) => {
         {/* <div className='background' style={{backgroundImage: 'url('+"https://pic2.zhimg.com/v2-0aa990f37ada6efc5af350acd9f92e50_r.jpg?source=1940ef5c"+')'}}> */}
         <div>
           <div>
-            <Dropdown.Button className="backPicbtn" overlay={backgroundpic} placement="bottom" arrow icon={<DownOutlined />}>
-                  Change Background
+            <Dropdown.Button
+              className="backPicbtn"
+              overlay={backgroundpic}
+              placement="bottom"
+              arrow
+              icon={<DownOutlined />}
+            >
+              Change Background
             </Dropdown.Button>
           </div>
           <div className="pictureCard">

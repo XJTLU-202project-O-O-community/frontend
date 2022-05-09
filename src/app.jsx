@@ -8,7 +8,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const registerPath = '/user/register';
 import { currentUser } from './services/ant-design-pro/api';
-import localStorage from 'localStorage';
+
 /** 获取用户信息比较慢的时候会展示一个 loading */
 
 export const initialStateConfig = {
@@ -22,13 +22,14 @@ export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
       const pk = localStorage.getItem('access_pk');
-      console.log(pk);
+      console.log(pk, 88888);
       if (pk == null) {
         history.push(loginPath);
       }
       const msg = await currentUser(localStorage.getItem('access_pk'));
       return msg.data;
     } catch (error) {
+      console.log(error);
       history.push(loginPath);
     }
 
