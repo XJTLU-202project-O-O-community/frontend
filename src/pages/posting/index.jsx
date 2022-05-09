@@ -340,8 +340,7 @@ const PostList = (props) => {
           )}
         />
       </Card>
-
-      <Card style={{ textAlign: 'center', position: 'fixed', width: 300 }} title="Personal Info">
+      <Card className="indexc" title="Personal Info">
         <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
         <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
