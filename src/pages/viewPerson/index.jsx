@@ -27,12 +27,18 @@ export default (props) => {
   let [personInfo, setpersonInfo] = useState([]);
   let [fan, setFan] = useState([]);
   let [his, setHis] = useState([]);
-  useEffect(async () => {
+  
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
     const infoData = await index_PersonInfo(data1);
     setpersonInfo(infoData.personal_data[0].fields);
     setFan(infoData.isFan);
     setHis(infoData.personal_data[0].pk);
-  }, []);
+  }
+
   const cum1 = personInfo.gender > 0 ? 'male' : 'female';
 
   const sendSubMes = async () => {
@@ -40,9 +46,10 @@ export default (props) => {
       user_id: localStorage.getItem('access_pk'),
       following_id: his,
     });
-    location.reload();
+    if(res.error_code==200){
+      init();
+    }
     console.log(res, 'send success');
-    location.reload();
   };
 
   const sendUnsubmes = async () => {
@@ -80,7 +87,7 @@ export default (props) => {
   // let picName = personInfo.background;
 
   return (
-    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("picName"))+")"}}>
+    <div className='background' style={{backgroundImage:"url("+require('.//media/'+localStorage.getItem("background"))+")"}}>
     <PageContainer >
       <div>
         <div className="pictureCardV">
