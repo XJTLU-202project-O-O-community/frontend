@@ -71,9 +71,9 @@ export default (props) => {
             bodyStyle={{ paddingBottom: 0 }}
             extra={
               <Space>
-                <Button onClick={this.onClose}>Cancel</Button>
+                {/* <Button onClick={this.onClose}>Cancel</Button> */}
                 <Button onClick={this.onClose1} type="primary">
-                  Submit
+                  Subscribe(no group)
                 </Button>
               </Space>
             }
