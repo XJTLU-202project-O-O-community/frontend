@@ -14,6 +14,7 @@ const CodePreview = ({ children }) => (
 
 export default () => {
   const intl = useIntl();
+  history.push('/post');
   return (
     <PageContainer>
       <Card>
