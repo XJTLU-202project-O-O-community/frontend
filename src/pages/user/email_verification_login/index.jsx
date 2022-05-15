@@ -26,7 +26,7 @@ const Email_verification = () => {
     const ans = await email_verification(data);
     console.log('已经收到结果');
     if (ans.error_code === 200) {
-      localStorage.setItem('register_email', ans['author_email']);
+      localStorage.setItem('login_email', ans['author_email']);
       history.push({
         pathname: '/user/email_login',
         state: {
