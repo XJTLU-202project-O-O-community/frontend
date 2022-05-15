@@ -23,17 +23,12 @@ const Login = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const intl = useIntl();
 
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-
-    if (userInfo) {
-      await setInitialState((s) => ({ ...s, currentUser: userInfo }));
-    }
-  };
+  const login_email = localStorage.getItem("login_email");
 
   const handleSubmit = async (values) => {
     try {
       // 登录
+      values['email'] = login_email;
       const ans = await email_login({ ...values });
       console.log(ans, '===========');
       if (ans.error_code === 200) {
@@ -75,34 +70,14 @@ const Login = () => {
       </div>
       <div className={styles.content}>
         <LoginForm
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="O&O"
-          subTitle="正在使用邮箱验证码登录"
+          title="正在使用邮箱验证码登录"
+          subTitle={login_email}
           onFinish={async (values) => {
             await handleSubmit(values);
           }}
         >
           {
             <>
-              <ProFormText
-                name="email"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <UserOutlined className={styles.prefixIcon} />,
-                }}
-                placeholder="email"
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.username.required"
-                        defaultMessage="请输入!"
-                      />
-                    ),
-                  },
-                ]}
-              />
               <ProFormText.Password
                 name="given_verification"
                 fieldProps={{

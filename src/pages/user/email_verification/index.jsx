@@ -46,6 +46,7 @@ const Email_verification = () => {
   };
 
   return (
+    <div className={styles.container}>
     <div className={styles.main}>
       <h3>我们将会往您的注册邮箱发送验证码</h3>
       <Form form={form} name="UserRegister" onFinish={onFinish}>
@@ -73,6 +74,7 @@ const Email_verification = () => {
           </Link>
         </FormItem>
       </Form>
+      </div>
     </div>
   );
 };
