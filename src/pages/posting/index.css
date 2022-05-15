@@ -1,14 +1,17 @@
+
 .indexc{
   text-align: center;
   position: absolute;
   width: 300px;
   margin-left: 1100px;
-  margin-top: -70%;
+  margin-top: -80%;
 
 
 
 }
 
-.textc{
-  text-align: center;
+.back{
+  background-image: url('/header.jpg');
+  background-size: cover;
+
 }
