@@ -1,5 +1,13 @@
 @import '~antd/es/style/themes/default.less';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+  background: @layout-body-background;
+}
+
 .main {
   width: 368px;
   margin: 0 auto;
@@ -19,11 +27,6 @@
     }
   }
 
-  .getCaptcha {
-    display: block;
-    width: 100%;
-  }
-
   .submit {
     width: 50%;
   }
@@ -36,15 +39,20 @@
 
 @media (min-width: @screen-md-min) {
   .container {
+    background-image: url('../Login/login_bg.jpg');
     background-repeat: no-repeat;
-    background-position: center 100vh;
+    background-position: 50% 50%;
     background-size: 100%;
   }
-
   .main {
-    padding: 320px 0 24px;
+    padding: 32px 0 24px;
+    position: absolute;
+    top: 350px;
+    left: 620px;
   }
+
 }
+
 .success,
 .warning,
 .error {
@@ -63,10 +71,4 @@
   color: @error-color;
 }
 
-.progress-pass > .progress {
-  :global {
-    .ant-progress-bg {
-      background-color: @warning-color;
-    }
-  }
-}
+
