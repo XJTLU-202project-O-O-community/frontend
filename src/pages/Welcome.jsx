@@ -3,6 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography } from 'antd';
 import { useIntl, FormattedMessage } from 'umi';
 import styles from './Welcome.less';
+import { history } from '@@/core/history';
 
 const CodePreview = ({ children }) => (
   <pre className={styles.pre}>
@@ -14,7 +15,7 @@ const CodePreview = ({ children }) => (
 
 export default () => {
   const intl = useIntl();
-  history.push('/post');
+  history.push('/posts');
   return (
     <PageContainer>
       <Card>

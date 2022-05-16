@@ -87,7 +87,7 @@ const PostList = () => {
   useEffect(async () => {
     const resData = await getComment();
     setComment(resData.data.comments);
-  });
+  }, []);
   //个人信息
   useEffect(async () => {
     const res1Data = await index_postProfile(own_id);
@@ -355,8 +355,20 @@ const PostList = () => {
           )}
         />
       </Card>
-      <Card className="indexc" title="Personal Info">
-        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
+      <Card
+        style={{
+          textAlign: 'center',
+          width: '336px',
+          height: '280px',
+          left: '50%',
+          top: '50%',
+          marginLeft: '480px',
+          marginTop: '-140px',
+          position: 'fixed',
+        }}
+        title="Personal Info"
+      >
+        <Avatar shape="square" size={75} src={'http://localhost:8000/media/' + dataPerson?.photo} />
         <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
         <h5 style={{ textAlign: 'left' }}>{dataPerson?.signature}</h5>

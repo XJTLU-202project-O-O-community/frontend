@@ -306,7 +306,7 @@ export default (props) => {
                 onChange: (page) => {
                   console.log(page);
                 },
-                pageSize: 10,
+                pageSize: 5,
               }}
               dataSource={own_data}
               renderItem={(item) => (
