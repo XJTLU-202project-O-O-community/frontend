@@ -263,7 +263,7 @@ const PostList = () => {
         ],
       }}
     >
-      <Card style={{ marginLeft: 170, width: 800 }}>
+      <Card style={{ marginLeft: 110, width: 750 }}>
         <List
           itemLayout="vertical"
           size="large"
@@ -358,7 +358,7 @@ const PostList = () => {
       <Card
         style={{
           textAlign: 'center',
-          width: '336px',
+          width: '270px',
           height: '280px',
           left: '50%',
           top: '50%',
