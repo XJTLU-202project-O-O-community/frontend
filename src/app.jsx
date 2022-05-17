@@ -22,7 +22,6 @@ export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
       const pk = localStorage.getItem('access_pk');
-      console.log(pk);
       if (pk == null) {
         history.push(loginPath);
       }
