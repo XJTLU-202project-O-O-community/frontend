@@ -70,6 +70,19 @@ export async function this_register(body, options) {
   });
 }
 
+/** 改密码接口 GET /api/user/change_pwd// */
+
+export async function change_pwd(body, options) {
+  return request('/api/user/change_pwd/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: `new_password=${body.password}`,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 
 export async function getNotices(options) {

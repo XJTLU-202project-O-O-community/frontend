@@ -36,6 +36,11 @@ export default [
             path: '/user/register-result',
             component: './user/register-result',
           },
+          {
+            name: 'change_pwd',
+            path: '/user/change_pwd',
+            component: './user/change_pwd',
+          },
         ],
       },
       {

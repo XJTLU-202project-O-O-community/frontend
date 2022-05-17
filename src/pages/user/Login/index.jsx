@@ -47,7 +47,7 @@ const Login = () => {
         const currentUserInfo = ans.data[0]['fields'];
         const background = ans.data[0]['fields']['background'];
         console.log('pk是');
-        console.log(currentUserPk);
+        console.log(currentUserPk, 9999);
         localStorage.setItem('access_pk', currentUserPk);
         localStorage.setItem('user_info', JSON.stringify(currentUserInfo));
         localStorage.setItem('background', background);

@@ -12,11 +12,11 @@ import {
   Menu,
   Drawer,
   Space,
+  Button
 } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './style.less';
 import { queryFakeList } from './service';
-// import { queryFakeList } from '@/services/sub&unsub';
 import { searchWithinFan } from '../FanList/service';
 import { Link } from 'umi';
 import { DownOutlined } from '@ant-design/icons';
@@ -31,10 +31,8 @@ export const FanList = () => {
   const [deleteList, setDeleteList] = useState([]); //分组名称
   const [deleteList1, setDeleteList1] = useState([]); //分组名称
   const [keyinf, setKeyInf] = useState([]); //分组名称
-  var gID;
-  function handleChange(value) {
-    gID = value;
-  }
+
+
 
   const createNewGroup1 = async (value) => {
     const res = await createNewGroup({
@@ -46,25 +44,27 @@ export const FanList = () => {
     } else {
       message.error(res.msg);
     }
-    location.reload();
+    
   };
 
-  const changeGroupName1 = async (value) => {
+  const changeGroupName1 = async (values) => {
+    // console.log(values);
     const res = await changeGroupName({
       user_id: localStorage.getItem('access_pk'),
-      group_name: value,
-      group_id: gID,
+      group_name: values["groupName"],
+      group_id: values["groupId"],
     });
     if (res.error_code == 200) {
       message.success(res.msg);
-      location.reload();
+      queryFanList();
     } else {
       message.error(res.msg + ', choose group first');
     }
-    gID = null;
   };
 
-  const changeUserGroup1 = async (value, value2) => {
+  const changeUserGroup1 = async (value,value2) => {
+    console.log(value);
+    // console.log(value["groupId"]);
     const res = await changeUserGroup({
       user_id: localStorage.getItem('access_pk'),
       following_id: value2,
@@ -72,7 +72,8 @@ export const FanList = () => {
     });
     if (res.error_code == 200) {
       message.success(res.msg);
-      location.reload();
+      queryFanList();
+      // location.reload();
     } else {
       message.error(res.msg);
     }
@@ -85,10 +86,10 @@ export const FanList = () => {
     });
     if (res.error_code == 200) {
       message.success(res.msg);
+      queryFanList();
     } else {
       message.error(res.msg);
     }
-    location.reload();
   };
 
   class DrawerForm extends React.Component {
@@ -168,28 +169,36 @@ export const FanList = () => {
             visible={this.state.visible}
             bodyStyle={{ paddingBottom: 0 }}
           >
-            <Form layout="vertical" hideRequiredMark >
+            <Form layout="vertical" hideRequiredMark
+              onFinish={changeGroupName1}>
               <Row gutter={16}>
                 <Form.Item
-                  name="choose group to change"
+                  name="groupId"
                   label="Choose group to change"
                   rules={[{ required: true, message: 'Please enter new group name' }]}
                 >
                   <Select
                     defaultValue="choose group"
                     style={{ width: 180 }}
-                    onChange={handleChange}
+                    // onChange={handleChange}
                     options={deleteList1}
                   ></Select>
                 </Form.Item>
               </Row>
               <Row gutter={16}>
-                <Search
-                  placeholder="Please enter new group name"
-                  onSearch={changeGroupName1}
-                  enterButton="Change"
-                />
+                <Form.Item
+                    label="Please enter new group name"
+                    name="groupName"
+                    rules={[{ required: true, message: 'Please input your new group name!' }]}
+                  >
+                    <Input />
+                </Form.Item>
               </Row>
+                <Form.Item wrapperCol={{ offset: 0, span: 16 }}>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
             </Form>
           </Drawer>
         </>
@@ -197,6 +206,13 @@ export const FanList = () => {
     }
   }
 
+  const MoreButton = ({ type }) => (
+    <Dropdown overlay={<Menu onClick={({ key }) => changeUserGroup1(key, type)} items={deleteList}></Menu>}>
+        <a>
+          move user to other group <DownOutlined />
+        </a>
+      </Dropdown>
+  );
   const MoreBtn = (
     <div>
       <b>current group:{keyinf}</b>
@@ -339,14 +355,15 @@ export const FanList = () => {
               renderItem={(item) => (
                 <List.Item
                   actions={[
-                    <Select
-                      defaultValue="move to other group"
-                      style={{ width: 180 }}
-                      onChange={(newValue) => {
-                        changeUserGroup1(newValue, item.id);
-                      }}
-                      options={deleteList1}
-                    ></Select>,
+                    // <Select
+                    //   placeholder="move to other group"
+                    //   style={{ width: 180 }}
+                    //   onSelect={(newValue) => {
+                    //     changeUserGroup1(newValue, item.id);
+                    //   }}
+                    //   options={deleteList1}
+                    // ></Select>,
+                    <MoreButton key="more" type={item.id} />,
                   ]}
                 >
                   <List.Item.Meta

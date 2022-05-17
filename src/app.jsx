@@ -8,7 +8,8 @@ const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 const registerPath = '/user/register';
 import { currentUser } from './services/ant-design-pro/api';
-import localStorage from 'localStorage';
+import { GetPersonInfo } from '@/services/person';
+
 /** 获取用户信息比较慢的时候会展示一个 loading */
 
 export const initialStateConfig = {
@@ -22,12 +23,21 @@ export async function getInitialState() {
   const fetchUserInfo = async () => {
     try {
       const pk = localStorage.getItem('access_pk');
+      console.log(pk, 88888);
       if (pk == null) {
         history.push(loginPath);
       }
-      const msg = await currentUser(localStorage.getItem('access_pk'));
+      const data1 = { his_id: localStorage.getItem('access_pk') };
+      const msg = await GetPersonInfo(data1);
+      console.log(5555);
+      console.log(msg, 6666);
+      if (msg.error_code != 200) {
+        history.push(loginPath);
+      }
+
       return msg.data;
     } catch (error) {
+      console.log(error);
       history.push(loginPath);
     }
 
@@ -66,18 +76,7 @@ export const layout = ({ initialState }) => {
       }
     },
     */
-    links: isDev
-      ? [
-          <Link to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
-      : [],
+    links: isDev ? [] : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,

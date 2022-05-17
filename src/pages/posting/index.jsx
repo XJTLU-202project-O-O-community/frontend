@@ -6,7 +6,7 @@ import { List, Avatar } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getWholePosts, add, Profile, getComment, postComment } from '@/services/posts';
-import { ProFormText } from '@ant-design/pro-form';
+import { ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { ProFormUploadButton } from '@ant-design/pro-form';
 import { useRef } from 'react';
 import ProForm, { ModalForm } from '@ant-design/pro-form';
@@ -55,26 +55,26 @@ const App = (values) => {
   );
 };
 
-const PostList = (props) => {
+const PostList = () => {
   const data1 = localStorage.getItem('access_pk');
   const own_id = { his_id: data1 };
   console.log(data1, 7355608);
   let [data, setData] = useState([]);
   let [show, setShow] = useState({});
 
-  const [moments, setMoments] = useState([])
+  const [moments, setMoments] = useState([]);
   let [dataPerson, setPersonData] = useState([]);
   let [comments, setComment] = useState([]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
     const resData = await getWholePosts();
-    console.log(resData.data.moments, 999)
-    resData.data.moments.map((item)=>{
+    console.log(resData.data.moments, 999);
+    resData.data.moments.map((item) => {
       item.show_comment = false;
       return item;
-    })
-    console.log(resData.data.moments, 999)
+    });
+    console.log(resData.data.moments, 999);
     setMoments(resData.data.moments);
   }, []);
 
@@ -84,10 +84,13 @@ const PostList = (props) => {
   //   console.log(resData.data, 1000);
   //   setData(resData.data);
   // }, []);
+  useEffect(async () => {
+    const resData = await getComment();
+    setComment(resData.data.comments);
+  }, []);
   //个人信息
   useEffect(async () => {
     const res1Data = await index_postProfile(own_id);
-    console.log(res1Data, 11111);
     setPersonData(res1Data);
   }, []);
 
@@ -101,6 +104,9 @@ const PostList = (props) => {
 
   const showComment = (value, num) => {
     console.log(num);
+    if (num && value == undefined) {
+      return <h3>no comments here</h3>;
+    }
     if (num && value.length > 0) {
       return (
         <div>
@@ -148,7 +154,7 @@ const PostList = (props) => {
     if (res.error_code == 200) {
       message.success('add successfully');
       const data1 = await index_postList();
-      setData(data1.data);
+      setMoments(data1.data);
     } else if (res.error_code == 300) {
       message.error('please type in some content');
     } else message.error('error');
@@ -163,11 +169,31 @@ const PostList = (props) => {
     } else message.error('Can not add comment');
   };
 
+  const wrap = (value) => {
+    let arr1 = value.split('\n');
+    let res = null;
+    for (var i = 0; i < arr1.length; i++) {
+      if (i == 0) {
+        res = arr1[i];
+      } else
+        res = (
+          <span>
+            {res}
+            <br />
+            {arr1[i]}
+          </span>
+        );
+    }
+    return res;
+  };
+
   return (
     <PageContainer
       style={{ color: 'pink' }}
       header={{
-        title: [<h1>Welcome to our O&O community</h1>],
+        className: 'back',
+
+        title: [<h5></h5>],
         ghost: true,
 
         extra: [
@@ -214,20 +240,12 @@ const PostList = (props) => {
             }}
           >
             <ProFormText name="user_id" width="md" label="User id" readonly initialValue={data1} />
-            <ProForm.Group>
-              <ProFormText
-                name="description"
-                width="md"
-                label="Put the description here"
-                tooltip="最长为 24 位"
-                placeholder="请输入名称"
-              />
-            </ProForm.Group>
-            <ProFormText
+            <ProFormTextArea
+              style={{ height: 120 }}
+              allowClear
               width="xl"
+              label="content"
               name="content"
-              label="write whatever you want"
-              placeholder="请输入名称"
             />
             <ProFormUploadButton
               name="imgs"
@@ -245,7 +263,7 @@ const PostList = (props) => {
         ],
       }}
     >
-      <Card style={{ marginLeft: 170, width: 800 }}>
+      <Card style={{ marginLeft: 110, width: 750 }}>
         <List
           itemLayout="vertical"
           size="large"
@@ -263,16 +281,13 @@ const PostList = (props) => {
             <List.Item key={item.title}>
               <List.Item.Meta
                 avatar={
-                  <Avatar
-                    shape="square"
-                    size={50}
-                    src={'/server/media/' + item.user_id__photo}
-                  />
+                  <Avatar shape="square" size={50} src={'/server/media/' + item.user_id__photo} />
                 }
                 title={<Link to={`/personal_view/${item.user_id}/`}>{item.user_id__name}</Link>}
                 description={item.user_id__signature}
               />
-              {item.content}
+
+              <span>{wrap(item.content)}</span>
               {App(item.url)}
 
               <div className="site-button-ghost-wrapper">
@@ -293,7 +308,7 @@ const PostList = (props) => {
                   style={{ width: 180 }}
                   icon={<MessageOutlined />}
                 >
-                  {numComment}
+                  {comments[item.id.toString()]?.length}
                 </Button>
 
                 <ModalForm
@@ -340,8 +355,20 @@ const PostList = (props) => {
           )}
         />
       </Card>
-      <Card className="indexc" title="Personal Info">
-        <Avatar shape="square" size={50} src={'http://localhost:8000/media/' + dataPerson?.photo} />
+      <Card
+        style={{
+          textAlign: 'center',
+          width: '270px',
+          height: '280px',
+          left: '50%',
+          top: '50%',
+          marginLeft: '480px',
+          marginTop: '-140px',
+          position: 'fixed',
+        }}
+        title="Personal Info"
+      >
+        <Avatar shape="square" size={75} src={'http://localhost:8000/media/' + dataPerson?.photo} />
         <h2 style={{ marginTop: 20 }}>{dataPerson?.name}</h2>
         <h3 style={{ textAlign: 'left' }}>description:</h3>
         <h5 style={{ textAlign: 'left' }}>{dataPerson?.signature}</h5>

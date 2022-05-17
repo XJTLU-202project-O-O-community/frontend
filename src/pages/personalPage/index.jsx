@@ -45,18 +45,18 @@ export default (props) => {
   let [personInfo, setpersonInfo] = useState([]);
   let [background, setBackground] = useState('default.jpg');
 
-  useEffect(()=>{
+  useEffect(() => {
     getPersonalInfo();
   }, []);
 
   const getPersonalInfo = async () => {
     const infoData = await index_PersonInfo(data1);
     console.log(infoData, 400);
-    localStorage.setItem('picName', infoData.background);
+    localStorage.setItem('background', infoData.background);
     setpersonInfo(infoData);
-  }
+    setBackground(infoData.background);
+  };
 
-  
   console.log('111');
   console.log(personInfo.photo);
 
@@ -91,7 +91,6 @@ export default (props) => {
       message.success('add successfully');
       getPersonalInfo();
     } else message.error('error');
-
   };
 
   const changeBack = async (value) => {
@@ -115,7 +114,7 @@ export default (props) => {
   // let picName = personInfo.background;
 
   const backgroundpic = (
-    <Menu onClick={onClick1} >
+    <Menu onClick={onClick1}>
       <Menu.Item key="blue.jpg">blue</Menu.Item>
       <Menu.Item key="purple.jpg">purple</Menu.Item>
       <Menu.Item key="orange.jpg">orange</Menu.Item>
@@ -307,7 +306,7 @@ export default (props) => {
                 onChange: (page) => {
                   console.log(page);
                 },
-                pageSize: 10,
+                pageSize: 5,
               }}
               dataSource={own_data}
               renderItem={(item) => (
