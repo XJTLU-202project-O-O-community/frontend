@@ -234,12 +234,11 @@ const PostList = () => {
             }}
             onFinish={(value) => {
               console.log(value, 99999);
+              value['user_id'] = data1;
               uploadPosting(value);
-
               return true;
             }}
           >
-            <ProFormText name="user_id" width="md" label="User id" readonly initialValue={data1} />
             <ProFormTextArea
               style={{ height: 120 }}
               allowClear
@@ -274,7 +273,7 @@ const PostList = () => {
           dataSource={moments}
           footer={
             <div>
-              <b>ant design</b> footer part
+              <b>All moments is here</b>
             </div>
           }
           renderItem={(item) => (
@@ -326,23 +325,17 @@ const PostList = () => {
                   }}
                   onFinish={(value) => {
                     value['user_id'] = localStorage.getItem('access_pk');
-                    console.log(value, 99999);
+                    value['moment_id'] = item.id;
+
                     upload_comment(value);
                     return true;
                   }}
                 >
-                  <ProFormText
-                    name="moment_id"
-                    width="md"
-                    label="Moment id"
-                    readonly
-                    initialValue={item.id}
-                  />
                   <ProForm.Group>
                     <ProFormText
                       name="content"
                       width="md"
-                      label="Put the description here"
+                      label="Put your comment here"
                       tooltip="最长为 24 位"
                       placeholder="请输入名称"
                     />
