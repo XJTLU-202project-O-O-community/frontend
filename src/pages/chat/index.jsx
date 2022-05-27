@@ -18,7 +18,8 @@ const App = (props) => {
   const message_list_ref = useRef([]);
   const following_lst_ref = useRef([]);
   const ws = useRef(null);
-  const target_user = useRef(null);
+  const target_user_ref = useRef(null);
+  const [target_user, setTarget_user] = useState(null);
   const user_id = useRef(null);
   const [tab, setTab] = useState('tab1');
 
@@ -36,7 +37,7 @@ const App = (props) => {
         const res = JSON.parse(e.data);
         const msg = handleMsg(res);
         if (res.recipient_id == user_id.current) {
-          if (res.user_id == target_user.current.id) {
+          if (res.user_id == target_user_ref.current.id) {
             appendMsg(msg);
           }
         }
@@ -60,52 +61,55 @@ const App = (props) => {
 
     // fetchFollowingList
     const res = await getFollowingList(user_id.current);
-    console.log(res)
+    console.log(res);
     let following_lst = res.data?.following_list;
-    let lst = []
-    if(following_lst){
+    let lst = [];
+    if (following_lst) {
       for (let group_index in following_lst) {
-        for (let index in following_lst[group_index].group_members){
-          let group_members = following_lst[group_index].group_members[index]
-          lst.push( {
+        for (let index in following_lst[group_index].group_members) {
+          let group_members = following_lst[group_index].group_members[index];
+          lst.push({
             id: group_members.id,
             message_user_id: group_members.id,
             username: group_members.username,
             avatar: group_members.photo,
             moment: group_members.moment,
-          })
+          });
         }
       }
-      console.log(lst)
+      console.log(lst);
       setFollowingList(lst);
       following_lst_ref.current = lst;
     }
-    
-  
+
     // handle target_user
     const target_id = props.location.query.target_id;
-    if(target_id){
+    if (target_id) {
       let flag = 0;
-      for(let i in message_list_ref.current){
-        if(message_list_ref.current[i].message_user_id==String(target_id)){
+      for (let i in message_list_ref.current) {
+        if (message_list_ref.current[i].message_user_id == String(target_id)) {
           handleTarget(message_list_ref.current[i]);
           flag = 1;
           break;
         }
       }
-      if(flag == 0){
-        const res = await GetPersonInfo({his_id: target_id});
+      if (flag == 0) {
+        const res = await GetPersonInfo({ his_id: target_id });
 
-        if(res.error_code==200){
+        if (res.error_code == 200) {
           const info = res.data.personal_data[0].fields;
           const target_info = {
             message_user_id: res.data.personal_data[0].pk,
-            username: info.name, 
-            avatar: info.photo
+            username: info.name,
+            avatar: info.photo,
+          };
+          if (message_list_ref.current == undefined) {
+            setMessage_list([target_info]);
+          } else {
+            setMessage_list([...message_list_ref.current, target_info]);
           }
-          setMessage_list([...message_list_ref.current, target_info])
-          console.log(message_list)
-          message_list_ref.current = [...message_list_ref.current, target_info];
+          console.log(message_list);
+          message_list_ref.current = message_list;
           handleTarget(target_info);
         }
       }
@@ -115,7 +119,8 @@ const App = (props) => {
   const handleTarget = async (target) => {
     resetList();
     target.id = target.message_user_id;
-    target_user.current = target;
+    target_user_ref.current = target;
+    setTarget_user(target);
     const res = await getHistory(user_id.current, target.id);
     if (res.error_code == 200) {
       let msgItems = res.data;
@@ -143,13 +148,13 @@ const App = (props) => {
         handleMsg({
           message: val,
           createdAt: Date.parse(new Date()),
-          recipient_id: target_user.current.message_user_id,
+          recipient_id: target_user_ref.current.message_user_id,
         }),
       );
       ws.current.send(
         JSON.stringify({
           user_id: user_id.current,
-          recipient_id: target_user.current.message_user_id,
+          recipient_id: target_user_ref.current.message_user_id,
           message: val,
         }),
       );
@@ -165,7 +170,7 @@ const App = (props) => {
       if (messageList[x].message_user_id == res.user_id) {
         flag = true;
         messageList[x].msg = res.message;
-        if (messageList[x].message_user_id != target_user.message_user_id) {
+        if (messageList[x].message_user_id != target_user_ref.message_user_id) {
           if (messageList[x].num) {
             messageList[x].num += 1;
           } else {
@@ -196,7 +201,7 @@ const App = (props) => {
     let flag = false;
     let messageList = message_list_ref.current;
     for (let x in messageList) {
-      if (messageList[x].message_user_id == target_user.current.message_user_id) {
+      if (messageList[x].message_user_id == target_user_ref.current.message_user_id) {
         messageList[x].msg = val;
         setMessage_list([...messageList]);
         message_list_ref.current = messageList;
@@ -208,7 +213,7 @@ const App = (props) => {
       let followingList = following_lst_ref.current;
       console.log(followingList);
       for (let x in followingList) {
-        if (followingList[x].message_user_id == target_user.current.message_user_id) {
+        if (followingList[x].message_user_id == target_user_ref.current.message_user_id) {
           let new_messager = followingList[x];
           new_messager.msg = val;
           setMessage_list([...messageList, new_messager]);
@@ -230,7 +235,7 @@ const App = (props) => {
       user: {
         avatar:
           msgItem.recipient_id == user_id.current
-            ? `/server/media/${target_user.current?.avatar}`
+            ? `/server/media/${target_user_ref.current?.avatar}`
             : '/server/media/' + user_info?.photo,
       },
     };
@@ -298,10 +303,10 @@ const App = (props) => {
             />
           </ProCard.TabPane>
         </ProCard>
-        {target_user.current ? (
+        {target_user ? (
           <ProCard>
             <Chat
-              navbar={{ title: target_user.current?.username }}
+              navbar={{ title: target_user_ref.current?.username }}
               messages={messages}
               renderMessageContent={renderMessageContent}
               onSend={handleSend}
