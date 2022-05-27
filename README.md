@@ -28,7 +28,16 @@ Scripts provided in `package.json`. It's safe to modify or add additional script
 yarn start
 ```
 
-## Rest is for build or test.
+## If there is bug for btoa package, please run:
+```bash
+yarn add swagger-ui-reac
+```
+## or:
+```bash
+yarn add btoa
+```
+
+## Rest is for build or test. (No need to use!!!)
 
 ### Build project
 

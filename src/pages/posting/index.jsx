@@ -41,7 +41,16 @@ const exitFunction = () => {
 };
 
 const App = (values) => {
-  const list11 = values?.toString().split(',');
+  let str=values?.toString()
+  if(str.length>0){
+    if(str.substring(str.length-1)!=","){
+      str=str.substring(1)+","
+    }
+  }
+  const list11 = str.split(',')
+
+
+    // .split(',');
   list11?.pop();
   console.log(list11);
   return (
@@ -311,7 +320,7 @@ const PostList = () => {
                 </Button>
 
                 <ModalForm
-                  title="Write moments here"
+                  title="Write comments here"
                   formRef={formRef}
                   trigger={
                     <Button type="primary">
@@ -326,7 +335,6 @@ const PostList = () => {
                   onFinish={(value) => {
                     value['user_id'] = localStorage.getItem('access_pk');
                     value['moment_id'] = item.id;
-
                     upload_comment(value);
                     return true;
                   }}
