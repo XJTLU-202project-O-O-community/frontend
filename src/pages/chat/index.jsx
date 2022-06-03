@@ -61,54 +61,55 @@ const App = (props) => {
 
     // fetchFollowingList
     const res = await getFollowingList(user_id.current);
-    console.log(res);
+    console.log(res)
     let following_lst = res.data?.following_list;
-    let lst = [];
-    if (following_lst) {
+    let lst = []
+    if(following_lst){
       for (let group_index in following_lst) {
-        for (let index in following_lst[group_index].group_members) {
-          let group_members = following_lst[group_index].group_members[index];
-          lst.push({
+        for (let index in following_lst[group_index].group_members){
+          let group_members = following_lst[group_index].group_members[index]
+          lst.push( {
             id: group_members.id,
             message_user_id: group_members.id,
             username: group_members.username,
             avatar: group_members.photo,
             moment: group_members.moment,
-          });
+          })
         }
       }
-      console.log(lst);
+      console.log(lst)
       setFollowingList(lst);
       following_lst_ref.current = lst;
     }
 
+
     // handle target_user
     const target_id = props.location.query.target_id;
-    if (target_id) {
+    if(target_id){
       let flag = 0;
-      for (let i in message_list_ref.current) {
-        if (message_list_ref.current[i].message_user_id == String(target_id)) {
+      for(let i in message_list_ref.current){
+        if(message_list_ref.current[i].message_user_id==String(target_id)){
           handleTarget(message_list_ref.current[i]);
           flag = 1;
           break;
         }
       }
-      if (flag == 0) {
-        const res = await GetPersonInfo({ his_id: target_id });
+      if(flag == 0){
+        const res = await GetPersonInfo({his_id: target_id});
 
-        if (res.error_code == 200) {
+        if(res.error_code==200){
           const info = res.data.personal_data[0].fields;
           const target_info = {
             message_user_id: res.data.personal_data[0].pk,
             username: info.name,
-            avatar: info.photo,
-          };
-          if (message_list_ref.current == undefined) {
-            setMessage_list([target_info]);
-          } else {
-            setMessage_list([...message_list_ref.current, target_info]);
+            avatar: info.photo
           }
-          console.log(message_list);
+          if(message_list_ref.current==undefined){
+            setMessage_list([target_info, ])
+          }else{
+            setMessage_list([...message_list_ref.current, target_info])
+          }
+          console.log(message_list)
           message_list_ref.current = message_list;
           handleTarget(target_info);
         }
@@ -216,8 +217,13 @@ const App = (props) => {
         if (followingList[x].message_user_id == target_user_ref.current.message_user_id) {
           let new_messager = followingList[x];
           new_messager.msg = val;
-          setMessage_list([...messageList, new_messager]);
-          message_list_ref.current = [...messageList, new_messager];
+          if(message_list_ref.current==undefined){
+            setMessage_list([new_messager, ])
+          }else{
+            setMessage_list([...message_list_ref.current, new_messager])
+          }
+
+          message_list_ref.current = message_list;
           break;
         }
       }
